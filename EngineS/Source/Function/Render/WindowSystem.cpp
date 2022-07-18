@@ -1,4 +1,5 @@
 #include "WindowSystem.hpp"
+#include "Core/Base/Macros.hpp"
 #include "Core/Logging/LoggingSystem.hpp"
 
 #define GLFW_CALLBACK(functionName)                                                          \
@@ -8,7 +9,10 @@
 
 namespace EngineS {
 
-WindowSystem::~WindowSystem() {}
+WindowSystem::~WindowSystem() {
+	glfwSetWindowShouldClose(_window, true);
+	glfwTerminate();
+}
 
 void WindowSystem::Initialize(int width, int height, const char* title) {
 	LOG_INFO("Initialzing WindowSystem (GLFW)");
