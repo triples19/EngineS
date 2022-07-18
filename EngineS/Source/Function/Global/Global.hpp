@@ -4,6 +4,7 @@ namespace EngineS {
 
 class WindowSystem;
 class LoggingSystem;
+class InputSystem;
 
 class Global {
   public:
@@ -15,6 +16,7 @@ class Global {
   public:
 	WindowSystem*  windowSystem;
 	LoggingSystem* loggingSystem;
+	InputSystem*   inputSystem;
 };
 
 } // namespace EngineS

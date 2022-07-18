@@ -1,5 +1,6 @@
 #include "Global.hpp"
 #include "Core/Logging/LoggingSystem.hpp"
+#include "Function/Input/InputSystem.hpp"
 #include "Function/Render/WindowSystem.hpp"
 
 #include <cassert>
@@ -21,6 +22,9 @@ void Global::Initialize() {
 	windowSystem = new WindowSystem;
 
 	loggingSystem = new LoggingSystem;
+
+	inputSystem = new InputSystem;
+	inputSystem->Initialize();
 }
 
 void Global::Shutdown() {
