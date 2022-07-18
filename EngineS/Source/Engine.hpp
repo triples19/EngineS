@@ -25,6 +25,8 @@ class Engine {
   private:
 	std::chrono::steady_clock::time_point _lastTickTime {std::chrono::steady_clock::now()};
 	std::vector<UpdateFunc>				  _updateFuncs;
+
+	bool _shouldShutdown {false};
 };
 
 } // namespace EngineS

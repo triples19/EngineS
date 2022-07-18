@@ -14,7 +14,7 @@ void Engine::StartEngine() {
 
 void Engine::Shutdown() {
 	LOG_INFO("Engine shutting down");
-	Global::Instance()->Shutdown();
+	_shouldShutdown = true;
 }
 
 void Engine::Initialize() {
@@ -27,6 +27,11 @@ void Engine::Run() {
 	while (!window->ShouldClose()) {
 		const float deltaTime = GetDeltaTime();
 		Update(deltaTime);
+
+		if (_shouldShutdown) {
+			Global::Instance()->Shutdown();
+			break;
+		}
 	}
 }
 
