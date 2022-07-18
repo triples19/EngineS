@@ -29,6 +29,8 @@ void Global::Initialize() {
 
 void Global::Shutdown() {
 	delete windowSystem;
+	delete loggingSystem;
+	delete inputSystem;
 }
 
 } // namespace EngineS
