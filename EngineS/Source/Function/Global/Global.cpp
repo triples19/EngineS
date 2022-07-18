@@ -19,18 +19,18 @@ Global* Global::Instance() {
 }
 
 void Global::Initialize() {
-	windowSystem = new WindowSystem;
+	windowSystem = std::make_shared<WindowSystem>();
 
-	loggingSystem = new LoggingSystem;
+	loggingSystem = std::make_shared<LoggingSystem>();
 
-	inputSystem = new InputSystem;
+	inputSystem = std::make_shared<InputSystem>();
 	inputSystem->Initialize();
 }
 
 void Global::Shutdown() {
-	delete windowSystem;
-	delete loggingSystem;
-	delete inputSystem;
+	windowSystem.reset();
+	loggingSystem.reset();
+	inputSystem.reset();
 }
 
 } // namespace EngineS

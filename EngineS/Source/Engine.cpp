@@ -18,12 +18,12 @@ void Engine::Shutdown() {
 }
 
 void Engine::Initialize() {
-	auto* window = Global::Instance()->windowSystem;
+	auto window = Global::Instance()->windowSystem;
 	window->Initialize(1280, 720, "EngineS");
 }
 
 void Engine::Run() {
-	auto* window = Global::Instance()->windowSystem;
+	auto window = Global::Instance()->windowSystem;
 	while (!window->ShouldClose()) {
 		const float deltaTime = GetDeltaTime();
 		Update(deltaTime);

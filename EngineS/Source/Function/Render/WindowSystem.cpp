@@ -10,7 +10,7 @@
 namespace EngineS {
 
 WindowSystem::~WindowSystem() {
-	glfwSetWindowShouldClose(_window, true);
+	glfwDestroyWindow(_window);
 	glfwTerminate();
 }
 

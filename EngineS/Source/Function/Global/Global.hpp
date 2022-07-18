@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 namespace EngineS {
 
 class WindowSystem;
@@ -14,9 +16,9 @@ class Global {
 	void Shutdown();
 
   public:
-	WindowSystem*  windowSystem;
-	LoggingSystem* loggingSystem;
-	InputSystem*   inputSystem;
+	std::shared_ptr<WindowSystem>  windowSystem;
+	std::shared_ptr<LoggingSystem> loggingSystem;
+	std::shared_ptr<InputSystem>   inputSystem;
 };
 
 } // namespace EngineS
