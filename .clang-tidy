@@ -176,7 +176,7 @@ CheckOptions:
   - key: readability-identifier-naming.ClassMemberPrefix
     value: ''
   - key: readability-identifier-naming.PrivateMemberPrefix
-    value: ——
+    value: _
   - key: readability-identifier-naming.ProtectedMemberPrefix
     value: ''
   - key: readability-identifier-naming.PublicMemberCase
