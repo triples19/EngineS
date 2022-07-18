@@ -1,0 +1,12 @@
+build/
+.DS_Store
+
+# Visual Studio Code
+.vscode/
+
+# Visual Studio
+.vs/
+CMakeSettings.json
+
+# CLion
+.idea/
