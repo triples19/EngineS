@@ -6,7 +6,7 @@
 namespace EngineS {
 
 void InputSystem::Initialize() {
-#define KEY_CODE(name, code) _keys[KeyCode::name] = false;
+#define KEY_CODE(name, code) _keys[KeyCode::name] = {};
 #include "Function/Input/KeyCode.def"
 #undef KEY_CODE
 	Global::Instance()->windowSystem->RegisterOnKeyFunc([this](auto... args) { OnKey(args...); });
