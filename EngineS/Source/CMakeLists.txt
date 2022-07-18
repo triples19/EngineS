@@ -4,3 +4,4 @@ file(GLOB_RECURSE SOURCE_FILES "*.cpp")
 add_executable(EngineS ${SOURCE_FILES} ${HEADER_FILES})
 
 target_link_libraries(EngineS PUBLIC glfw)
+target_link_libraries(EngineS PUBLIC glad)
