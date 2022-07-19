@@ -45,17 +45,16 @@ float Engine::GetDeltaTime() {
 }
 
 void Engine::Update(float deltaTime) {
+	Global::Instance()->inputSystem->Update();
+	Global::Instance()->windowSystem->PollEvents();
+
 	LogicUpdate(deltaTime);
 	for (auto& func : _updateFuncs) func(deltaTime);
 
 	RenderUpdate();
-
-	Global::Instance()->windowSystem->PollEvents();
 }
 
-void Engine::LogicUpdate(float deltaTime) {
-	Global::Instance()->inputSystem->Update();
-}
+void Engine::LogicUpdate(float deltaTime) {}
 
 void Engine::RenderUpdate() {}
 

@@ -9,19 +9,24 @@ void InputSystem::Initialize() {
 #define KEY_CODE(name, code) _keys[KeyCode::name] = {};
 #include "Function/Input/KeyCode.def"
 #undef KEY_CODE
-	Global::Instance()->windowSystem->RegisterOnKeyFunc([this](auto... args) { OnKey(args...); });
+	Global::Instance()->windowSystem->RegisterOnKeyFunc(ENGINES_CALLBACK(OnKey));
 }
 
-void InputSystem::Update() {}
-
-bool InputSystem::GetKey(KeyCode key) {
-	return _keys[key].downThisFrame;
+void InputSystem::Update() {
+	for (auto& key : _keys) {
+		auto& state			= key.second;
+		state.downLastFrame = state.downThisFrame;
+	}
 }
 
 void InputSystem::OnKey(int key, int scanCode, int action, int mods) {
-	auto& state			= _keys[static_cast<KeyCode>(key)];
-	state.downLastFrame = state.downThisFrame;
+	auto  code			= static_cast<KeyCode>(key);
+	auto& state			= _keys[code];
 	state.downThisFrame = (action != GLFW_RELEASE);
+}
+
+bool InputSystem::GetKey(KeyCode key) {
+	return _keys[key].downThisFrame;
 }
 
 bool InputSystem::GetKeyDown(KeyCode key) {
