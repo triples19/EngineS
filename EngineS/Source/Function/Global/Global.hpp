@@ -7,6 +7,7 @@ namespace EngineS {
 class WindowSystem;
 class LoggingSystem;
 class InputSystem;
+class RenderSystem;
 
 class Global {
   public:
@@ -17,6 +18,7 @@ class Global {
 
   public:
 	std::shared_ptr<WindowSystem>  windowSystem;
+	std::shared_ptr<RenderSystem>  renderSystem;
 	std::shared_ptr<LoggingSystem> loggingSystem;
 	std::shared_ptr<InputSystem>   inputSystem;
 };

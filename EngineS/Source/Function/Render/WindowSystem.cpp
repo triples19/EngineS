@@ -25,13 +25,13 @@ void WindowSystem::Initialize(int width, int height, const char* title) {
 	_width	= width;
 	_height = height;
 
-	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 	_window = glfwCreateWindow(width, height, title, nullptr, nullptr);
 	if (!_window) {
 		LOG_FATAL("Failed to create GLFW window");
 		glfwTerminate();
 		return;
 	}
+	glfwMakeContextCurrent(_window);
 
 	glfwSetWindowUserPointer(_window, this);
 	glfwSetKeyCallback(_window, GLFW_CALLBACK(OnKey));

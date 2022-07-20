@@ -1,6 +1,7 @@
 #include "Global.hpp"
 #include "Core/Logging/LoggingSystem.hpp"
 #include "Function/Input/InputSystem.hpp"
+#include "Function/Render/RenderSystem.hpp"
 #include "Function/Render/WindowSystem.hpp"
 
 #include <cassert>
@@ -19,9 +20,13 @@ Global* Global::Instance() {
 }
 
 void Global::Initialize() {
-	windowSystem = std::make_shared<WindowSystem>();
-
 	loggingSystem = std::make_shared<LoggingSystem>();
+
+	windowSystem = std::make_shared<WindowSystem>();
+	renderSystem = std::make_shared<RenderSystem>();
+	renderSystem->PreWindowInitialize();
+	windowSystem->Initialize(1280, 720, "EngineS");
+	renderSystem->Initialize();
 
 	inputSystem = std::make_shared<InputSystem>();
 	inputSystem->Initialize();

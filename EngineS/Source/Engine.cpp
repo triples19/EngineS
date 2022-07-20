@@ -3,6 +3,7 @@
 #include "Core/Logging/LoggingSystem.hpp"
 #include "Function/Global/Global.hpp"
 #include "Function/Input/InputSystem.hpp"
+#include "Function/Render/RenderSystem.hpp"
 #include "Function/Render/WindowSystem.hpp"
 
 namespace EngineS {
@@ -17,10 +18,7 @@ void Engine::Shutdown() {
 	_shouldShutdown = true;
 }
 
-void Engine::Initialize() {
-	auto window = Global::Instance()->windowSystem;
-	window->Initialize(1280, 720, "EngineS");
-}
+void Engine::Initialize() {}
 
 void Engine::Run() {
 	auto window = Global::Instance()->windowSystem;
@@ -56,6 +54,8 @@ void Engine::Update(float deltaTime) {
 
 void Engine::LogicUpdate(float deltaTime) {}
 
-void Engine::RenderUpdate() {}
+void Engine::RenderUpdate() {
+	Global::Instance()->renderSystem->Update();
+}
 
 } // namespace EngineS
