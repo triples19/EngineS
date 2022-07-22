@@ -4,3 +4,6 @@
 [submodule "spdlog"]
 	path = EngineS/ThirdParty/spdlog
 	url = https://github.com/gabime/spdlog.git
+[submodule "ryml"]
+	path = EngineS/ThirdParty/ryml
+	url = https://github.com/biojppm/rapidyaml.git

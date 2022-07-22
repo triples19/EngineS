@@ -22,3 +22,7 @@ if (NOT TARGET spdlog)
     add_subdirectory(spdlog)
     set_target_properties(spdlog PROPERTIES FOLDER ${third_party_folder}/spdlog)
 endif ()
+
+if (NOT TARGET ryml)
+    add_subdirectory(ryml)
+endif ()
