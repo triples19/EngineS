@@ -55,6 +55,8 @@ class Matrix3x3 {
 
 	Matrix3x3(const Vector3& row0, const Vector3& row1, const Vector3& row2);
 
+	const float* Data() const { return &mat[0][0]; }
+
 	float* operator[](size_t rowIndex) const { return const_cast<float*>(mat[rowIndex]); }
 
 	Vector3 GetColumn(size_t iCol) const;

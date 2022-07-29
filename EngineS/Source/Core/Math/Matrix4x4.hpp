@@ -71,6 +71,8 @@ class Matrix4x4 {
 
 	Matrix4x4(const Vector4& row0, const Vector4& row1, const Vector4& row2, const Vector4& row3);
 
+	const float* Data() const { return &mat[0][0]; }
+
 	float* operator[](size_t rowIndex) const { return const_cast<float*>(mat[rowIndex]); }
 
 	Matrix4x4 Concatenate(const Matrix4x4& m2) const {
