@@ -26,3 +26,7 @@ endif ()
 if (NOT TARGET ryml)
     add_subdirectory(ryml)
 endif ()
+
+if (NOT TARGET stb)
+    include(stb.cmake)
+endif ()
