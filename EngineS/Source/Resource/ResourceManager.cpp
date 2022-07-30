@@ -14,7 +14,7 @@ std::stringstream ResourceManager::LoadStringStream(fs::path path) {
 		LOG_ERROR("File {} does not exist.", path.string());
 		return {};
 	}
-	std::ofstream	  file(path);
+	std::ifstream	  file(path);
 	std::stringstream ss;
 	ss << file.rdbuf();
 	return ss;
