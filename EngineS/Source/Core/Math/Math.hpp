@@ -5,13 +5,14 @@
 #include <cmath>
 #include <limits>
 
-#include "Matrix3x3.hpp"
-#include "Matrix4x4.hpp"
-#include "Vector2.hpp"
-#include "Vector3.hpp"
-#include "Vector4.hpp"
-
 namespace EngineS {
+
+class Vector2;
+class Vector3;
+class Vector4;
+
+class Matrix3x3;
+class Matrix4x4;
 
 class Math {
   public:
