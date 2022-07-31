@@ -9,6 +9,10 @@
 
 namespace EngineS {
 
+void ResourceManager::Initialize() {
+	stbi__vertically_flip_on_load(true);
+}
+
 std::stringstream ResourceManager::LoadStringStream(fs::path path) {
 	if (!exists(path)) {
 		LOG_ERROR("File {} does not exist.", path.string());

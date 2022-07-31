@@ -3,6 +3,7 @@
 #include "Function/Input/InputSystem.hpp"
 #include "Function/Render/RenderSystem.hpp"
 #include "Function/Render/WindowSystem.hpp"
+#include "Resource/ResourceManager.hpp"
 
 #include <cassert>
 #include <new>
@@ -22,6 +23,9 @@ Global* Global::Instance() {
 void Global::Initialize() {
 	loggingSystem = std::make_shared<LoggingSystem>();
 
+	resourceManager = std::make_shared<ResourceManager>();
+	resourceManager->Initialize();
+
 	windowSystem = std::make_shared<WindowSystem>();
 	renderSystem = std::make_shared<RenderSystem>();
 	renderSystem->PreWindowInitialize();
@@ -36,6 +40,8 @@ void Global::Shutdown() {
 	windowSystem.reset();
 	loggingSystem.reset();
 	inputSystem.reset();
+	resourceManager.reset();
+	renderSystem.reset();
 }
 
 } // namespace EngineS
