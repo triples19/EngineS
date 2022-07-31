@@ -1,5 +1,6 @@
 #include "MatrixTransform.hpp"
 #include "Matrix4x4.hpp"
+#include "Vector3.hpp"
 
 namespace EngineS {
 
@@ -33,12 +34,20 @@ Matrix4x4 Translate(float x, float y, float z) {
 	return m;
 }
 
+Matrix4x4 Translate(Vector3 offset) {
+	return Translate(offset.x, offset.y, offset.z);
+}
+
 Matrix4x4 Scale(float x, float y, float z) {
 	Matrix4x4 m {Matrix4x4::Identity};
 	m[0][0] = x;
 	m[1][1] = y;
 	m[2][2] = z;
 	return m;
+}
+
+Matrix4x4 Scale(Vector3 scale) {
+	return Scale(scale.x, scale.y, scale.z);
 }
 
 } // namespace EngineS
