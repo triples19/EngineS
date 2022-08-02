@@ -1,16 +1,23 @@
 #pragma once
 
 #include <memory>
+#include <type_traits>
 #include <typeindex>
 #include <unordered_map>
 #include <vector>
 
-#include "Components/Component.hpp"
+#include "Component/Component.hpp"
+#include "Component/Transform2D.hpp"
+#include "Function/Render/Renderer.hpp"
 
 namespace EngineS {
 
 class GameObject {
   public:
+	GameObject();
+
+	virtual void Update(float deltaTime);
+
 	template<class T>
 	T* GetComponent() {
 		auto iter = _components.find(static_cast<std::type_index>(typeid(T)));
@@ -31,9 +38,25 @@ class GameObject {
 	}
 
 	template<class T>
-	void AddComponent(std::unique_ptr<T> comp) {
-		_components.insert(std::make_pair(static_cast<std::type_index>(typeid(T)), std::move(comp)));
+	T* AddComponent(std::unique_ptr<T> comp) {
+		comp->Initialize(this);
+		auto inserted = _components.insert(std::make_pair(static_cast<std::type_index>(typeid(T)), std::move(comp)));
+		auto pointer  = inserted->second.get();
+		SetPropertyIfNeeded(pointer);
+		return static_cast<T*>(pointer);
 	}
+
+  private:
+	template<class T>
+	void SetPropertyIfNeeded(T* val) {
+		if constexpr (std::is_base_of_v<Renderer, T>) {
+			renderer = val;
+		}
+	}
+
+  public:
+	Transform2D* transform;
+	Renderer*	 renderer;
 
   private:
 	std::unordered_multimap<std::type_index, std::unique_ptr<Component>> _components;
