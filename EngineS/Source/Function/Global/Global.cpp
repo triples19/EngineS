@@ -34,6 +34,8 @@ void Global::Initialize() {
 
 	inputSystem = std::make_shared<InputSystem>();
 	inputSystem->Initialize();
+
+	resourceManager->LoadDefaultResources();
 }
 
 void Global::Shutdown() {

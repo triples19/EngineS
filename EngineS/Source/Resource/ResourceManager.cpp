@@ -13,6 +13,10 @@ void ResourceManager::Initialize() {
 	stbi_set_flip_vertically_on_load(true);
 }
 
+void ResourceManager::LoadDefaultResources() {
+	_defaultResource.defaultSpriteShader = LoadShader("fragment.glsl", "vertex.glsl");
+}
+
 std::stringstream ResourceManager::LoadStringStream(fs::path path) {
 	if (!exists(path)) {
 		LOG_ERROR("File {} does not exist.", path.string());
@@ -38,25 +42,28 @@ ResourceManager::LoadShader(fs::path vertexPath, fs::path fragmentPath, std::opt
 	return shader;
 }
 
-std::shared_ptr<Texture2D> ResourceManager::LoadTexture2D(fs::path path, bool alpha) {
+std::shared_ptr<Texture2D> ResourceManager::LoadTexture2D(fs::path path) {
 	if (!exists(path)) {
 		LOG_ERROR("File {} does not exist.", path.string());
 		return nullptr;
 	}
-	auto texture = std::make_shared<Texture2D>();
-	if (alpha) {
-		texture->internalFormat = GL_RGBA;
-		texture->imageFormat	= GL_RGBA;
-	}
+	auto  texture = std::make_shared<Texture2D>();
 	int	  width, height, nrChannels;
 	auto* data = stbi_load(path.string().c_str(), &width, &height, &nrChannels, 0);
 	if (!data) {
 		LOG_ERROR("Failed to load image {}", path.string());
 		return nullptr;
 	}
+	if (nrChannels == 4) {
+		texture->internalFormat = GL_RGBA;
+		texture->imageFormat	= GL_RGBA;
+	}
 	texture->Generate(width, height, data);
 	stbi_image_free(data);
 	return texture;
+}
+std::shared_ptr<Shader> ResourceManager::GetDefaultSpriteShader() const {
+	return _defaultResource.defaultSpriteShader;
 }
 
 } // namespace EngineS
