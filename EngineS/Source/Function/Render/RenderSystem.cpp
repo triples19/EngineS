@@ -37,7 +37,8 @@ void RenderSystem::Update() {
 	auto shader = Global::Instance()->resourceManager->GetDefaultSpriteShader();
 	shader->Use();
 	shader->Set("image", 0);
-	shader->Set("projection", Orthographic(1280.0f, 920.0f, -1.0f, 1.0f));
+	auto [width, height] = Global::Instance()->windowSystem->GetWindowSize();
+	shader->Set("projection", Orthographic(width, height, 0.0f, 1.0f));
 
 	auto* scene = Global::Instance()->sceneManager->GetCurrentScene();
 	for (auto& obj : scene->GetGameObjects()) {
