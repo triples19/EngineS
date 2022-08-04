@@ -9,6 +9,7 @@ class LoggingSystem;
 class InputSystem;
 class RenderSystem;
 class ResourceManager;
+class SceneManager;
 
 class Global {
   public:
@@ -23,6 +24,7 @@ class Global {
 	std::shared_ptr<LoggingSystem>	 loggingSystem;
 	std::shared_ptr<InputSystem>	 inputSystem;
 	std::shared_ptr<ResourceManager> resourceManager;
+	std::shared_ptr<SceneManager>	 sceneManager;
 };
 
 } // namespace EngineS

@@ -1,8 +1,10 @@
 #include "Global.hpp"
+
 #include "Core/Logging/LoggingSystem.hpp"
 #include "Function/Input/InputSystem.hpp"
 #include "Function/Render/RenderSystem.hpp"
 #include "Function/Render/WindowSystem.hpp"
+#include "Function/Scene/SceneManager.hpp"
 #include "Resource/ResourceManager.hpp"
 
 #include <cassert>
@@ -35,6 +37,9 @@ void Global::Initialize() {
 	inputSystem = std::make_shared<InputSystem>();
 	inputSystem->Initialize();
 
+	sceneManager = std::make_shared<SceneManager>();
+	sceneManager->Initialize();
+
 	resourceManager->LoadDefaultResources();
 }
 
@@ -44,6 +49,7 @@ void Global::Shutdown() {
 	inputSystem.reset();
 	resourceManager.reset();
 	renderSystem.reset();
+	sceneManager.reset();
 }
 
 } // namespace EngineS
