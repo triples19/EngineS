@@ -14,7 +14,7 @@ void ResourceManager::Initialize() {
 }
 
 void ResourceManager::LoadDefaultResources() {
-	_defaultResource.defaultSpriteShader = LoadShader("fragment.glsl", "vertex.glsl");
+	_defaultResource.defaultSpriteShader = LoadShader("vertex.glsl", "fragment.glsl");
 }
 
 std::stringstream ResourceManager::LoadStringStream(fs::path path) {
