@@ -7,9 +7,9 @@ namespace EngineS {
 
 class Transform2D : public Component {
   public:
-	Vector2 position;
-	Vector2 scale;
-	float	rotation;
+	Vector2 position {0.0f, 0.0f};
+	Vector2 scale {1.0f, 1.0f};
+	float	rotation {0.0f};
 
 	Matrix4x4 MakeModelMatrix() const;
 };
