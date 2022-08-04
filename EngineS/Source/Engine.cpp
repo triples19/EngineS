@@ -18,8 +18,6 @@ void Engine::Shutdown() {
 	_shouldShutdown = true;
 }
 
-void Engine::Initialize() {}
-
 void Engine::Run() {
 	auto window = Global::Instance()->windowSystem;
 	while (!window->ShouldClose()) {

@@ -10,7 +10,6 @@ class Engine {
   public:
 	void StartEngine();
 	void Shutdown();
-	void Initialize();
 	void Run();
 
 	using UpdateFunc = std::function<void(float)>;
