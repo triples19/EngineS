@@ -41,7 +41,7 @@ class GameObject {
 	T* AddComponent(std::unique_ptr<T> comp) {
 		comp->Initialize(this);
 		auto inserted = _components.insert(std::make_pair(static_cast<std::type_index>(typeid(T)), std::move(comp)));
-		auto pointer  = inserted->second.get();
+		auto pointer  = static_cast<T*>(inserted->second.get());
 		SetPropertyIfNeeded(pointer);
 		return static_cast<T*>(pointer);
 	}
