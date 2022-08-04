@@ -1,7 +1,15 @@
 #include "RenderSystem.hpp"
 #include "Core/Base/Macros.hpp"
+#include "Core/Math/MathHeaders.hpp"
 #include "Function/Global/Global.hpp"
+#include "Function/Object/Component/Transform2D.hpp"
+#include "Function/Object/GameObject.hpp"
+#include "Function/Render/Shader.hpp"
+#include "Function/Render/SpriteRenderer.hpp"
+#include "Function/Render/Texture2D.hpp"
 #include "Function/Render/WindowSystem.hpp"
+#include "Function/Scene/SceneManager.hpp"
+#include "Resource/ResourceManager.hpp"
 
 namespace EngineS {
 
@@ -25,6 +33,16 @@ void RenderSystem::Initialize() {
 void RenderSystem::Update() {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	auto shader = Global::Instance()->resourceManager->GetDefaultSpriteShader();
+	shader->Use();
+	shader->Set("image", 0);
+	shader->Set("projection", Orthographic(1280.0f, 920.0f, -1.0f, 1.0f));
+
+	auto* scene = Global::Instance()->sceneManager->GetCurrentScene();
+	for (auto& obj : scene->GetGameObjects()) {
+		obj->renderer->Render();
+	}
 
 	glfwSwapBuffers(_window);
 }
