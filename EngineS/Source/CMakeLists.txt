@@ -11,3 +11,7 @@ target_link_libraries(EngineS PUBLIC ryml::ryml)
 target_link_libraries(EngineS PRIVATE stb)
 
 target_include_directories(EngineS PUBLIC .)
+
+add_custom_command(TARGET EngineS POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E remove_directory "${OUTPUT_ASSETS_DIR}"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory "${ENGINE_ASSETS_DIR}" "${OUTPUT_ASSETS_DIR}")
