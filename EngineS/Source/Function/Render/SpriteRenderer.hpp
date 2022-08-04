@@ -24,6 +24,7 @@ class SpriteRenderer : public Renderer {
 	std::shared_ptr<Shader>	   _shader;
 	std::shared_ptr<Texture2D> _texture;
 	Vector3					   _color {Vector3::One};
+	Vector2					   _anchor {0.5f, 0.5f};
 	static unsigned int		   _vao;
 };
 

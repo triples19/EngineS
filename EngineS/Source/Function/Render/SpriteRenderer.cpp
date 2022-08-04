@@ -17,8 +17,9 @@ SpriteRenderer::SpriteRenderer(std::shared_ptr<Shader> shader, std::shared_ptr<T
 
 void SpriteRenderer::Render() {
 	_shader->Use();
-	auto	  scale	   = Scale(_texture->width, _texture->height, 1);
-	Matrix4x4 modelMat = scale * transform->MakeModelMatrix();
+	auto	  scale		  = Scale(_texture->width, _texture->height, 1);
+	auto	  anchorTrans = Translate(-_anchor.x, -_anchor.y, 0);
+	Matrix4x4 modelMat	  = transform->MakeModelMatrix() * scale * anchorTrans;
 
 	_shader->Set("model", modelMat);
 	_shader->Set("spriteColor", _color);
