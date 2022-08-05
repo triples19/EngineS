@@ -14,7 +14,7 @@ namespace EngineS {
 
 class GameObject {
   public:
-	GameObject();
+	GameObject() = default;
 
 	virtual void Update(float deltaTime);
 
@@ -51,6 +51,8 @@ class GameObject {
 	void SetPropertyIfNeeded(T* val) {
 		if constexpr (std::is_base_of_v<Renderer, T>) {
 			renderer = val;
+		} else if constexpr (std::is_base_of_v<Transform2D, T>) {
+			transform = val;
 		}
 	}
 
