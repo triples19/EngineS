@@ -236,6 +236,9 @@ class Matrix4x4 {
 		return mat[0][0] * Minor(1, 2, 3, 1, 2, 3) - mat[0][1] * Minor(1, 2, 3, 0, 2, 3) +
 			   mat[0][2] * Minor(1, 2, 3, 0, 1, 3) - mat[0][3] * Minor(1, 2, 3, 0, 1, 2);
 	}
+
+	bool	  IsAffine() const { return mat[3][0] == 0 && mat[3][1] == 0 && mat[3][2] == 0 && mat[3][3] == 1; }
+	Matrix4x4 InverseAffine() const;
 };
 
 } // namespace EngineS

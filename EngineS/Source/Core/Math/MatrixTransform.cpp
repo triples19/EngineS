@@ -34,7 +34,7 @@ Matrix4x4 Translate(float x, float y, float z) {
 	return m;
 }
 
-Matrix4x4 Translate(Vector3 offset) {
+Matrix4x4 Translate(const Vector3& offset) {
 	return Translate(offset.x, offset.y, offset.z);
 }
 
@@ -46,8 +46,34 @@ Matrix4x4 Scale(float x, float y, float z) {
 	return m;
 }
 
-Matrix4x4 Scale(Vector3 scale) {
+Matrix4x4 Scale(const Vector3& scale) {
 	return Scale(scale.x, scale.y, scale.z);
+}
+
+Matrix4x4 LookAt(const Vector3& from, const Vector3& to, const Vector3& up) {
+	Vector3 x, y, z;
+	z = (to - from).Normalized();
+	x = Vector3::Cross(up, z).Normalized();
+	y = Vector3::Cross(z, x).Normalized();
+
+	Matrix4x4 lookAt;
+	lookAt[0][0] = x.x;
+	lookAt[1][0] = x.y;
+	lookAt[2][0] = x.z;
+	lookAt[3][0] = -Vector3::Dot(x, from);
+	lookAt[0][1] = y.x;
+	lookAt[1][1] = y.y;
+	lookAt[2][1] = y.z;
+	lookAt[3][1] = -Vector3::Dot(y, from);
+	lookAt[0][2] = z.x;
+	lookAt[1][2] = z.y;
+	lookAt[2][2] = z.z;
+	lookAt[3][2] = -Vector3::Dot(z, from);
+	lookAt[0][3] = 0;
+	lookAt[1][3] = 0;
+	lookAt[2][3] = 0;
+	lookAt[3][3] = 1.0f;
+	return lookAt;
 }
 
 } // namespace EngineS

@@ -55,8 +55,8 @@ class GameObject {
 	}
 
   public:
-	Transform2D* transform;
-	Renderer*	 renderer;
+	Transform2D* transform {nullptr};
+	Renderer*	 renderer {nullptr};
 
   private:
 	std::unordered_multimap<std::type_index, std::unique_ptr<Component>> _components;

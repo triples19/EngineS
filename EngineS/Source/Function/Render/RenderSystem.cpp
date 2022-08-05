@@ -1,7 +1,9 @@
 #include "RenderSystem.hpp"
+
 #include "Core/Base/Macros.hpp"
 #include "Core/Math/MathHeaders.hpp"
 #include "Function/Global/Global.hpp"
+#include "Function/Object/Component/Camera.hpp"
 #include "Function/Object/Component/Transform2D.hpp"
 #include "Function/Object/GameObject.hpp"
 #include "Function/Render/Shader.hpp"
@@ -37,15 +39,18 @@ void RenderSystem::Update() {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	auto* scene	 = Global::Instance()->sceneManager->GetCurrentScene();
+	auto* camera = scene->GetMainCamera();
+
 	auto shader = Global::Instance()->resourceManager->GetDefaultSpriteShader();
 	shader->Use();
 	shader->Set("image", 0);
-	auto [width, height] = Global::Instance()->windowSystem->GetWindowSize();
-	shader->Set("projection", Orthographic(width, height, 0.0f, 1.0f));
+	shader->Set("projection", camera->GetProjectionMatrix());
+	shader->Set("view", camera->GetViewMatrix());
 
-	auto* scene = Global::Instance()->sceneManager->GetCurrentScene();
 	for (auto& obj : scene->GetGameObjects()) {
-		obj->renderer->Render();
+		if (obj->renderer != nullptr)
+			obj->renderer->Render();
 	}
 
 	glfwSwapBuffers(_window);

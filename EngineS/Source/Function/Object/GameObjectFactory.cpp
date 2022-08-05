@@ -1,6 +1,7 @@
 #include "GameObjectFactory.hpp"
 
 #include "Function/Global/Global.hpp"
+#include "Function/Object/Component/Camera.hpp"
 #include "Function/Object/GameObject.hpp"
 #include "Function/Render/Shader.hpp"
 #include "Function/Render/SpriteRenderer.hpp"
@@ -14,6 +15,13 @@ std::shared_ptr<GameObject> GameObjectFactory::CreateSprite(std::filesystem::pat
 	auto texture		= Global::Instance()->resourceManager->LoadTexture2D(path);
 	auto spriteRenderer = std::make_unique<SpriteRenderer>(shader, texture);
 	obj->AddComponent(std::move(spriteRenderer));
+	return obj;
+}
+
+std::shared_ptr<GameObject> GameObjectFactory::CreateCamera() {
+	auto obj	= std::make_shared<GameObject>();
+	auto camera = std::make_unique<Camera>();
+	obj->AddComponent(std::move(camera));
 	return obj;
 }
 
