@@ -28,6 +28,9 @@ void RenderSystem::Initialize() {
 	}
 
 	Global::Instance()->windowSystem->RegisterOnWindowSizeFunc([](int w, int h) { glViewport(0, 0, w, h); });
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void RenderSystem::Update() {
