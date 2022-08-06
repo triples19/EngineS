@@ -3,8 +3,11 @@
 namespace EngineS {
 
 void GameObject::Update(float deltaTime) {
-	for (auto& component : _components) {
-		component.second->Update(deltaTime);
+	for (auto& pair : _components) {
+		auto& component = pair.second;
+		if (component->enabled) {
+			component->Update(deltaTime);
+		}
 	}
 }
 

@@ -11,8 +11,9 @@ class Component {
 	virtual void Update(float deltaTime) {}
 
   public:
-	GameObject*	 gameObject;
-	Transform2D* transform;
+	bool		 enabled {true};
+	GameObject*	 gameObject {nullptr};
+	Transform2D* transform {nullptr};
 };
 
 } // namespace EngineS
