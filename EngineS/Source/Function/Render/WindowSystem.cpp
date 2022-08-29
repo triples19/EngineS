@@ -17,11 +17,6 @@ WindowSystem::~WindowSystem() {
 void WindowSystem::Initialize(int width, int height, const char* title) {
 	LOG_INFO("Initialzing WindowSystem (GLFW)");
 
-	if (!glfwInit()) {
-		LOG_FATAL("Failed to initialize GLFW");
-		return;
-	}
-
 	_width	= width;
 	_height = height;
 

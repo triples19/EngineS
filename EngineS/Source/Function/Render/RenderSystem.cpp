@@ -16,9 +16,16 @@
 namespace EngineS {
 
 void RenderSystem::PreWindowInitialize() {
+	if (!glfwInit()) {
+		LOG_FATAL("Failed to initialize GLFW");
+		return;
+	}
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#ifdef __APPLE__
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
 }
 
 void RenderSystem::Initialize() {

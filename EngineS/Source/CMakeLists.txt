@@ -3,7 +3,20 @@ file(GLOB_RECURSE SOURCE_FILES "*.cpp")
 
 add_executable(EngineS ${SOURCE_FILES} ${HEADER_FILES})
 
-target_link_libraries(EngineS PRIVATE -static-libgcc -static-libstdc++)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    target_link_libraries(EngineS PRIVATE -static)
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_link_libraries(EngineS PRIVATE -static-libgcc -static-libstdc++)
+endif()
+
+if (APPLE)
+    target_link_libraries(EngineS PRIVATE
+            "-framework Cocoa"
+            "-framework OpenGL"
+            "-framework IOKit"
+            "-framework CoreVideo")
+endif()
+
 target_link_libraries(EngineS PUBLIC glfw)
 target_link_libraries(EngineS PUBLIC glad)
 target_link_libraries(EngineS PUBLIC spdlog::spdlog)
