@@ -4,9 +4,9 @@
 [submodule "spdlog"]
 	path = EngineS/ThirdParty/spdlog
 	url = https://github.com/gabime/spdlog.git
-[submodule "ryml"]
-	path = EngineS/ThirdParty/ryml
-	url = https://github.com/biojppm/rapidyaml.git
 [submodule "stb"]
 	path = EngineS/ThirdParty/stb
 	url = https://github.com/nothings/stb.git
+[submodule "json"]
+	path = EngineS/ThirdParty/json
+	url = https://github.com/nlohmann/json.git
