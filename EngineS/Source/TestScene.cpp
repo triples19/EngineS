@@ -8,7 +8,7 @@ namespace EngineS {
 void TestScene::Initialize() {
 	Scene::Initialize();
 
-	auto sprite = GameObjectFactory::CreateSprite("Assets/awesomeface.png");
+	auto sprite = GameObjectFactory::CreateSprite("awesomeface.png");
 	AddGameObject(sprite);
 }
 

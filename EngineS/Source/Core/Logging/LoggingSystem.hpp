@@ -18,31 +18,35 @@ class LoggingSystem {
 	LoggingSystem();
 	~LoggingSystem();
 
-	template<class... Ts>
-	void Debug(Ts&&... args) {
-		_logger->debug(std::forward<Ts>(args)...);
+	template<class T, class... Ts>
+	void Debug(T&& prefix, fmt::format_string<Ts...> format, Ts&&... args) {
+		auto msg = fmt::format(format, std::forward<Ts>(args)...);
+		_logger->debug(prefix + msg);
 	}
 
-	template<class... Ts>
-	void Info(Ts&&... args) {
-		_logger->info(std::forward<Ts>(args)...);
+	template<class T, class... Ts>
+	void Info(T&& prefix, fmt::format_string<Ts...> format, Ts&&... args) {
+		auto msg = fmt::format(format, std::forward<Ts>(args)...);
+		_logger->info(prefix + msg);
 	}
 
-	template<class... Ts>
-	void Warn(Ts&&... args) {
-		_logger->warn(std::forward<Ts>(args)...);
+	template<class T, class... Ts>
+	void Warn(T&& prefix, fmt::format_string<Ts...> format, Ts&&... args) {
+		auto msg = fmt::format(format, std::forward<Ts>(args)...);
+		_logger->warn(prefix + msg);
 	}
 
-	template<class... Ts>
-	void Error(Ts&&... args) {
-		_logger->error(std::forward<Ts>(args)...);
+	template<class T, class... Ts>
+	void Error(T&& prefix, fmt::format_string<Ts...> format, Ts&&... args) {
+		auto msg = fmt::format(format, std::forward<Ts>(args)...);
+		_logger->error(prefix + msg);
 	}
 
-	template<class... Ts>
-	void Fatal(Ts&&... args) {
-		_logger->critical(std::forward<Ts>(args)...);
-		const std::string formatStr = fmt::format(std::forward<Ts>(args)...);
-		throw std::runtime_error(formatStr);
+	template<class T, class... Ts>
+	void Fatal(T&& prefix, fmt::format_string<Ts...> format, Ts&&... args) {
+		auto msg = fmt::format(format, std::forward<Ts>(args)...);
+		_logger->error(prefix + msg);
+		throw std::runtime_error(msg);
 	}
 
 	auto GetLogger() { return _logger; }

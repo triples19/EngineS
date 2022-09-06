@@ -39,8 +39,6 @@ void Global::Initialize() {
 
 	sceneManager = std::make_shared<SceneManager>();
 	sceneManager->Initialize();
-
-	resourceManager->LoadDefaultResources();
 }
 
 void Global::Shutdown() {

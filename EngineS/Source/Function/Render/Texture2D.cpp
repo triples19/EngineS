@@ -1,5 +1,10 @@
 #include "Texture2D.hpp"
 
+#include "Core/Base/Macros.hpp"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
 namespace EngineS {
 
 void Texture2D::Generate(unsigned int width, unsigned int height, unsigned char* data) {
@@ -18,6 +23,24 @@ void Texture2D::Generate(unsigned int width, unsigned int height, unsigned char*
 
 void Texture2D::Bind() const {
 	glBindTexture(GL_TEXTURE_2D, id);
+}
+
+Resource* Texture2DLoader::CreateResource(const fs::path& path) const {
+	stbi_set_flip_vertically_on_load(true);
+	auto texture = new Texture2D;
+	int	 width, height, nrChannels;
+	auto data = stbi_load(path.string().c_str(), &width, &height, &nrChannels, 0);
+	if (!data) {
+		LOG_ERROR("Failed to load image {}", path.string());
+		return nullptr;
+	}
+	if (nrChannels == 4) {
+		texture->internalFormat = GL_RGBA;
+		texture->imageFormat	= GL_RGBA;
+	}
+	texture->Generate(width, height, data);
+	stbi_image_free(data);
+	return texture;
 }
 
 } // namespace EngineS

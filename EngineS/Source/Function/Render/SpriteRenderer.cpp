@@ -2,7 +2,7 @@
 
 #include "Core/Math/MathHeaders.hpp"
 #include "Function/Object/Component/Transform2D.hpp"
-#include "Function/Render/Shader.hpp"
+#include "Function/Render/Program.hpp"
 #include "Function/Render/Texture2D.hpp"
 
 namespace EngineS {
@@ -12,17 +12,17 @@ unsigned int SpriteRenderer::_vao = 0;
 static float quadVertices[] = {0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 							   0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f};
 
-SpriteRenderer::SpriteRenderer(std::shared_ptr<Shader> shader, std::shared_ptr<Texture2D> texture) :
-	_shader {shader}, _texture {texture} {}
+SpriteRenderer::SpriteRenderer(std::shared_ptr<Program> shader, std::shared_ptr<Texture2D> texture) :
+	_program {shader}, _texture {texture} {}
 
 void SpriteRenderer::Render() {
-	_shader->Use();
+	_program->Use();
 	auto	  scale		  = Scale(_texture->width, _texture->height, 1);
 	auto	  anchorTrans = Translate(-_anchor.x, -_anchor.y, 0);
 	Matrix4x4 modelMat	  = transform->MakeModelMatrix() * scale * anchorTrans;
 
-	_shader->Set("model", modelMat);
-	_shader->Set("spriteColor", _color);
+	_program->Set("model", modelMat);
+	_program->Set("spriteColor", _color);
 
 	glActiveTexture(GL_TEXTURE0);
 	_texture->Bind();

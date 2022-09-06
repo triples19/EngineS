@@ -6,7 +6,7 @@
 #include "Function/Object/Component/Camera.hpp"
 #include "Function/Object/Component/Transform2D.hpp"
 #include "Function/Object/GameObject.hpp"
-#include "Function/Render/Shader.hpp"
+#include "Function/Render/Program.hpp"
 #include "Function/Render/SpriteRenderer.hpp"
 #include "Function/Render/Texture2D.hpp"
 #include "Function/Render/WindowSystem.hpp"
@@ -40,6 +40,18 @@ void RenderSystem::Initialize() {
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	auto resourceManager = Global::Instance()->resourceManager;
+	auto vertHandle		 = resourceManager->GetHandle("sprite.vert");
+	resourceManager->LoadResource(vertHandle);
+	auto fragHandle = resourceManager->GetHandle("sprite.frag");
+	resourceManager->LoadResource(fragHandle);
+
+	auto vert = resourceManager->GetLoadedResource<Shader>(vertHandle);
+	auto frag = resourceManager->GetLoadedResource<Shader>(fragHandle);
+
+	_program = std::make_shared<Program>(vert, frag);
+	_program->Compile();
 }
 
 void RenderSystem::Update() {
@@ -49,15 +61,16 @@ void RenderSystem::Update() {
 	auto* scene	 = Global::Instance()->sceneManager->GetCurrentScene();
 	auto* camera = scene->GetMainCamera();
 
-	auto shader = Global::Instance()->resourceManager->GetDefaultSpriteShader();
-	shader->Use();
-	shader->Set("image", 0);
-	shader->Set("projection", camera->GetProjectionMatrix());
-	shader->Set("view", camera->GetViewMatrix());
+	_program->Use();
+	_program->Set("image", 0);
+	_program->Set("projection", camera->GetProjectionMatrix());
+	_program->Set("view", camera->GetViewMatrix());
 
 	for (auto& obj : scene->GetGameObjects()) {
-		if (obj->renderer != nullptr)
+		if (obj->renderer != nullptr) {
+			static_cast<SpriteRenderer*>(obj->renderer)->_program = _program;
 			obj->renderer->Render();
+		}
 	}
 
 	glfwSwapBuffers(_window);

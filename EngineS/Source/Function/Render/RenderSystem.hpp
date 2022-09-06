@@ -1,9 +1,13 @@
 #pragma once
 
-#include <glad/glad.h>
+#include "Platform/GLCommon.hpp"
+
 #include <GLFW/glfw3.h>
+#include <memory>
 
 namespace EngineS {
+
+class Program;
 
 class RenderSystem {
   public:
@@ -19,11 +23,12 @@ class RenderSystem {
 	 * Called after glfw window is initialized
 	 */
 	void Initialize();
-	
+
 	void Update();
 
   private:
-	GLFWwindow* _window;
+	std::shared_ptr<Program> _program;
+	GLFWwindow*				 _window;
 };
 
 } // namespace EngineS
