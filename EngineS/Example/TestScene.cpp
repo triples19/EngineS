@@ -1,15 +1,10 @@
 #include "TestScene.hpp"
 
-#include "Function/Object/GameObject.hpp"
-#include "Function/Object/GameObjectFactory.hpp"
-
-namespace EngineS {
-
 void TestScene::Initialize() {
 	Scene::Initialize();
 
 	auto sprite = GameObjectFactory::CreateSprite("awesomeface.png");
 	AddGameObject(sprite);
+	auto* transform	 = sprite->GetComponent<Transform2D>();
+	transform->scale = {0.2f, 0.2f};
 }
-
-} // namespace EngineS

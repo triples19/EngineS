@@ -1,12 +1,10 @@
 #pragma once
 
-#include "Function/Scene/Scene.hpp"
+#include <EngineS.hpp>
 
-namespace EngineS {
+using namespace EngineS;
 
 class TestScene : public Scene {
   public:
 	virtual void Initialize() override;
 };
-
-} // namespace EngineS

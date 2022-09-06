@@ -1,22 +1,11 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include <EngineS.hpp>
 
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <memory>
 #include <sstream>
-
-#include "Core/Base/Macros.hpp"
-#include "Engine.hpp"
-#include "Function/Global/Global.hpp"
-#include "Function/Input/InputSystem.hpp"
-#include "Function/Object/Component/Transform2D.hpp"
-#include "Function/Object/GameObject.hpp"
-#include "Function/Render/WindowSystem.hpp"
-#include "Function/Scene/SceneManager.hpp"
-#include "Resource/ResourceManager.hpp"
-
+ 
 #include "TestScene.hpp"
 
 using namespace EngineS;
