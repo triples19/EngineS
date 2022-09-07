@@ -5,21 +5,33 @@
 
 namespace EngineS {
 
+Resource* ProgramLoader::CreateResource(const fs::path& path) const {
+	auto src			= ReadString(path);
+	auto vertexShader	= std::make_shared<Shader>(ShaderStage::Vertex);
+	auto fragmentShader = std::make_shared<Shader>(ShaderStage::Fragment);
+	vertexShader->Compile({"#version 330 core\n", "#define VERTEX\n", src});
+	fragmentShader->Compile({"#version 330 core\n", "#define FRAGMENT\n", src});
+	auto program = new Program(vertexShader, fragmentShader);
+	program->Link();
+	return program;
+}
+
+void ProgramLoader::ReloadResource(std::shared_ptr<Resource>& resource, const fs::path& path) const {}
+
 Program::Program(std::shared_ptr<Shader> vertexShaderModule, std::shared_ptr<Shader> fragShaderModule) :
-	_vertexShaderModule {vertexShaderModule}, _fragmentShaderModule {fragShaderModule} {}
+	_vertexShaderModule {vertexShaderModule}, _fragmentShaderModule {fragShaderModule} {
+	_program		= glCreateProgram();
+	auto vertShader = _vertexShaderModule->GetShader();
+	auto fragShader = _fragmentShaderModule->GetShader();
+	glAttachShader(_program, vertShader);
+	glAttachShader(_program, fragShader);
+}
 
 void Program::Use() const {
 	glUseProgram(_program);
 }
 
-void Program::Compile() {
-	auto vertShader = _vertexShaderModule->GetShader();
-	auto fragShader = _fragmentShaderModule->GetShader();
-
-	_program = glCreateProgram();
-
-	glAttachShader(_program, vertShader);
-	glAttachShader(_program, fragShader);
+void Program::Link() {
 	glLinkProgram(_program);
 
 	GLint status = 0;

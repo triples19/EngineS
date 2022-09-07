@@ -2,6 +2,7 @@
 
 #include "Core/Math/MathHeaders.hpp"
 #include "Platform/GLCommon.hpp"
+#include "Resource/Resource.hpp"
 #include "Shader.hpp"
 
 #include <memory>
@@ -10,13 +11,15 @@
 
 namespace EngineS {
 
-class Program {
+class Program : public Resource {
+	friend class ProgramLoader;
+
   public:
 	Program(std::shared_ptr<Shader> vertexShaderModule, std::shared_ptr<Shader> fragShaderModule);
 
 	void Use() const;
 
-	void Compile();
+	void Link();
 
 	void Set(const std::string& name, bool value) const;
 	void Set(const std::string& name, int value) const;
@@ -35,6 +38,13 @@ class Program {
 
 	std::shared_ptr<Shader> _vertexShaderModule;
 	std::shared_ptr<Shader> _fragmentShaderModule;
+};
+
+class ProgramLoader : public ResourceLoader {
+  public:
+	virtual Resource*	CreateResource(const fs::path& path) const;
+	virtual void		ReloadResource(std::shared_ptr<Resource>& resource, const fs::path& path) const;
+	virtual std::string GetName() const { return "ProgramLoader"; }
 };
 
 } // namespace EngineS

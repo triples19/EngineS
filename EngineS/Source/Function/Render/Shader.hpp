@@ -7,24 +7,26 @@
 #include "Types.hpp"
 
 #include <string>
+#include <vector>
 
 namespace EngineS {
 
 class Shader : public Resource {
   public:
-	Shader(ShaderStage stage, const std::string& src);
+	Shader(ShaderStage stage);
 	~Shader();
 
 	GLuint GetShader() const { return _shader; }
 
-  private:
-	GLuint _shader {0};
-};
+	void Compile(const std::string& src);
+	void Compile(const std::vector<std::string>& src);
 
-class ShaderLoader : public ResourceLoader {
-  public:
-	virtual Resource*	CreateResource(const fs::path& path) const;
-	virtual std::string GetName() const { return "ShaderLoader"; }
+  private:
+	void Compile(const GLchar** src, std::size_t size);
+
+  private:
+	GLuint		_shader {0};
+	ShaderStage _stage;
 };
 
 } // namespace EngineS

@@ -2,7 +2,7 @@
 
 #include "Core/Base/Macros.hpp"
 
-#include "Function/Render/Shader.hpp"
+#include "Function/Render/Program.hpp"
 #include "Function/Render/Texture2D.hpp"
 #include "Resource/CommonResources/Text.hpp"
 
@@ -12,7 +12,7 @@ namespace EngineS {
 
 void ResourceManager::Initialize() {
 	RegisterLoader<TextLoader>();
-	RegisterLoader<ShaderLoader>();
+	RegisterLoader<ProgramLoader>();
 	RegisterLoader<Texture2DLoader>();
 
 	AddAllHandles();

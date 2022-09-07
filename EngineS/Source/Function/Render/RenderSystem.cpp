@@ -42,16 +42,9 @@ void RenderSystem::Initialize() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	auto resourceManager = Global::Instance()->resourceManager;
-	auto vertHandle		 = resourceManager->GetHandle("sprite.vert");
-	resourceManager->LoadResource(vertHandle);
-	auto fragHandle = resourceManager->GetHandle("sprite.frag");
-	resourceManager->LoadResource(fragHandle);
-
-	auto vert = resourceManager->GetLoadedResource<Shader>(vertHandle);
-	auto frag = resourceManager->GetLoadedResource<Shader>(fragHandle);
-
-	_program = std::make_shared<Program>(vert, frag);
-	_program->Compile();
+	auto programHandle	 = resourceManager->GetHandle("sprite.glsl");
+	resourceManager->LoadResource(programHandle);
+	_program = resourceManager->GetLoadedResource<Program>(programHandle);
 }
 
 void RenderSystem::Update() {
