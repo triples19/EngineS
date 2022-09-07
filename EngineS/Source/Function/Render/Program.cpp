@@ -44,9 +44,10 @@ void Program::Link() {
 	GLint status = 0;
 	glGetProgramiv(_program, GL_LINK_STATUS, &status);
 	if (status == GL_FALSE) {
+		char infoLog[1024];
+		glGetProgramInfoLog(_program, 1024, nullptr, infoLog);
 		LOG_ERROR("Failed to link program");
-		glDeleteProgram(_program);
-		_program = 0;
+		LOG_ERROR("{}", infoLog);
 	}
 }
 
