@@ -46,8 +46,7 @@ void Program::Link() {
 	if (status == GL_FALSE) {
 		char infoLog[1024];
 		glGetProgramInfoLog(_program, 1024, nullptr, infoLog);
-		LOG_ERROR("Failed to link program");
-		LOG_ERROR("{}", infoLog);
+		LOG_ERROR("Failed to link program\n{}", infoLog);
 	}
 }
 

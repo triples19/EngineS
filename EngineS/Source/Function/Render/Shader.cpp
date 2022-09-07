@@ -46,8 +46,7 @@ void Shader::Compile(const GLchar** src, std::size_t size) {
 	if (!status) {
 		char infoLog[1024];
 		glGetShaderInfoLog(_shader, 1024, nullptr, infoLog);
-		LOG_ERROR("Failed to compile shader");
-		LOG_ERROR("{}", infoLog);
+		LOG_ERROR("Failed to compile shader\n{}", infoLog);
 	}
 }
 
