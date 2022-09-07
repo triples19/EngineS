@@ -16,7 +16,14 @@ Resource* ProgramLoader::CreateResource(const fs::path& path) const {
 	return program;
 }
 
-void ProgramLoader::ReloadResource(std::shared_ptr<Resource>& resource, const fs::path& path) const {}
+void ProgramLoader::ReloadResource(std::shared_ptr<Resource>& resource, const fs::path& path) const {
+	LOG_INFO("Reloading program {}", fs::relative(path).string());
+	auto program = std::static_pointer_cast<Program>(resource);
+	auto src	 = ReadString(path);
+	program->_vertexShaderModule->Compile({"#version 330 core\n", "#define VERTEX\n", src});
+	program->_fragmentShaderModule->Compile({"#version 330 core\n", "#define FRAGMENT\n", src});
+	program->Link();
+}
 
 Program::Program(std::shared_ptr<Shader> vertexShaderModule, std::shared_ptr<Shader> fragShaderModule) :
 	_vertexShaderModule {vertexShaderModule}, _fragmentShaderModule {fragShaderModule} {

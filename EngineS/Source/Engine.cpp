@@ -5,6 +5,7 @@
 #include "Function/Input/InputSystem.hpp"
 #include "Function/Render/RenderSystem.hpp"
 #include "Function/Render/WindowSystem.hpp"
+#include "Resource/ResourceManager.hpp"
 
 namespace EngineS {
 
@@ -41,6 +42,7 @@ float Engine::GetDeltaTime() {
 }
 
 void Engine::Update(float deltaTime) {
+	Global::Instance()->resourceManager->Update();
 	Global::Instance()->inputSystem->Update();
 	Global::Instance()->windowSystem->PollEvents();
 

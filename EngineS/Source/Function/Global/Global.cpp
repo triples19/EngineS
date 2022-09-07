@@ -31,7 +31,7 @@ void Global::Initialize() {
 	windowSystem = std::make_shared<WindowSystem>();
 	renderSystem = std::make_shared<RenderSystem>();
 	renderSystem->PreWindowInitialize();
-	windowSystem->Initialize(1280, 720, "EngineS");
+	windowSystem->Initialize(512, 512, "EngineS");
 	renderSystem->Initialize();
 
 	inputSystem = std::make_shared<InputSystem>();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Platform/GLCommon.hpp"
+#include "Resource/ResourceManager.hpp"
 
 #include <GLFW/glfw3.h>
 #include <memory>
@@ -27,8 +28,8 @@ class RenderSystem {
 	void Update();
 
   private:
-	std::shared_ptr<Program> _program;
-	GLFWwindow*				 _window;
+	ResourceHandle* _programHandle;
+	GLFWwindow*		_window;
 };
 
 } // namespace EngineS

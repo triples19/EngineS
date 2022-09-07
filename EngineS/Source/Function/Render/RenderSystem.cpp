@@ -11,7 +11,6 @@
 #include "Function/Render/Texture2D.hpp"
 #include "Function/Render/WindowSystem.hpp"
 #include "Function/Scene/SceneManager.hpp"
-#include "Resource/ResourceManager.hpp"
 
 namespace EngineS {
 
@@ -42,9 +41,9 @@ void RenderSystem::Initialize() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	auto resourceManager = Global::Instance()->resourceManager;
-	auto programHandle	 = resourceManager->GetHandle("sprite.glsl");
-	resourceManager->LoadResource(programHandle);
-	_program = resourceManager->GetLoadedResource<Program>(programHandle);
+	_programHandle		 = resourceManager->GetHandle("sprite.glsl");
+	resourceManager->LoadResource(_programHandle);
+	resourceManager->AddWatch(_programHandle);
 }
 
 void RenderSystem::Update() {
@@ -54,14 +53,15 @@ void RenderSystem::Update() {
 	auto* scene	 = Global::Instance()->sceneManager->GetCurrentScene();
 	auto* camera = scene->GetMainCamera();
 
-	_program->Use();
-	_program->Set("image", 0);
-	_program->Set("projection", camera->GetProjectionMatrix());
-	_program->Set("view", camera->GetViewMatrix());
+	auto program = Global::Instance()->resourceManager->GetLoadedResource<Program>(_programHandle);
+	program->Use();
+	program->Set("image", 0);
+	program->Set("projection", camera->GetProjectionMatrix());
+	program->Set("view", camera->GetViewMatrix());
 
 	for (auto& obj : scene->GetGameObjects()) {
 		if (obj->renderer != nullptr) {
-			static_cast<SpriteRenderer*>(obj->renderer)->_program = _program;
+			static_cast<SpriteRenderer*>(obj->renderer)->_program = program;
 			obj->renderer->Render();
 		}
 	}
