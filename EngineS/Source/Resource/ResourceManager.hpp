@@ -7,6 +7,7 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <concepts>
 
 namespace fs = std::filesystem;
 
@@ -43,6 +44,7 @@ class ResourceManager {
 	 * @tparam T a subclass of ResourceLoader
 	 */
 	template<class T>
+	requires std::derived_from<T, ResourceLoader>
 	void RegisterLoader() {
 		auto loader = std::make_unique<T>();
 		_loaders.emplace(loader->GetName(), std::move(loader));
@@ -129,6 +131,7 @@ class ResourceManager {
 	 * @return std::shared_ptr<T> A shared pointer to the resource
 	 */
 	template<class T>
+	requires std::derived_from<T, Resource>
 	std::shared_ptr<T> GetLoadedResource(ResourceHandle* handle) {
 		return std::static_pointer_cast<T>(GetLoadedResource(handle));
 	}
