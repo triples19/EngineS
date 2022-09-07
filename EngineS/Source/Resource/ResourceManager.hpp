@@ -134,10 +134,12 @@ class ResourceManager {
 	}
 
   private:
-	std::unordered_map<std::string, std::unique_ptr<ResourceLoader>>	 _loaders;
-	std::unordered_map<ResourceHandle*, std::shared_ptr<Resource>>		 _cache;
-	std::unordered_map<fs::path, std::unique_ptr<ResourceHandle>, Hasher<fs::path>>		 _handles;
-	std::unordered_map<ResourceHandle*, std::filesystem::file_time_type> _watchedHandles;
+	std::unordered_map<std::string, std::unique_ptr<ResourceLoader>>				_loaders;
+	std::unordered_map<ResourceHandle*, std::shared_ptr<Resource>>					_cache;
+	std::unordered_map<fs::path, std::unique_ptr<ResourceHandle>, Hasher<fs::path>> _handles;
+	std::unordered_map<ResourceHandle*, std::filesystem::file_time_type>			_watchedHandles;
+
+	fs::path _assetsPath {"../Assets"};
 };
 
 } // namespace EngineS

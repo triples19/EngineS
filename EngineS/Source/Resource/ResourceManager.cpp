@@ -37,8 +37,7 @@ void ResourceManager::AddHandle(const fs::path& metaPath, const fs::path& resour
 }
 
 void ResourceManager::AddAllHandles() {
-	fs::path assetPath = "Assets";
-	for (const auto& dirEntry : fs::recursive_directory_iterator(assetPath)) {
+	for (const auto& dirEntry : fs::recursive_directory_iterator(_assetsPath)) {
 		const auto& path = std::filesystem::absolute(dirEntry.path());
 		if (path.extension() == ".meta") {
 			auto originPath = path;
@@ -62,7 +61,7 @@ void ResourceManager::RemoveWatch(ResourceHandle* handle) {
 }
 
 ResourceHandle* ResourceManager::GetHandle(const fs::path& path) {
-	auto absolutePath = fs::absolute(fs::path("Assets") / path);
+	auto absolutePath = fs::absolute(_assetsPath / path);
 	return _handles[absolutePath].get();
 }
 
