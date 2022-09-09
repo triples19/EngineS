@@ -1,17 +1,21 @@
 #pragma once
 
 #include "Core/Base/Hash.hpp"
-#include "Resource.hpp"
+#include "Core/Base/Macros.hpp"
+#include "Resource/Resource.hpp"
 
+#include <concepts>
 #include <filesystem>
 #include <memory>
 #include <string>
 #include <unordered_map>
-#include <concepts>
 
 namespace fs = std::filesystem;
 
 namespace EngineS {
+
+template<class T>
+requires std::derived_from<T, Resource> class ResourceHandle;
 
 /**
  * A handle-based resource management system
@@ -44,8 +48,7 @@ class ResourceManager {
 	 * @tparam T a subclass of ResourceLoader
 	 */
 	template<class T>
-	requires std::derived_from<T, ResourceLoader>
-	void RegisterLoader() {
+	requires std::derived_from<T, ResourceLoader> void RegisterLoader() {
 		auto loader = std::make_unique<T>();
 		_loaders.emplace(loader->GetName(), std::move(loader));
 	}
@@ -66,20 +69,15 @@ class ResourceManager {
 	/**
 	 * @brief Adds file modification watch for a handle
 	 */
-	void AddWatch(ResourceHandle* handle);
+	void AddWatch(const ResourceHandleBase& handle);
 
 	/**
 	 * @brief Remove file modification watch for a handle
 	 */
-	void RemoveWatch(ResourceHandle* handle);
+	void RemoveWatch(const ResourceHandleBase& handle);
 
-	/**
-	 * @brief Get the ResourceHandle by path
-	 *
-	 * @param path The resource file path
-	 * @return ResourceHandle* A weak pointer to the handle
-	 */
-	ResourceHandle* GetHandle(const fs::path& path);
+	template<class T>
+	requires std::derived_from<T, Resource> ResourceHandle<T> GetHandle(const fs::path& path);
 
 	/**
 	 * @brief Get the ResourceLoader by handle
@@ -87,28 +85,28 @@ class ResourceManager {
 	 * @param handle The resource handle
 	 * @return ResourceLoader* A weak pointer to the loader
 	 */
-	ResourceLoader* GetLoader(ResourceHandle* handle);
+	ResourceLoader* GetLoader(const ResourceHandleBase& handle);
 
 	/**
 	 * @brief Load the resource from the disk
 	 *
 	 * @param handle The handle of the resource
 	 */
-	void LoadResource(ResourceHandle* handle);
+	void LoadResource(const ResourceHandleBase& handle);
 
 	/**
 	 * @brief Unload the resource from the disk
 	 *
 	 * @param handle The handle of the resource
 	 */
-	void UnloadResource(ResourceHandle* handle);
+	void UnloadResource(const ResourceHandleBase& handle);
 
 	/**
 	 * @brief Reload the resource from the disk
 	 *
 	 * @param handle The handle of the resource
 	 */
-	void ReloadResource(ResourceHandle* handle);
+	void ReloadResource(const ResourceHandleBase& handle);
 
 	/**
 	 * @brief Unload all unused resources.
@@ -121,7 +119,7 @@ class ResourceManager {
 	 * @param handle The handle of the resource
 	 * @return std::shared_ptr<Resource> A shared pointer to the resource
 	 */
-	std::shared_ptr<Resource> GetLoadedResource(ResourceHandle* handle);
+	std::shared_ptr<Resource> GetLoadedResource(const ResourceHandleBase& handle);
 
 	/**
 	 * @brief Get the loaded resource of type T
@@ -131,18 +129,74 @@ class ResourceManager {
 	 * @return std::shared_ptr<T> A shared pointer to the resource
 	 */
 	template<class T>
-	requires std::derived_from<T, Resource>
-	std::shared_ptr<T> GetLoadedResource(ResourceHandle* handle) {
+	requires std::derived_from<T, Resource> std::shared_ptr<T> GetLoadedResource(const ResourceHandleBase& handle) {
 		return std::static_pointer_cast<T>(GetLoadedResource(handle));
 	}
 
   private:
-	std::unordered_map<std::string, std::unique_ptr<ResourceLoader>>				_loaders;
-	std::unordered_map<ResourceHandle*, std::shared_ptr<Resource>>					_cache;
-	std::unordered_map<fs::path, std::unique_ptr<ResourceHandle>, Hasher<fs::path>> _handles;
-	std::unordered_map<ResourceHandle*, std::filesystem::file_time_type>			_watchedHandles;
+	struct HandleData {
+		HandleData(const fs::path& _path, MetaData&& _meta) : path(_path), meta(std::move(_meta)) {}
+		fs::path path;
+		MetaData meta;
+	};
+	std::size_t GetNextID() { return ++_nextID; }
+	std::size_t GetID(const fs::path& path) const {
+		auto iter = _pathToID.find(fs::absolute(_assetsPath / path));
+		if (iter == _pathToID.end())
+			return 0;
+		else
+			return iter->second;
+	}
+
+  private:
+	std::size_t														 _nextID {0};
+	std::unordered_map<std::string, std::unique_ptr<ResourceLoader>> _loaders;
+
+	std::unordered_map<fs::path, std::size_t, Hasher<fs::path>> _pathToID;
+
+	std::unordered_map<std::size_t, std::shared_ptr<Resource>>		 _cache;
+	std::unordered_map<std::size_t, HandleData>						 _handles;
+	std::unordered_map<std::size_t, std::filesystem::file_time_type> _watchedHandles;
 
 	fs::path _assetsPath {"../Assets"};
 };
+
+/**
+ * @brief A handle class with some convenient methods
+ *
+ * @tparam T Type of the resource
+ */
+template<class T>
+requires std::derived_from<T, Resource> class ResourceHandle : public ResourceHandleBase {
+	friend class ResourceManager;
+
+  public:
+	ResourceHandle() = default;
+	void Load() const { _manager->LoadResource(*this); }
+	void Reload() const { _manager->ReloadResource(*this); }
+	void Unload() const { _manager->UnloadResource(*this); }
+	void SetWatched(bool watched) const {
+		if (watched)
+			_manager->AddWatch(*this);
+		else
+			_manager->RemoveWatch(*this);
+	}
+	std::shared_ptr<T> operator*() const { return _manager->GetLoadedResource(*this); }
+
+  private:
+	ResourceManager* _manager;
+};
+
+template<class T>
+requires std::derived_from<T, Resource> ResourceHandle<T> ResourceManager::GetHandle(const fs::path& path) {
+	ResourceHandle<T> handle;
+	auto			  id = GetID(path);
+	if (!id) {
+		LOG_ERROR("Unknown resource path: {}", path.string());
+	}
+	handle.ID		= id;
+	handle._manager = this;
+	return handle;
+}
 
 } // namespace EngineS

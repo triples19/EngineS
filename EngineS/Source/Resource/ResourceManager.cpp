@@ -1,7 +1,5 @@
 #include "ResourceManager.hpp"
 
-#include "Core/Base/Macros.hpp"
-
 #include "Function/Render/Program.hpp"
 #include "Function/Render/Texture2D.hpp"
 #include "Resource/CommonResources/Text.hpp"
@@ -19,21 +17,22 @@ void ResourceManager::Initialize() {
 }
 
 void ResourceManager::Update() {
-	for (auto& [handle, lastWriteTime] : _watchedHandles) {
-		auto currentLastWriteTime = fs::last_write_time(handle->GetPath());
+	for (auto& [id, lastWriteTime] : _watchedHandles) {
+		auto currentLastWriteTime = fs::last_write_time(_handles.at(id).path);
 		if (currentLastWriteTime != lastWriteTime) {
 			// file modified
-			ReloadResource(handle);
+			ReloadResource(ResourceHandleBase {id});
 			lastWriteTime = currentLastWriteTime;
 		}
 	}
 }
 
 void ResourceManager::AddHandle(const fs::path& metaPath, const fs::path& resourcePath) {
-	auto		meta   = std::make_shared<MetaData>(metaPath);
-	const auto& loader = *_loaders[meta->GetLoaderName()];
-	auto		handle = std::make_unique<ResourceHandle>(meta, resourcePath);
-	_handles.emplace(resourcePath, std::move(handle));
+	auto		id = GetNextID();
+	MetaData	meta(metaPath);
+	const auto& loader = *_loaders[meta.GetLoaderName()];
+	_handles.try_emplace(id, resourcePath, std::move(meta));
+	_pathToID.emplace(fs::absolute(resourcePath), id);
 }
 
 void ResourceManager::AddAllHandles() {
@@ -49,24 +48,19 @@ void ResourceManager::AddAllHandles() {
 	}
 }
 
-void ResourceManager::AddWatch(ResourceHandle* handle) {
-	if (_watchedHandles.find(handle) != _watchedHandles.end()) {
+void ResourceManager::AddWatch(const ResourceHandleBase& handle) {
+	if (_watchedHandles.find(handle.ID) != _watchedHandles.end()) {
 		return;
 	}
-	_watchedHandles.emplace(handle, fs::last_write_time(handle->GetPath()));
+	_watchedHandles.emplace(handle.ID, fs::last_write_time(_handles.at(handle.ID).path));
 }
 
-void ResourceManager::RemoveWatch(ResourceHandle* handle) {
-	_watchedHandles.erase(handle);
+void ResourceManager::RemoveWatch(const ResourceHandleBase& handle) {
+	_watchedHandles.erase(handle.ID);
 }
 
-ResourceHandle* ResourceManager::GetHandle(const fs::path& path) {
-	auto absolutePath = fs::absolute(_assetsPath / path);
-	return _handles[absolutePath].get();
-}
-
-ResourceLoader* ResourceManager::GetLoader(ResourceHandle* handle) {
-	auto loaderName = handle->GetMetaData().GetLoaderName();
+ResourceLoader* ResourceManager::GetLoader(const ResourceHandleBase& handle) {
+	auto loaderName = _handles.at(handle.ID).meta.GetLoaderName();
 	auto iter		= _loaders.find(loaderName);
 	if (iter == _loaders.end()) {
 		LOG_ERROR("Unregistered loader: {}", loaderName);
@@ -75,20 +69,20 @@ ResourceLoader* ResourceManager::GetLoader(ResourceHandle* handle) {
 	return iter->second.get();
 }
 
-void ResourceManager::LoadResource(ResourceHandle* handle) {
+void ResourceManager::LoadResource(const ResourceHandleBase& handle) {
 	const auto& loader	 = GetLoader(handle);
-	auto		resource = loader->CreateResource(handle->GetPath());
-	_cache.emplace(handle, resource);
+	auto		resource = loader->CreateResource(_handles.at(handle.ID).path);
+	_cache.emplace(handle.ID, resource);
 }
 
-void ResourceManager::UnloadResource(ResourceHandle* handle) {
-	_cache.erase(handle);
+void ResourceManager::UnloadResource(const ResourceHandleBase& handle) {
+	_cache.erase(handle.ID);
 }
 
-void ResourceManager::ReloadResource(ResourceHandle* handle) {
-	auto		iter   = _cache.find(handle);
+void ResourceManager::ReloadResource(const ResourceHandleBase& handle) {
+	auto		iter   = _cache.find(handle.ID);
 	const auto& loader = GetLoader(handle);
-	loader->ReloadResource(iter->second, handle->GetPath());
+	loader->ReloadResource(iter->second, _handles.at(handle.ID).path);
 }
 
 void ResourceManager::UnloadUnusedResources() {
@@ -98,10 +92,10 @@ void ResourceManager::UnloadUnusedResources() {
 	});
 }
 
-std::shared_ptr<Resource> ResourceManager::GetLoadedResource(ResourceHandle* handle) {
-	auto iter = _cache.find(handle);
+std::shared_ptr<Resource> ResourceManager::GetLoadedResource(const ResourceHandleBase& handle) {
+	auto iter = _cache.find(handle.ID);
 	if (iter == _cache.end()) {
-		LOG_ERROR("Unloaded resource: {}", handle->GetPath().string());
+		LOG_ERROR("Unloaded resource: {}", _handles.at(handle.ID).path.string());
 		return nullptr;
 	}
 	return iter->second;

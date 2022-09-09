@@ -18,21 +18,16 @@ class Resource : public Object {};
 /**
  * @brief A handle of some resource.
  */
-class ResourceHandle : public Object {
+class ResourceHandleBase : public Object {
 	friend class ResourceManager;
 
   public:
-	ResourceHandle(std::shared_ptr<MetaData> metaData, const fs::path& resourcePath) :
-		_meta {metaData}, _path {resourcePath} {}
-	virtual ~ResourceHandle() = default;
-
-	const MetaData& GetMetaData() const { return *_meta; }
-	const fs::path& GetPath() const { return _path; }
+	ResourceHandleBase()		  = default;
+	virtual ~ResourceHandleBase() = default;
+	size_t ID;
 
   private:
-	fs::path				  _path;
-	std::size_t				  _id;
-	std::shared_ptr<MetaData> _meta;
+	ResourceHandleBase(size_t id) : ID {id} {}
 };
 
 /**

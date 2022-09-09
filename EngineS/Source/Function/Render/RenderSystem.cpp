@@ -41,7 +41,7 @@ void RenderSystem::Initialize() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	auto resourceManager = Global::Instance()->resourceManager;
-	_programHandle		 = resourceManager->GetHandle("sprite.glsl");
+	_programHandle		 = resourceManager->GetHandle<Program>("sprite.glsl");
 	resourceManager->LoadResource(_programHandle);
 	resourceManager->AddWatch(_programHandle);
 }

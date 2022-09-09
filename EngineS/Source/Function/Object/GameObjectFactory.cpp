@@ -19,7 +19,7 @@ std::shared_ptr<GameObject> GameObjectFactory::CreateGameObject() {
 
 std::shared_ptr<GameObject> GameObjectFactory::CreateSprite(std::filesystem::path path) {
 	auto obj		   = CreateGameObject();
-	auto textureHandle = Global::Instance()->resourceManager->GetHandle(path);
+	auto textureHandle = Global::Instance()->resourceManager->GetHandle<Texture2D>(path);
 	auto shader		   = nullptr;
 	Global::Instance()->resourceManager->LoadResource(textureHandle);
 	auto texture		= Global::Instance()->resourceManager->GetLoadedResource<Texture2D>(textureHandle);

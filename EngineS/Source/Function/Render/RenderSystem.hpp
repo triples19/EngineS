@@ -1,14 +1,13 @@
 #pragma once
 
 #include "Platform/GLCommon.hpp"
+#include "Program.hpp"
 #include "Resource/ResourceManager.hpp"
 
 #include <GLFW/glfw3.h>
 #include <memory>
 
 namespace EngineS {
-
-class Program;
 
 class RenderSystem {
   public:
@@ -28,8 +27,8 @@ class RenderSystem {
 	void Update();
 
   private:
-	ResourceHandle* _programHandle;
-	GLFWwindow*		_window;
+	ResourceHandle<Program> _programHandle;
+	GLFWwindow*				_window;
 };
 
 } // namespace EngineS
