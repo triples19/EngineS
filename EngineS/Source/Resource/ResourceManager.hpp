@@ -15,7 +15,8 @@ namespace fs = std::filesystem;
 namespace EngineS {
 
 template<class T>
-requires std::derived_from<T, Resource> class ResourceHandle;
+	requires std::derived_from<T, Resource>
+class ResourceHandle;
 
 /**
  * A handle-based resource management system
@@ -48,7 +49,8 @@ class ResourceManager {
 	 * @tparam T a subclass of ResourceLoader
 	 */
 	template<class T>
-	requires std::derived_from<T, ResourceLoader> void RegisterLoader() {
+		requires std::derived_from<T, ResourceLoader>
+	void RegisterLoader() {
 		auto loader = std::make_unique<T>();
 		_loaders.emplace(loader->GetName(), std::move(loader));
 	}
@@ -77,7 +79,8 @@ class ResourceManager {
 	void RemoveWatch(const ResourceHandleBase& handle);
 
 	template<class T>
-	requires std::derived_from<T, Resource> ResourceHandle<T> GetHandle(const fs::path& path);
+		requires std::derived_from<T, Resource>
+	ResourceHandle<T> GetHandle(const fs::path& path);
 
 	/**
 	 * @brief Get the ResourceLoader by handle
@@ -129,7 +132,8 @@ class ResourceManager {
 	 * @return std::shared_ptr<T> A shared pointer to the resource
 	 */
 	template<class T>
-	requires std::derived_from<T, Resource> std::shared_ptr<T> GetLoadedResource(const ResourceHandleBase& handle) {
+		requires std::derived_from<T, Resource>
+	std::shared_ptr<T> GetLoadedResource(const ResourceHandleBase& handle) {
 		return std::static_pointer_cast<T>(GetLoadedResource(handle));
 	}
 
@@ -167,7 +171,8 @@ class ResourceManager {
  * @tparam T Type of the resource
  */
 template<class T>
-requires std::derived_from<T, Resource> class ResourceHandle : public ResourceHandleBase {
+	requires std::derived_from<T, Resource>
+class ResourceHandle : public ResourceHandleBase {
 	friend class ResourceManager;
 
   public:
@@ -188,7 +193,8 @@ requires std::derived_from<T, Resource> class ResourceHandle : public ResourceHa
 };
 
 template<class T>
-requires std::derived_from<T, Resource> ResourceHandle<T> ResourceManager::GetHandle(const fs::path& path) {
+	requires std::derived_from<T, Resource>
+ResourceHandle<T> ResourceManager::GetHandle(const fs::path& path) {
 	ResourceHandle<T> handle;
 	auto			  id = GetID(path);
 	if (!id) {
