@@ -3,8 +3,10 @@
 #include "Core/Logging/LoggingSystem.hpp"
 #include "Function/Global/Global.hpp"
 #include "Function/Input/InputSystem.hpp"
+#include "Function/Object/GameObject.hpp"
 #include "Function/Render/RenderSystem.hpp"
 #include "Function/Render/WindowSystem.hpp"
+#include "Function/Scene/SceneManager.hpp"
 #include "Resource/ResourceManager.hpp"
 
 namespace EngineS {
@@ -52,7 +54,12 @@ void Engine::Update(float deltaTime) {
 	RenderUpdate();
 }
 
-void Engine::LogicUpdate(float deltaTime) {}
+void Engine::LogicUpdate(float deltaTime) {
+	const auto& objs = Global::Instance()->sceneManager->GetCurrentScene()->GetGameObjects();
+	for (auto& obj : objs) {
+		obj->Update(deltaTime);
+	}
+}
 
 void Engine::RenderUpdate() {
 	Global::Instance()->renderSystem->Update();
