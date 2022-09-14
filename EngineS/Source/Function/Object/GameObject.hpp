@@ -46,6 +46,12 @@ class GameObject {
 		return static_cast<T*>(pointer);
 	}
 
+	template<class T, class... Args>
+	T* AddComponent(Args&&... args) {
+		auto comp = std::make_unique<T>(std::forward<Args>(args)...);
+		return AddComponent(std::move(comp));
+	}
+
   private:
 	template<class T>
 	void SetPropertyIfNeeded(T* val) {
