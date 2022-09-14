@@ -4,12 +4,13 @@
 #include "Platform/GLCommon.hpp"
 #include "Resource/Resource.hpp"
 #include "Resource/ResourceManager.hpp"
-#include "Types.hpp"
 
 #include <string>
 #include <vector>
 
 namespace EngineS {
+
+enum class ShaderStage : uint32_t { Vertex, Fragment };
 
 class Shader : public Resource {
   public:
