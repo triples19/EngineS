@@ -119,6 +119,11 @@ class Vector2 {
 	static Vector2 Lerp(const Vector2& lhs, const Vector2& rhs, float alpha) { return lhs + alpha * (rhs - lhs); }
 	static Vector2 Perpendicular(const Vector2& inDir) { return {-inDir.y, inDir.x}; }
 	static Vector2 Reflect(const Vector2& in, const Vector2& normal) { return in - (2 * Dot(in, normal) * normal); }
+	static Vector2 Rotate(const Vector2& in, float deg) {
+		float sin = Math::Sin(deg * Math::Deg2Rad);
+		float cos = Math::Cos(deg * Math::Deg2Rad);
+		return {cos * in.x - sin * in.y, sin * in.x + cos * in.y};
+	}
 };
 
 } // namespace EngineS
