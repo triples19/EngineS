@@ -1,4 +1,8 @@
-add_executable(Example main.cpp TestScene.cpp)
+add_executable(Example
+        main.cpp
+        TestScene.cpp
+        TestComponent.cpp)
+
 target_link_libraries(Example EngineS)
 
 set(ASSETS_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Assets)
