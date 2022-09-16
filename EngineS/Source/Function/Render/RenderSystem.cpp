@@ -1,11 +1,13 @@
 #include "RenderSystem.hpp"
 
+#include "Core/Base/Hash.hpp"
 #include "Core/Base/Macros.hpp"
 #include "Core/Math/MathHeaders.hpp"
 #include "Function/Global/Global.hpp"
 #include "Function/Object/Component/Camera.hpp"
 #include "Function/Object/Component/Transform2D.hpp"
 #include "Function/Object/GameObject.hpp"
+#include "Function/Render/Material2D.hpp"
 #include "Function/Render/Program.hpp"
 #include "Function/Render/SpriteRenderer.hpp"
 #include "Function/Render/Texture2D.hpp"
@@ -53,20 +55,39 @@ void RenderSystem::Update() {
 	auto* scene	 = Global::Instance()->sceneManager->GetCurrentScene();
 	auto* camera = scene->GetMainCamera();
 
-	auto program = Global::Instance()->resourceManager->GetLoadedResource<Program>(_programHandle);
-	program->Use();
-	program->Set("image", 0);
-	program->Set("projection", camera->GetProjectionMatrix());
-	program->Set("view", camera->GetViewMatrix());
+	_batches.clear();
 
 	for (auto& obj : scene->GetGameObjects()) {
 		if (obj->renderer != nullptr) {
-			static_cast<SpriteRenderer*>(obj->renderer)->_program = program;
 			obj->renderer->Render();
 		}
 	}
 
+	for (auto& [id, batch] : _batches) {
+		batch.Draw();
+	}
+
 	glfwSwapBuffers(_window);
+}
+
+void RenderSystem::AddToBatch(std::shared_ptr<Material2D> material, const Transform2D* transform) {
+	auto iter = _batches.find(material->GetID());
+	if (iter == _batches.end()) {
+		iter = _batches.try_emplace(material->GetID(), material).first;
+	}
+	auto& batch = iter->second;
+	batch.Add(transform);
+}
+
+std::shared_ptr<Material2D> RenderSystem::GetOrCreateMaterial(std::shared_ptr<Program>	 program,
+															  std::shared_ptr<Texture2D> texture) {
+	std::size_t hash = 0;
+	HashCombine(hash, program->GetID(), texture->id);
+	auto iter = _materials.find(hash);
+	if (iter == _materials.end()) {
+		iter = _materials.try_emplace(hash, std::make_shared<Material2D>(program, texture)).first;
+	}
+	return iter->second;
 }
 
 } // namespace EngineS

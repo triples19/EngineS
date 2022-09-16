@@ -21,6 +21,8 @@ class Program : public Resource {
 
 	void Link();
 
+	unsigned int GetID() { return _program; }
+
 	void Set(const std::string& name, bool value) const;
 	void Set(const std::string& name, int value) const;
 	void Set(const std::string& name, float value) const;
