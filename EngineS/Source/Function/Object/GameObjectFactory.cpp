@@ -20,11 +20,11 @@ std::shared_ptr<GameObject> GameObjectFactory::CreateGameObject() {
 
 std::shared_ptr<GameObject> GameObjectFactory::CreateSprite(std::filesystem::path path) {
 	auto obj		   = CreateGameObject();
-	auto textureHandle = Global::Instance()->resourceManager->GetHandle<Texture2D>(path);
+	auto textureHandle = ResourceManager::Instance()->GetHandle<Texture2D>(path);
 	textureHandle.Load();
-	auto programHandle = Global::Instance()->resourceManager->GetHandle<Program>("sprite.glsl");
+	auto programHandle = ResourceManager::Instance()->GetHandle<Program>("sprite.glsl");
 	programHandle.Load();
-	auto material		= Global::Instance()->renderSystem->GetOrCreateMaterial(*programHandle, *textureHandle);
+	auto material		= RenderSystem::Instance()->GetOrCreateMaterial(*programHandle, *textureHandle);
 	auto spriteRenderer = std::make_unique<SpriteRenderer>(material);
 	obj->AddComponent(std::move(spriteRenderer));
 	return obj;

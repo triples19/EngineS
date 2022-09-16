@@ -12,7 +12,7 @@ namespace EngineS {
 SpriteRenderer::SpriteRenderer(std::shared_ptr<Material2D> material) : _material {material} {}
 
 void SpriteRenderer::Render() {
-	auto renderSystem = Global::Instance()->renderSystem;
+	auto renderSystem = RenderSystem::Instance();
 	renderSystem->AddToBatch(_material, transform);
 }
 

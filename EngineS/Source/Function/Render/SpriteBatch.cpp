@@ -20,7 +20,7 @@ SpriteBatch::SpriteBatch(std::shared_ptr<Material2D> material) :
 	SpriteBatch(material->GetTexture(), material->GetProgram()) {}
 
 void SpriteBatch::Add(const Vector2& position, float rotation, const Vector2& scale) {
-	auto			 camera = Global::Instance()->sceneManager->GetCurrentScene()->GetMainCamera();
+	auto			 camera = SceneManager::Instance()->GetCurrentScene()->GetMainCamera();
 	V2F_C4F_T2F_Quad quad;
 	Vector2			 up, right;
 

@@ -23,31 +23,18 @@ Global* Global::Instance() {
 }
 
 void Global::Initialize() {
-	loggingSystem = std::make_shared<LoggingSystem>();
+	ResourceManager::Instance()->Initialize();
 
-	resourceManager = std::make_shared<ResourceManager>();
-	resourceManager->Initialize();
+	WindowSystem::Instance();
+	RenderSystem::Instance();
+	RenderSystem::Instance()->PreWindowInitialize();
+	WindowSystem::Instance()->Initialize(512, 512, "EngineS");
+	RenderSystem::Instance()->Initialize();
 
-	windowSystem = std::make_shared<WindowSystem>();
-	renderSystem = std::make_shared<RenderSystem>();
-	renderSystem->PreWindowInitialize();
-	windowSystem->Initialize(512, 512, "EngineS");
-	renderSystem->Initialize();
-
-	inputSystem = std::make_shared<InputSystem>();
-	inputSystem->Initialize();
-
-	sceneManager = std::make_shared<SceneManager>();
-	sceneManager->Initialize();
+	InputSystem::Instance()->Initialize();
+	SceneManager::Instance()->Initialize();
 }
 
-void Global::Shutdown() {
-	windowSystem.reset();
-	loggingSystem.reset();
-	inputSystem.reset();
-	resourceManager.reset();
-	renderSystem.reset();
-	sceneManager.reset();
-}
+void Global::Shutdown() {}
 
 } // namespace EngineS

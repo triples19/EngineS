@@ -8,6 +8,8 @@ namespace EngineS {
 
 class SceneManager {
   public:
+	static SceneManager* Instance();
+
 	void Initialize();
 
 	void   SetCurrentScene(std::unique_ptr<Scene> scene) { _currentScene = std::move(scene); }

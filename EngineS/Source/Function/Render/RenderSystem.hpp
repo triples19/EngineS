@@ -18,6 +18,8 @@ class Texture2D;
 
 class RenderSystem {
   public:
+	static RenderSystem* Instance();
+
 	RenderSystem()	= default;
 	~RenderSystem() = default;
 

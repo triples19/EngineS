@@ -17,7 +17,7 @@ int main() {
 	engine->StartEngine();
 	auto scene = std::make_unique<TestScene>();
 	scene->Initialize();
-	Global::Instance()->sceneManager->SetCurrentScene(std::move(scene));
+	SceneManager::Instance()->SetCurrentScene(std::move(scene));
 	engine->Run();
 
 	return 0;

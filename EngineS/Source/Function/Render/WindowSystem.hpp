@@ -10,6 +10,8 @@ namespace EngineS {
 
 class WindowSystem {
   public:
+	static WindowSystem* Instance();
+
 	WindowSystem() = default;
 	~WindowSystem();
 

@@ -22,7 +22,7 @@ void Engine::Shutdown() {
 }
 
 void Engine::Run() {
-	auto window = Global::Instance()->windowSystem;
+	auto window = WindowSystem::Instance();
 	while (!window->ShouldClose()) {
 		const float deltaTime = GetDeltaTime();
 		Update(deltaTime);
@@ -44,9 +44,9 @@ float Engine::GetDeltaTime() {
 }
 
 void Engine::Update(float deltaTime) {
-	Global::Instance()->resourceManager->Update();
-	Global::Instance()->inputSystem->Update();
-	Global::Instance()->windowSystem->PollEvents();
+	ResourceManager::Instance()->Update();
+	InputSystem::Instance()->Update();
+	WindowSystem::Instance()->PollEvents();
 
 	LogicUpdate(deltaTime);
 	for (auto& func : _updateFuncs) func(deltaTime);
@@ -55,14 +55,14 @@ void Engine::Update(float deltaTime) {
 }
 
 void Engine::LogicUpdate(float deltaTime) {
-	const auto& objs = Global::Instance()->sceneManager->GetCurrentScene()->GetGameObjects();
+	const auto& objs = SceneManager::Instance()->GetCurrentScene()->GetGameObjects();
 	for (auto& obj : objs) {
 		obj->Update(deltaTime);
 	}
 }
 
 void Engine::RenderUpdate() {
-	Global::Instance()->renderSystem->Update();
+	RenderSystem::Instance()->Update();
 }
 
 } // namespace EngineS

@@ -12,6 +12,7 @@ class WindowSystem;
 
 class InputSystem {
   public:
+	static InputSystem* Instance();
 	InputSystem() = default;
 
 	void Initialize();

@@ -9,6 +9,16 @@
 
 namespace EngineS {
 
+static WindowSystem* s_SharedInstance;
+
+WindowSystem* WindowSystem::Instance() {
+	if (!s_SharedInstance) {
+		s_SharedInstance = new (std::nothrow) WindowSystem;
+		assert(s_SharedInstance != nullptr);
+	}
+	return s_SharedInstance;
+}
+
 WindowSystem::~WindowSystem() {
 	glfwDestroyWindow(_window);
 	glfwTerminate();

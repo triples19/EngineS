@@ -15,6 +15,7 @@ class LoggingSystem {
 	enum class LogLevel : uint8_t { Debug, Info, Warn, Error, Fatal };
 
   public:
+	static LoggingSystem* Instance();
 	LoggingSystem();
 	~LoggingSystem();
 

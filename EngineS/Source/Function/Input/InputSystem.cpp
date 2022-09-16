@@ -5,11 +5,21 @@
 
 namespace EngineS {
 
+static InputSystem* s_SharedInstance;
+
+InputSystem* InputSystem::Instance() {
+	if (!s_SharedInstance) {
+		s_SharedInstance = new (std::nothrow) InputSystem;
+		assert(s_SharedInstance != nullptr);
+	}
+	return s_SharedInstance;
+}
+
 void InputSystem::Initialize() {
 #define KEY_CODE(name, code) _keys[KeyCode::name] = {};
 #include "Function/Input/KeyCode.def"
 #undef KEY_CODE
-	Global::Instance()->windowSystem->RegisterOnKeyFunc(ENGINES_CALLBACK(OnKey));
+	WindowSystem::Instance()->RegisterOnKeyFunc(ENGINES_CALLBACK(OnKey));
 }
 
 void InputSystem::Update() {

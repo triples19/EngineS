@@ -8,6 +8,16 @@
 
 namespace EngineS {
 
+ResourceManager* s_SharedInstance;
+
+ResourceManager* ResourceManager::Instance() {
+	if (!s_SharedInstance) {
+		s_SharedInstance = new (std::nothrow) ResourceManager;
+		assert(s_SharedInstance != nullptr);
+	}
+	return s_SharedInstance;
+}
+
 void ResourceManager::Initialize() {
 	RegisterLoader<TextLoader>();
 	RegisterLoader<ProgramLoader>();

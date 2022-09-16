@@ -11,7 +11,7 @@
 namespace EngineS {
 
 void Scene::Initialize() {
-	auto windowSystem	 = Global::Instance()->windowSystem;
+	auto windowSystem	 = WindowSystem::Instance();
 	auto [width, height] = windowSystem->GetWindowSize();
 
 	auto  cameraObj = GameObjectFactory::CreateCamera();

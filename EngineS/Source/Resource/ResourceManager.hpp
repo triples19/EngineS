@@ -33,6 +33,8 @@ class ResourceHandle;
  */
 class ResourceManager {
   public:
+	static ResourceManager* Instance();
+
 	/**
 	 * @brief Initialze the manager, loading all the metadata into memory
 	 */

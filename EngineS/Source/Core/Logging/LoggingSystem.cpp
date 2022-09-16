@@ -7,6 +7,16 @@
 
 namespace EngineS {
 
+static LoggingSystem* s_SharedInstance;
+
+LoggingSystem* LoggingSystem::Instance() {
+	if (!s_SharedInstance) {
+		s_SharedInstance = new (std::nothrow) LoggingSystem;
+		assert(s_SharedInstance != nullptr);
+	}
+	return s_SharedInstance;
+}
+
 LoggingSystem::LoggingSystem() {
 	auto consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
 	consoleSink->set_level(spdlog::level::trace);

@@ -16,6 +16,16 @@
 
 namespace EngineS {
 
+static RenderSystem* s_SharedInstance;
+
+RenderSystem* RenderSystem::Instance() {
+	if (!s_SharedInstance) {
+		s_SharedInstance = new (std::nothrow) RenderSystem;
+		assert(s_SharedInstance != nullptr);
+	}
+	return s_SharedInstance;
+}
+
 void RenderSystem::PreWindowInitialize() {
 	if (!glfwInit()) {
 		LOG_FATAL("Failed to initialize GLFW");
@@ -30,19 +40,19 @@ void RenderSystem::PreWindowInitialize() {
 }
 
 void RenderSystem::Initialize() {
-	_window = Global::Instance()->windowSystem->GetWindow();
+	_window = WindowSystem::Instance()->GetWindow();
 
 	if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
 		LOG_FATAL("Failed to initialize GLAD");
 		return;
 	}
 
-	Global::Instance()->windowSystem->RegisterOnWindowSizeFunc([](int w, int h) { glViewport(0, 0, w, h); });
+	WindowSystem::Instance()->RegisterOnWindowSizeFunc([](int w, int h) { glViewport(0, 0, w, h); });
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	auto resourceManager = Global::Instance()->resourceManager;
+	auto resourceManager = ResourceManager::Instance();
 	_programHandle		 = resourceManager->GetHandle<Program>("sprite.glsl");
 	resourceManager->LoadResource(_programHandle);
 	resourceManager->AddWatch(_programHandle);
@@ -52,7 +62,7 @@ void RenderSystem::Update() {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	auto* scene	 = Global::Instance()->sceneManager->GetCurrentScene();
+	auto* scene	 = SceneManager::Instance()->GetCurrentScene();
 	auto* camera = scene->GetMainCamera();
 
 	_batches.clear();
