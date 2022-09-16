@@ -186,7 +186,7 @@ class ResourceHandle : public ResourceHandleBase {
 		else
 			_manager->RemoveWatch(*this);
 	}
-	std::shared_ptr<T> operator*() const { return _manager->GetLoadedResource(*this); }
+	std::shared_ptr<T> operator*() const { return std::static_pointer_cast<T>(_manager->GetLoadedResource(*this)); }
 
   private:
 	ResourceManager* _manager;
