@@ -92,7 +92,7 @@ void RenderSystem::AddToBatch(std::shared_ptr<Material2D> material, const Transf
 std::shared_ptr<Material2D> RenderSystem::GetOrCreateMaterial(std::shared_ptr<Program>	 program,
 															  std::shared_ptr<Texture2D> texture) {
 	std::size_t hash = 0;
-	HashCombine(hash, program->GetID(), texture->id);
+	HashCombine(hash, program->GetID(), texture->GetID());
 	auto iter = _materials.find(hash);
 	if (iter == _materials.end()) {
 		iter = _materials.try_emplace(hash, std::make_shared<Material2D>(program, texture)).first;

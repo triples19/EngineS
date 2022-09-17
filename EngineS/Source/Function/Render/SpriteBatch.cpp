@@ -24,8 +24,8 @@ void SpriteBatch::Add(const Vector2& position, float rotation, const Vector2& sc
 	V2F_C4F_T2F_Quad quad;
 	Vector2			 up, right;
 
-	right = {_texture->width / 2.0f * scale.x, 0};
-	up	  = {0, _texture->height / 2.0f * scale.y};
+	right = {_texture->GetWidth() / 2.0f * scale.x, 0};
+	up	  = {0, _texture->GetHeight() / 2.0f * scale.y};
 	up	  = Vector2::Rotate(up, rotation);
 	right = Vector2::Rotate(right, rotation);
 

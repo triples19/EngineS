@@ -8,21 +8,21 @@
 namespace EngineS {
 
 void Texture2D::Generate(unsigned int width, unsigned int height, unsigned char* data) {
-	this->width	 = width;
-	this->height = height;
+	this->_width  = width;
+	this->_height = height;
 
-	glGenTextures(1, &id);
-	glBindTexture(GL_TEXTURE_2D, id);
-	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, imageFormat, GL_UNSIGNED_BYTE, data);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filterMin);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filterMax);
+	glGenTextures(1, &_id);
+	glBindTexture(GL_TEXTURE_2D, _id);
+	glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, width, height, 0, _imageFormat, GL_UNSIGNED_BYTE, data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, _wrapS);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, _wrapT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _filterMin);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _filterMax);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Texture2D::Bind() const {
-	glBindTexture(GL_TEXTURE_2D, id);
+	glBindTexture(GL_TEXTURE_2D, _id);
 }
 
 Resource* Texture2DLoader::CreateResource(const fs::path& path) const {
@@ -35,8 +35,8 @@ Resource* Texture2DLoader::CreateResource(const fs::path& path) const {
 		return nullptr;
 	}
 	if (nrChannels == 4) {
-		texture->internalFormat = GL_RGBA;
-		texture->imageFormat	= GL_RGBA;
+		texture->_internalFormat = GL_RGBA;
+		texture->_imageFormat	 = GL_RGBA;
 	}
 	texture->Generate(width, height, data);
 	stbi_image_free(data);
