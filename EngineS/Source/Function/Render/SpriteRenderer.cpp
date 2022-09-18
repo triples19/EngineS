@@ -13,7 +13,7 @@ SpriteRenderer::SpriteRenderer(std::shared_ptr<Material2D> material) : _material
 
 void SpriteRenderer::Render() {
 	auto renderSystem = RenderSystem::Instance();
-	renderSystem->AddToBatch(_material, transform);
+	renderSystem->AddToBatch(_material, transform->MakeModelMatrix(), _anchor);
 }
 
 void SpriteRenderer::Initialize(GameObject* parent) {

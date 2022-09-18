@@ -35,7 +35,7 @@ class RenderSystem {
 
 	void Update();
 
-	void AddToBatch(std::shared_ptr<Material2D> material, const Transform2D* transform);
+	void AddToBatch(std::shared_ptr<Material2D> material, const Matrix4x4& modelMat, const Vector2& anchor);
 
 	std::shared_ptr<Material2D> GetOrCreateMaterial(std::shared_ptr<Program>   program,
 													std::shared_ptr<Texture2D> texture);

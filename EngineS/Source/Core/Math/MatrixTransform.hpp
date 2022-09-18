@@ -9,6 +9,7 @@ Matrix4x4 Translate(float x, float y, float z);
 Matrix4x4 Translate(const Vector3& offset);
 Matrix4x4 Scale(float x, float y, float z);
 Matrix4x4 Scale(const Vector3& scale);
+Matrix4x4 RotateZ(float rad);
 Matrix4x4 LookAt(const Vector3& from, const Vector3& to, const Vector3& up);
 
 } // namespace EngineS

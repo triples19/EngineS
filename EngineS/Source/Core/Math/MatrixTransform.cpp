@@ -50,6 +50,17 @@ Matrix4x4 Scale(const Vector3& scale) {
 	return Scale(scale.x, scale.y, scale.z);
 }
 
+Matrix4x4 RotateZ(float rad) {
+	float	  cos = Math::Cos(rad);
+	float	  sin = Math::Sin(rad);
+	Matrix4x4 m {Matrix4x4::Identity};
+	m[0][0] = cos;
+	m[0][1] = -sin;
+	m[1][0] = sin;
+	m[1][1] = cos;
+	return m;
+}
+
 Matrix4x4 LookAt(const Vector3& from, const Vector3& to, const Vector3& up) {
 	Vector3 x, y, z;
 	z = (to - from).Normalized();

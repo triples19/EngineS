@@ -19,32 +19,6 @@ SpriteBatch::SpriteBatch(std::shared_ptr<Texture2D> texture, std::shared_ptr<Pro
 SpriteBatch::SpriteBatch(std::shared_ptr<Material2D> material) :
 	SpriteBatch(material->GetTexture(), material->GetProgram()) {}
 
-void SpriteBatch::Add(const Vector2& position, float rotation, const Vector2& scale) {
-	auto			 camera = SceneManager::Instance()->GetCurrentScene()->GetMainCamera();
-	V2F_C4F_T2F_Quad quad;
-	Vector2			 up, right;
-
-	right = {_texture->GetWidth() / 2.0f * scale.x, 0};
-	up	  = {0, _texture->GetHeight() / 2.0f * scale.y};
-	up	  = Vector2::Rotate(up, rotation);
-	right = Vector2::Rotate(right, rotation);
-
-	Vector2 ortho {camera->width / 2.0f, camera->height / 2.0f};
-
-	quad.tl.vertices = (position + up - right) / ortho;
-	quad.tr.vertices = (position + up + right) / ortho;
-	quad.bl.vertices = (position - up - right) / ortho;
-	quad.br.vertices = (position - up + right) / ortho;
-
-	quad.tl.texCoords = {0.0f, 1.0f};
-	quad.tr.texCoords = {1.0f, 1.0f};
-	quad.bl.texCoords = {0.0f, 0.0f};
-	quad.br.texCoords = {1.0f, 0.0f};
-
-	_triangles.push_back({quad.tl, quad.br, quad.bl});
-	_triangles.push_back({quad.tl, quad.tr, quad.br});
-}
-
 void SpriteBatch::Draw() {
 	glBindVertexArray(_vao);
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
@@ -77,8 +51,37 @@ void SpriteBatch::Draw() {
 	glDrawArrays(GL_TRIANGLES, 0, 3 * _triangles.size());
 }
 
-void SpriteBatch::Add(const Transform2D* transform) {
-	Add(transform->position, transform->rotation, transform->scale);
+void SpriteBatch::Add(const Matrix4x4& modelMat, const Vector2& anchor) {
+	auto camera = SceneManager::Instance()->GetCurrentScene()->GetMainCamera();
+	auto proj	= camera->GetProjectionMatrix();
+	auto view	= camera->GetViewMatrix();
+
+	V2F_C4F_T2F_Quad quad;
+
+	quad.tl.vertices = {0.0f, 1.0f};
+	quad.tr.vertices = {1.0f, 1.0f};
+	quad.bl.vertices = {0.0f, 0.0f};
+	quad.br.vertices = {1.0f, 0.0f};
+
+	auto doVertexTransform = [&](Vector2& vert) {
+		Vector2 vertTransformed = (vert - anchor) * Vector2(_texture->GetWidth(), _texture->GetHeight());
+		Vector4 vertHomo {vertTransformed.x, vertTransformed.y, 0.0f, 1.0f};
+		vertHomo = proj * view * modelMat * vertHomo;
+		vert	 = {vertHomo.x, vertHomo.y};
+	};
+
+	doVertexTransform(quad.tl.vertices);
+	doVertexTransform(quad.tr.vertices);
+	doVertexTransform(quad.bl.vertices);
+	doVertexTransform(quad.br.vertices);
+
+	quad.tl.texCoords = {0.0f, 1.0f};
+	quad.tr.texCoords = {1.0f, 1.0f};
+	quad.bl.texCoords = {0.0f, 0.0f};
+	quad.br.texCoords = {1.0f, 0.0f};
+
+	_triangles.push_back({quad.tl, quad.br, quad.bl});
+	_triangles.push_back({quad.tl, quad.tr, quad.br});
 }
 
 } // namespace EngineS
