@@ -7,6 +7,7 @@
 #include "Function/Object/Component/Camera.hpp"
 #include "Function/Object/Component/Transform2D.hpp"
 #include "Function/Object/GameObject.hpp"
+#include "Function/Render/DeviceInfo.hpp"
 #include "Function/Render/Material2D.hpp"
 #include "Function/Render/Program.hpp"
 #include "Function/Render/SpriteRenderer.hpp"
@@ -25,6 +26,9 @@ RenderSystem* RenderSystem::Instance() {
 	}
 	return s_SharedInstance;
 }
+
+RenderSystem::RenderSystem()  = default;
+RenderSystem::~RenderSystem() = default;
 
 void RenderSystem::PreWindowInitialize() {
 	if (!glfwInit()) {
@@ -46,6 +50,11 @@ void RenderSystem::Initialize() {
 		LOG_FATAL("Failed to initialize GLAD");
 		return;
 	}
+
+	LOG_INFO("Initializing RenderSystem (OpenGL)");
+	LOG_INFO("Vendor:\t{}", _deviceInfo.GetVendor());
+	LOG_INFO("Version:\t{}", _deviceInfo.GetVersion());
+	LOG_INFO("Renderer:\t{}", _deviceInfo.GetRenderer());
 
 	WindowSystem::Instance()->RegisterOnWindowSizeFunc([](int w, int h) { glViewport(0, 0, w, h); });
 

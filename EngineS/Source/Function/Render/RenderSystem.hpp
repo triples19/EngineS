@@ -1,5 +1,6 @@
 #pragma once
 
+#include "DeviceInfo.hpp"
 #include "Platform/GLCommon.hpp"
 #include "Program.hpp"
 #include "Resource/ResourceManager.hpp"
@@ -15,13 +16,14 @@ class Material2D;
 class Transform2D;
 class Program;
 class Texture2D;
+class DeviceInfo;
 
 class RenderSystem {
   public:
 	static RenderSystem* Instance();
 
-	RenderSystem()	= default;
-	~RenderSystem() = default;
+	RenderSystem();
+	~RenderSystem();
 
 	/**
 	 * Called before glfw window is initialized
@@ -43,6 +45,7 @@ class RenderSystem {
   private:
 	ResourceHandle<Program> _programHandle;
 	GLFWwindow*				_window;
+	DeviceInfo				_deviceInfo;
 
 	std::unordered_map<std::size_t, std::shared_ptr<Material2D>> _materials;
 	std::unordered_map<unsigned int, SpriteBatch>				 _batches;
