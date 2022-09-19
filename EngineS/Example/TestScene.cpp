@@ -9,12 +9,16 @@ void TestScene::Initialize() {
 
 	std::vector<Vector2> positions {{0.0f, 0.0f}, {100.0f, 0.0f}, {-100.0f, 0.0f}, {0.0f, 100.0f}, {0.0f, -100.0f}};
 
+	auto root = GameObjectFactory::CreateGameObject();
+	root->AddComponent<TestComponent>();
+	AddGameObject(root);
+
 	for (auto& pos : positions) {
 		auto sprite = GameObjectFactory::CreateSprite("awesomeface.png");
-		AddGameObject(sprite);
+		AddGameObject(sprite, root->transform);
 		auto* transform		= sprite->GetComponent<Transform2D>();
 		transform->scale	= {0.2f, 0.2f};
 		transform->position = pos;
-		sprite->AddComponent<TestComponent>();
+		// sprite->AddComponent<TestComponent>();
 	}
 }

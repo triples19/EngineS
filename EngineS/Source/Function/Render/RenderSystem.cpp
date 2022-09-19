@@ -67,11 +67,11 @@ void RenderSystem::Update() {
 
 	_batches.clear();
 
-	for (auto& obj : scene->GetGameObjects()) {
-		if (obj->renderer != nullptr) {
-			obj->renderer->Render();
+	scene->GetRootTransform()->Visit(Matrix4x4::Identity, [](GameObject* gameObject, const Matrix4x4& model) {
+		if (gameObject->renderer) {
+			gameObject->renderer->Render(model);
 		}
-	}
+	});
 
 	for (auto& [id, batch] : _batches) {
 		batch.Draw();

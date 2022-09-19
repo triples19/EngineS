@@ -7,6 +7,7 @@ namespace EngineS {
 void Component::Initialize(GameObject* parent) {
 	gameObject = parent;
 	transform  = gameObject->transform;
+	renderer   = gameObject->renderer;
 }
 
 } // namespace EngineS

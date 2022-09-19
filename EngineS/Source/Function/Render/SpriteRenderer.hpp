@@ -20,7 +20,7 @@ class SpriteRenderer : public Renderer {
   public:
 	SpriteRenderer(std::shared_ptr<Material2D> material);
 
-	virtual void Render() override;
+	virtual void Render(const Matrix4x4& modelMat) override;
 
 	virtual void Initialize(GameObject* parent) override;
 
