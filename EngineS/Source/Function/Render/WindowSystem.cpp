@@ -25,7 +25,7 @@ WindowSystem::~WindowSystem() {
 }
 
 void WindowSystem::Initialize(int width, int height, const char* title) {
-	LOG_INFO("Initialzing WindowSystem (GLFW)");
+	LOG_INFO("Initializing WindowSystem (GLFW)");
 
 	_width	= width;
 	_height = height;
