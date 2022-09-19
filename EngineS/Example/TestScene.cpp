@@ -12,9 +12,9 @@ void TestScene::Initialize() {
 	for (auto& pos : positions) {
 		auto sprite = GameObjectFactory::CreateSprite("awesomeface.png");
 		AddGameObject(sprite);
-		auto* transform = sprite->GetComponent<Transform2D>();
-		transform->SetLocalScale({0.2f, 0.2f});
-		transform->SetLocalPosition(pos);
+		auto* transform		= sprite->GetComponent<Transform2D>();
+		transform->scale	= {0.2f, 0.2f};
+		transform->position = pos;
 		sprite->AddComponent<TestComponent>();
 	}
 }
