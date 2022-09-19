@@ -6,6 +6,10 @@
 
 namespace EngineS {
 
+class Color3B;
+class Color4B;
+class Color4F;
+
 struct Color3B {
 	uint8_t r {0}, g {0}, b {0};
 
@@ -25,6 +29,18 @@ struct Color4F {
 
 	Color4F() = default;
 	Color4F(float _r, float _g, float _b, float _a) : r {_r}, g {_g}, b {_b}, a {_a} {}
+	Color4F(const Color4B& color) :
+		r {color.a / 255.0f}, g {color.g / 255.0f}, b {color.b / 255.0f}, a {color.a / 255.0f} {}
+
+	static const Color4F White;
+	static const Color4F Yellow;
+	static const Color4F Green;
+	static const Color4F Blue;
+	static const Color4F Red;
+	static const Color4F Magenta;
+	static const Color4F Black;
+	static const Color4F Orange;
+	static const Color4F Gray;
 };
 
 struct Tex2F {
