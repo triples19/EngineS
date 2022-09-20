@@ -10,11 +10,14 @@
 
 using namespace EngineS;
 
-std::unique_ptr<Engine> engine;
+void TestUpdate(float deltaTime) {
+	WindowSystem::Instance()->SetTitle(fmt::format("EngineS | FPS: {}", Engine::Instance()->GetFPS()));
+}
 
 int main() {
-	engine = std::make_unique<Engine>();
+	auto* engine = Engine::Instance();
 	engine->StartEngine();
+	engine->RegisterUpdateFunc(ENGINES_CALLBACK(TestUpdate));
 	auto scene = std::make_unique<TestScene>();
 	scene->Initialize();
 	SceneManager::Instance()->SetCurrentScene(std::move(scene));

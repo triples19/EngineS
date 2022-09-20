@@ -11,6 +11,27 @@
 
 namespace EngineS {
 
+static Engine* s_SharedInstance;
+
+Engine* Engine::Instance() {
+	if (!s_SharedInstance) {
+		s_SharedInstance = new (std::nothrow) Engine;
+		assert(s_SharedInstance != nullptr);
+	}
+	return s_SharedInstance;
+}
+
+int Engine::FPSCalculator::Calculate(float deltaTime) {
+	frameCount++;
+	if (frameCount == 1) {
+		averageDuration = deltaTime;
+	} else {
+		averageDuration = averageDuration * (1 - fpsSmoothing) + deltaTime * fpsSmoothing;
+	}
+	fps = static_cast<int>(1.0f / averageDuration);
+	return fps;
+}
+
 void Engine::StartEngine() {
 	Global::Instance()->Initialize();
 	LOG_INFO("Engine started");
@@ -50,6 +71,8 @@ void Engine::Update(float deltaTime) {
 
 	LogicUpdate(deltaTime);
 	for (auto& func : _updateFuncs) func(deltaTime);
+
+	_fpsCalculator.Calculate(deltaTime);
 
 	RenderUpdate();
 }
