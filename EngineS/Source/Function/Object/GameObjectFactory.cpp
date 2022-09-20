@@ -13,8 +13,8 @@
 namespace EngineS {
 
 std::shared_ptr<GameObject> GameObjectFactory::CreateGameObject() {
-	auto  obj		= std::make_shared<GameObject>();
-	auto* transform = obj->AddComponent<Transform2D>(std::make_unique<Transform2D>());
+	auto obj = std::make_shared<GameObject>();
+	obj->AddComponent<Transform2D>();
 	return obj;
 }
 
@@ -24,16 +24,14 @@ std::shared_ptr<GameObject> GameObjectFactory::CreateSprite(std::filesystem::pat
 	textureHandle.Load();
 	auto programHandle = ResourceManager::Instance()->GetHandle<Program>("sprite.glsl");
 	programHandle.Load();
-	auto material		= RenderSystem::Instance()->GetOrCreateMaterial(*programHandle, *textureHandle);
-	auto spriteRenderer = std::make_unique<SpriteRenderer>(material);
-	obj->AddComponent(std::move(spriteRenderer));
+	auto material = RenderSystem::Instance()->GetOrCreateMaterial(*programHandle, *textureHandle);
+	obj->AddComponent<SpriteRenderer>(material);
 	return obj;
 }
 
 std::shared_ptr<GameObject> GameObjectFactory::CreateCamera() {
-	auto obj	= CreateGameObject();
-	auto camera = std::make_unique<Camera>();
-	obj->AddComponent(std::move(camera));
+	auto obj = CreateGameObject();
+	obj->AddComponent<Camera>();
 	return obj;
 }
 

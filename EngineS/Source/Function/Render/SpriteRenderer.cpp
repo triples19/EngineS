@@ -14,7 +14,7 @@ SpriteRenderer::SpriteRenderer(std::shared_ptr<Material2D> material) : _material
 
 void SpriteRenderer::Render(const Matrix4x4& modelMat) {
 	auto renderSystem = RenderSystem::Instance();
-	renderSystem->AddToBatch(_material, modelMat, _anchor);
+	renderSystem->AddToBatch(_material, modelMat, _anchor, _color);
 }
 
 void SpriteRenderer::Initialize(GameObject* parent) {

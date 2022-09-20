@@ -22,7 +22,7 @@ class SpriteBatch {
 	SpriteBatch(std::shared_ptr<Material2D> material);
 	SpriteBatch(std::shared_ptr<Texture2D> texture, std::shared_ptr<Program> program);
 
-	void Add(const Matrix4x4& modelMat, const Vector2& anchor);
+	void Add(const Matrix4x4& modelMat, const Vector2& anchor, const Color4F& color);
 
 	void Draw();
 

@@ -37,19 +37,14 @@ class GameObject {
 		return comps;
 	}
 
-	template<class T>
-	T* AddComponent(std::unique_ptr<T> comp) {
+	template<class T, class... Args>
+	T* AddComponent(Args&&... args) {
+		auto comp = std::make_unique<T>(std::forward<Args>(args)...);
 		comp->Initialize(this);
 		auto inserted = _components.insert(std::make_pair(static_cast<std::type_index>(typeid(T)), std::move(comp)));
 		auto pointer  = static_cast<T*>(inserted->second.get());
 		SetPropertyIfNeeded(pointer);
 		return static_cast<T*>(pointer);
-	}
-
-	template<class T, class... Args>
-	T* AddComponent(Args&&... args) {
-		auto comp = std::make_unique<T>(std::forward<Args>(args)...);
-		return AddComponent(std::move(comp));
 	}
 
   private:

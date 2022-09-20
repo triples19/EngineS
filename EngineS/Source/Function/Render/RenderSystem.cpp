@@ -89,13 +89,16 @@ void RenderSystem::Update() {
 	glfwSwapBuffers(_window);
 }
 
-void RenderSystem::AddToBatch(std::shared_ptr<Material2D> material, const Matrix4x4& modelMat, const Vector2& anchor) {
+void RenderSystem::AddToBatch(std::shared_ptr<Material2D> material,
+							  const Matrix4x4&			  modelMat,
+							  const Vector2&			  anchor,
+							  const Color4F&			  color) {
 	auto iter = _batches.find(material->GetID());
 	if (iter == _batches.end()) {
 		iter = _batches.try_emplace(material->GetID(), material).first;
 	}
 	auto& batch = iter->second;
-	batch.Add(modelMat, anchor);
+	batch.Add(modelMat, anchor, color);
 }
 
 std::shared_ptr<Material2D> RenderSystem::GetOrCreateMaterial(std::shared_ptr<Program>	 program,

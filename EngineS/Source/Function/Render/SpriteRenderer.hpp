@@ -24,9 +24,14 @@ class SpriteRenderer : public Renderer {
 
 	virtual void Initialize(GameObject* parent) override;
 
+	const Vector2& GetAnchor() const { return _anchor; }
+	void		   SetAnchor(const Vector2& anchor) { _anchor = anchor; }
+	const Color4F& GetColor() const { return _color; }
+	void		   SetColor(const Color4F& color) { _color = color; }
+
   private:
 	std::shared_ptr<Material2D> _material;
-	Vector3						_color {Vector3::One};
+	Color4F						_color {Color4F::White};
 	Vector2						_anchor {0.5f, 0.5f};
 };
 

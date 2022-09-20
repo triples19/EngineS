@@ -51,7 +51,7 @@ void SpriteBatch::Draw() {
 	glDrawArrays(GL_TRIANGLES, 0, 3 * _triangles.size());
 }
 
-void SpriteBatch::Add(const Matrix4x4& modelMat, const Vector2& anchor) {
+void SpriteBatch::Add(const Matrix4x4& modelMat, const Vector2& anchor, const Color4F& color) {
 	auto camera = SceneManager::Instance()->GetCurrentScene()->GetMainCamera();
 	auto proj	= camera->GetProjectionMatrix();
 	auto view	= camera->GetViewMatrix();
@@ -62,6 +62,11 @@ void SpriteBatch::Add(const Matrix4x4& modelMat, const Vector2& anchor) {
 	quad.tr.vertices = {1.0f, 1.0f};
 	quad.bl.vertices = {0.0f, 0.0f};
 	quad.br.vertices = {1.0f, 0.0f};
+
+	quad.tl.colors = color;
+	quad.tr.colors = color;
+	quad.bl.colors = color;
+	quad.br.colors = color;
 
 	auto doVertexTransform = [&](Vector2& vert) {
 		Vector2 vertTransformed = (vert - anchor) * Vector2(_texture->GetWidth(), _texture->GetHeight());
