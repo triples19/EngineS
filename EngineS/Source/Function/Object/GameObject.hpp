@@ -8,13 +8,14 @@
 
 #include "Component/Component.hpp"
 #include "Component/Transform2D.hpp"
+#include "Core/Base/Object.hpp"
 #include "Function/Render/Renderer.hpp"
 
 namespace EngineS {
 
-class GameObject {
+class GameObject : public Object {
   public:
-	GameObject() = default;
+	static GameObject* Create();
 
 	virtual void Update(float deltaTime);
 
@@ -23,7 +24,7 @@ class GameObject {
 		auto iter = _components.find(static_cast<std::type_index>(typeid(T)));
 		if (iter == _components.end())
 			return nullptr;
-		return static_cast<T*>(iter->second.get());
+		return static_cast<T*>(iter->second);
 	}
 
 	template<class T>
@@ -32,17 +33,19 @@ class GameObject {
 		std::vector<T*> comps;
 		comps.reserve(std::distance(range.first, range.second));
 		for (auto iter = range.first; iter != range.second; ++iter) {
-			comps.push_back(static_cast<T*>(iter->second.get()));
+			comps.push_back(static_cast<T*>(iter->second));
 		}
 		return comps;
 	}
 
 	template<class T, class... Args>
 	T* AddComponent(Args&&... args) {
-		auto comp = std::make_unique<T>(std::forward<Args>(args)...);
+		auto comp = new T(std::forward<Args>(args)...);
+		comp->AutoRelease();
+		comp->Retain();
 		comp->Initialize(this);
-		auto inserted = _components.insert(std::make_pair(static_cast<std::type_index>(typeid(T)), std::move(comp)));
-		auto pointer  = static_cast<T*>(inserted->second.get());
+		auto inserted = _components.insert(std::make_pair(static_cast<std::type_index>(typeid(T)), comp));
+		auto pointer  = static_cast<T*>(inserted->second);
 		SetPropertyIfNeeded(pointer);
 		return static_cast<T*>(pointer);
 	}
@@ -62,7 +65,11 @@ class GameObject {
 	Renderer*	 renderer {nullptr};
 
   private:
-	std::unordered_multimap<std::type_index, std::unique_ptr<Component>> _components;
+	GameObject() = default;
+	~GameObject();
+
+  private:
+	std::unordered_multimap<std::type_index, Component*> _components;
 };
 
 } // namespace EngineS

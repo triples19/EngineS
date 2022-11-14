@@ -1,5 +1,7 @@
 #include "Engine.hpp"
+#include "Core/Base/AutoReleasePool.hpp"
 #include "Core/Base/Macros.hpp"
+#include "Core/Base/PoolManager.hpp"
 #include "Core/Logging/LoggingSystem.hpp"
 #include "Function/Global/Global.hpp"
 #include "Function/Input/InputSystem.hpp"
@@ -75,6 +77,8 @@ void Engine::Update(float deltaTime) {
 	_fpsCalculator.Calculate(deltaTime);
 
 	RenderUpdate();
+
+	PoolManager::Instance()->GetCurrentPool()->Clear();
 }
 
 void Engine::LogicUpdate(float deltaTime) {

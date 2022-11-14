@@ -18,15 +18,16 @@ class Scene {
 	virtual void Initialize();
 
 	auto&		 GetGameObjects() { return _gameObjects; }
-	void		 AddGameObject(std::shared_ptr<GameObject> gameObject);
-	void		 AddGameObject(std::shared_ptr<GameObject> gameObject, Transform2D* parent);
+	void		 AddGameObject(GameObject* gameObject);
+	void		 AddGameObject(GameObject* gameObject, Transform2D* parent);
+	void		 RemoveGameObject(GameObject* gameObject);
 	Camera*		 GetMainCamera() { return _mainCamera; }
 	Transform2D* GetRootTransform();
 
   private:
-	std::unordered_set<std::shared_ptr<GameObject>> _gameObjects;
-	Camera*											_mainCamera;
-	std::shared_ptr<GameObject>						_rootGameObject;
+	std::unordered_set<GameObject*> _gameObjects;
+	Camera*							_mainCamera;
+	GameObject*						_rootGameObject;
 };
 
 } // namespace EngineS

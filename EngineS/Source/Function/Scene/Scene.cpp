@@ -10,11 +10,15 @@
 
 namespace EngineS {
 
-Scene::Scene()	= default;
-Scene::~Scene() = default;
+Scene::Scene() = default;
+
+Scene::~Scene() {
+	_rootGameObject->Release();
+}
 
 void Scene::Initialize() {
 	_rootGameObject = GameObjectFactory::CreateGameObject();
+	_rootGameObject->Retain();
 	_gameObjects.insert(_rootGameObject);
 
 	auto windowSystem	 = WindowSystem::Instance();
@@ -32,13 +36,19 @@ void Scene::Initialize() {
 	_mainCamera = camera;
 }
 
-void Scene::AddGameObject(std::shared_ptr<GameObject> gameObject) {
+void Scene::AddGameObject(GameObject* gameObject) {
 	AddGameObject(gameObject, _rootGameObject->transform);
 }
 
-void Scene::AddGameObject(std::shared_ptr<GameObject> gameObject, Transform2D* parent) {
+void Scene::AddGameObject(GameObject* gameObject, Transform2D* parent) {
 	_gameObjects.insert(gameObject);
 	parent->AddChild(gameObject->transform);
+	gameObject->Retain();
+}
+
+void Scene::RemoveGameObject(GameObject* gameObject) {
+	_gameObjects.erase(gameObject);
+	gameObject->Release();
 }
 
 Transform2D* Scene::GetRootTransform() {

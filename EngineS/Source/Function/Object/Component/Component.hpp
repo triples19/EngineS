@@ -1,12 +1,14 @@
 #pragma once
 
+#include "Core/Base/Object.hpp"
+
 namespace EngineS {
 
 class GameObject;
 class Transform2D;
 class Renderer;
 
-class Component {
+class Component : public Object {
   public:
 	virtual void Initialize(GameObject* parent);
 	virtual void Update(float deltaTime) {}

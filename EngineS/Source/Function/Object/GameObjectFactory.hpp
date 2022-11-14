@@ -9,9 +9,9 @@ class GameObject;
 
 class GameObjectFactory {
   public:
-	static std::shared_ptr<GameObject> CreateGameObject();
-	static std::shared_ptr<GameObject> CreateSprite(std::filesystem::path path);
-	static std::shared_ptr<GameObject> CreateCamera();
+	static GameObject* CreateGameObject();
+	static GameObject* CreateSprite(std::filesystem::path path);
+	static GameObject* CreateCamera();
 };
 
 } // namespace EngineS
