@@ -3,4 +3,6 @@ project(EngineS)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_subdirectory(EngineS)
+add_subdirectory(ThirdParty)
+add_subdirectory(Source)
+add_subdirectory(Example)
