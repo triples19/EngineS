@@ -1,4 +1,4 @@
-#include "Engine.hpp"
+#include "GameEngine.hpp"
 #include "Core/Base/AutoReleasePool.hpp"
 #include "Core/Base/Macros.hpp"
 #include "Core/Base/PoolManager.hpp"
@@ -13,17 +13,17 @@
 
 namespace EngineS {
 
-static Engine* s_SharedInstance;
+static GameEngine* s_SharedInstance;
 
-Engine* Engine::Instance() {
+GameEngine* GameEngine::Instance() {
 	if (!s_SharedInstance) {
-		s_SharedInstance = new (std::nothrow) Engine;
+		s_SharedInstance = new (std::nothrow) GameEngine;
 		assert(s_SharedInstance != nullptr);
 	}
 	return s_SharedInstance;
 }
 
-int Engine::FPSCalculator::Calculate(float deltaTime) {
+int GameEngine::FPSCalculator::Calculate(float deltaTime) {
 	frameCount++;
 	if (frameCount == 1) {
 		averageDuration = deltaTime;
@@ -34,17 +34,17 @@ int Engine::FPSCalculator::Calculate(float deltaTime) {
 	return fps;
 }
 
-void Engine::StartEngine() {
+void GameEngine::StartEngine() {
 	Global::Instance()->Initialize();
 	LOG_INFO("Engine started");
 }
 
-void Engine::Shutdown() {
+void GameEngine::Shutdown() {
 	LOG_INFO("Engine shutting down");
 	_shouldShutdown = true;
 }
 
-void Engine::Run() {
+void GameEngine::Run() {
 	auto window = WindowSystem::Instance();
 	while (!window->ShouldClose()) {
 		const float deltaTime = GetDeltaTime();
@@ -57,7 +57,7 @@ void Engine::Run() {
 	}
 }
 
-float Engine::GetDeltaTime() {
+float GameEngine::GetDeltaTime() {
 	float deltaTime;
 	auto  nowTime  = std::chrono::steady_clock::now();
 	auto  timeSpan = std::chrono::duration_cast<std::chrono::duration<float>>(nowTime - _lastTickTime);
@@ -66,7 +66,7 @@ float Engine::GetDeltaTime() {
 	return deltaTime;
 }
 
-void Engine::Update(float deltaTime) {
+void GameEngine::Update(float deltaTime) {
 	ResourceManager::Instance()->Update();
 	InputSystem::Instance()->Update();
 	WindowSystem::Instance()->PollEvents();
@@ -81,14 +81,14 @@ void Engine::Update(float deltaTime) {
 	PoolManager::Instance()->GetCurrentPool()->Clear();
 }
 
-void Engine::LogicUpdate(float deltaTime) {
+void GameEngine::LogicUpdate(float deltaTime) {
 	const auto& objs = SceneManager::Instance()->GetCurrentScene()->GetGameObjects();
 	for (auto& obj : objs) {
 		obj->Update(deltaTime);
 	}
 }
 
-void Engine::RenderUpdate() {
+void GameEngine::RenderUpdate() {
 	RenderSystem::Instance()->Update();
 }
 

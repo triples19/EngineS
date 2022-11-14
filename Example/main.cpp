@@ -11,11 +11,11 @@
 using namespace EngineS;
 
 void TestUpdate(float deltaTime) {
-	WindowSystem::Instance()->SetTitle(fmt::format("EngineS | FPS: {}", Engine::Instance()->GetFPS()));
+	WindowSystem::Instance()->SetTitle(fmt::format("EngineS | FPS: {}", GameEngine::Instance()->GetFPS()));
 }
 
 int main() {
-	auto* engine = Engine::Instance();
+	auto* engine = GameEngine::Instance();
 	engine->StartEngine();
 	engine->RegisterUpdateFunc(ENGINES_CALLBACK(TestUpdate));
 	auto scene = std::make_unique<TestScene>();
