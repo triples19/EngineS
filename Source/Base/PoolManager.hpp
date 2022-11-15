@@ -8,21 +8,21 @@ class AutoReleasePool;
 
 class PoolManager {
   public:
-	static PoolManager* Instance();
+    static PoolManager* Instance();
 
-	AutoReleasePool* GetCurrentPool() const;
+    AutoReleasePool* GetCurrentPool() const;
 
-	friend class AutoReleasePool;
-
-  private:
-	PoolManager();
-	~PoolManager();
-
-	void PushPool(AutoReleasePool* pool);
-	void PopPool();
+    friend class AutoReleasePool;
 
   private:
-	std::vector<AutoReleasePool*> _releasePools;
+    PoolManager();
+    ~PoolManager();
+
+    void PushPool(AutoReleasePool* pool);
+    void PopPool();
+
+  private:
+    std::vector<AutoReleasePool*> _releasePools;
 };
 
 } // namespace EngineS

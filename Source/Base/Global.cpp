@@ -15,24 +15,24 @@ namespace EngineS {
 static Global* globalInstance;
 
 Global* Global::Instance() {
-	if (!globalInstance) {
-		globalInstance = new (std::nothrow) Global;
-		ES_ASSERT_NOMSG(globalInstance != nullptr);
-	}
-	return globalInstance;
+    if (!globalInstance) {
+        globalInstance = new (std::nothrow) Global;
+        ES_ASSERT_NOMSG(globalInstance != nullptr);
+    }
+    return globalInstance;
 }
 
 void Global::Initialize() {
-	ResourceManager::Instance()->Initialize();
+    ResourceManager::Instance()->Initialize();
 
-	WindowSystem::Instance();
-	RenderSystem::Instance();
-	RenderSystem::Instance()->PreWindowInitialize();
-	WindowSystem::Instance()->Initialize(512, 512, "EngineS");
-	RenderSystem::Instance()->Initialize();
+    WindowSystem::Instance();
+    RenderSystem::Instance();
+    RenderSystem::Instance()->PreWindowInitialize();
+    WindowSystem::Instance()->Initialize(512, 512, "EngineS");
+    RenderSystem::Instance()->Initialize();
 
-	InputSystem::Instance()->Initialize();
-	SceneManager::Instance()->Initialize();
+    InputSystem::Instance()->Initialize();
+    SceneManager::Instance()->Initialize();
 }
 
 void Global::Shutdown() {}

@@ -12,48 +12,48 @@ namespace EngineS {
 
 class LoggingSystem {
   public:
-	enum class LogLevel : uint8_t { Debug, Info, Warn, Error, Fatal };
+    enum class LogLevel : uint8_t { Debug, Info, Warn, Error, Fatal };
 
   public:
-	static LoggingSystem* Instance();
-	LoggingSystem();
-	~LoggingSystem();
+    static LoggingSystem* Instance();
+    LoggingSystem();
+    ~LoggingSystem();
 
-	template<class T, class... Ts>
-	void Debug(T&& prefix, fmt::format_string<Ts...> format, Ts&&... args) {
-		auto msg = fmt::format(format, std::forward<Ts>(args)...);
-		_logger->debug(prefix + msg);
-	}
+    template<class T, class... Ts>
+    void Debug(T&& prefix, fmt::format_string<Ts...> format, Ts&&... args) {
+        auto msg = fmt::format(format, std::forward<Ts>(args)...);
+        _logger->debug(prefix + msg);
+    }
 
-	template<class T, class... Ts>
-	void Info(T&& prefix, fmt::format_string<Ts...> format, Ts&&... args) {
-		auto msg = fmt::format(format, std::forward<Ts>(args)...);
-		_logger->info(prefix + msg);
-	}
+    template<class T, class... Ts>
+    void Info(T&& prefix, fmt::format_string<Ts...> format, Ts&&... args) {
+        auto msg = fmt::format(format, std::forward<Ts>(args)...);
+        _logger->info(prefix + msg);
+    }
 
-	template<class T, class... Ts>
-	void Warn(T&& prefix, fmt::format_string<Ts...> format, Ts&&... args) {
-		auto msg = fmt::format(format, std::forward<Ts>(args)...);
-		_logger->warn(prefix + msg);
-	}
+    template<class T, class... Ts>
+    void Warn(T&& prefix, fmt::format_string<Ts...> format, Ts&&... args) {
+        auto msg = fmt::format(format, std::forward<Ts>(args)...);
+        _logger->warn(prefix + msg);
+    }
 
-	template<class T, class... Ts>
-	void Error(T&& prefix, fmt::format_string<Ts...> format, Ts&&... args) {
-		auto msg = fmt::format(format, std::forward<Ts>(args)...);
-		_logger->error(prefix + msg);
-	}
+    template<class T, class... Ts>
+    void Error(T&& prefix, fmt::format_string<Ts...> format, Ts&&... args) {
+        auto msg = fmt::format(format, std::forward<Ts>(args)...);
+        _logger->error(prefix + msg);
+    }
 
-	template<class T, class... Ts>
-	void Fatal(T&& prefix, fmt::format_string<Ts...> format, Ts&&... args) {
-		auto msg = fmt::format(format, std::forward<Ts>(args)...);
-		_logger->error(prefix + msg);
-		throw std::runtime_error(msg);
-	}
+    template<class T, class... Ts>
+    void Fatal(T&& prefix, fmt::format_string<Ts...> format, Ts&&... args) {
+        auto msg = fmt::format(format, std::forward<Ts>(args)...);
+        _logger->error(prefix + msg);
+        throw std::runtime_error(msg);
+    }
 
-	auto GetLogger() { return _logger; }
+    auto GetLogger() { return _logger; }
 
   private:
-	std::shared_ptr<spdlog::logger> _logger;
+    std::shared_ptr<spdlog::logger> _logger;
 };
 
 } // namespace EngineS

@@ -12,22 +12,22 @@ class Transform2D;
 
 class Scene {
   public:
-	Scene();
-	~Scene();
+    Scene();
+    ~Scene();
 
-	virtual void Initialize();
+    virtual void Initialize();
 
-	auto&		 GetGameObjects() { return _gameObjects; }
-	void		 AddGameObject(GameObject* gameObject);
-	void		 AddGameObject(GameObject* gameObject, Transform2D* parent);
-	void		 RemoveGameObject(GameObject* gameObject);
-	Camera*		 GetMainCamera() { return _mainCamera; }
-	Transform2D* GetRootTransform();
+    auto&        GetGameObjects() { return _gameObjects; }
+    void         AddGameObject(GameObject* gameObject);
+    void         AddGameObject(GameObject* gameObject, Transform2D* parent);
+    void         RemoveGameObject(GameObject* gameObject);
+    Camera*      GetMainCamera() { return _mainCamera; }
+    Transform2D* GetRootTransform();
 
   private:
-	std::unordered_set<GameObject*> _gameObjects;
-	Camera*							_mainCamera;
-	GameObject*						_rootGameObject;
+    std::unordered_set<GameObject*> _gameObjects;
+    Camera*                         _mainCamera;
+    GameObject*                     _rootGameObject;
 };
 
 } // namespace EngineS

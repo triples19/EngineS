@@ -15,6 +15,6 @@ const Vector3 Vector3::Up {0, 1, 0};
 const Vector3 Vector3::Zero {0, 0, 0};
 
 Vector3::operator Vector2() const {
-	return {x, y};
+    return {x, y};
 }
 } // namespace EngineS

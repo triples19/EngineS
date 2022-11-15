@@ -8,15 +8,15 @@ namespace EngineS {
 
 class AutoReleasePool {
   public:
-	AutoReleasePool();
-	~AutoReleasePool();
+    AutoReleasePool();
+    ~AutoReleasePool();
 
-	void AddObject(Object* obj);
+    void AddObject(Object* obj);
 
-	void Clear();
+    void Clear();
 
   private:
-	std::vector<Object*> _managedObjects;
+    std::vector<Object*> _managedObjects;
 };
 
 } // namespace EngineS

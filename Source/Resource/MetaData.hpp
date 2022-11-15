@@ -9,12 +9,12 @@ namespace EngineS {
 
 class MetaData : public Object {
   public:
-	MetaData(const std::filesystem::path& path);
+    MetaData(const std::filesystem::path& path);
 
-	std::string GetLoaderName() const { return _json["loader"]; }
+    std::string GetLoaderName() const { return _json["loader"]; }
 
   private:
-	nlohmann::json _json;
+    nlohmann::json _json;
 };
 
 } // namespace EngineS

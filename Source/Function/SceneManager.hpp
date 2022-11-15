@@ -8,15 +8,15 @@ namespace EngineS {
 
 class SceneManager {
   public:
-	static SceneManager* Instance();
+    static SceneManager* Instance();
 
-	void Initialize();
+    void Initialize();
 
-	void   SetCurrentScene(std::unique_ptr<Scene> scene) { _currentScene = std::move(scene); }
-	Scene* GetCurrentScene() { return _currentScene.get(); }
+    void   SetCurrentScene(std::unique_ptr<Scene> scene) { _currentScene = std::move(scene); }
+    Scene* GetCurrentScene() { return _currentScene.get(); }
 
   private:
-	std::unique_ptr<Scene> _currentScene;
+    std::unique_ptr<Scene> _currentScene;
 };
 
 } // namespace EngineS

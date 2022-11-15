@@ -8,12 +8,12 @@ enum class KeyCode : int32_t {
 };
 
 constexpr const char* KeyCodeToString(KeyCode keyCode) noexcept {
-	switch (keyCode) {
+    switch (keyCode) {
 #define KEY_CODE(name, code) \
-	case KeyCode::name:      \
-		return #name;
+    case KeyCode::name:      \
+        return #name;
 #include "KeyCode.def"
 #undef KEY_CODE
-	}
-	return "Unknown";
+    }
+    return "Unknown";
 }

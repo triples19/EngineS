@@ -13,7 +13,7 @@ const Vector2 Vector2::Up {0, 1};
 const Vector2 Vector2::Zero {0, 0};
 
 Vector2::operator Vector3() const {
-	return {x, y, 0};
+    return {x, y, 0};
 }
 
 } // namespace EngineS

@@ -6,19 +6,19 @@ namespace EngineS {
 
 class Object {
   public:
-	static Object* Create();
+    static Object* Create();
 
-	Object();
-	virtual ~Object();
+    Object();
+    virtual ~Object();
 
-	std::size_t GetReferenceCount() const;
+    std::size_t GetReferenceCount() const;
 
-	void Retain();
-	void Release();
-	void AutoRelease();
+    void Retain();
+    void Release();
+    void AutoRelease();
 
   protected:
-	std::size_t _referenceCount;
+    std::size_t _referenceCount;
 };
 
 } // namespace EngineS

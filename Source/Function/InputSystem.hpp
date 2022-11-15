@@ -12,24 +12,24 @@ class WindowSystem;
 
 class InputSystem {
   public:
-	static InputSystem* Instance();
-	InputSystem() = default;
+    static InputSystem* Instance();
+    InputSystem() = default;
 
-	void Initialize();
-	void Update();
-	bool GetKey(KeyCode key);
-	bool GetKeyDown(KeyCode key);
-	bool GetKeyUp(KeyCode key);
-
-  private:
-	void OnKey(int key, int scanCode, int action, int mods);
+    void Initialize();
+    void Update();
+    bool GetKey(KeyCode key);
+    bool GetKeyDown(KeyCode key);
+    bool GetKeyUp(KeyCode key);
 
   private:
-	struct KeyState {
-		bool downThisFrame {false};
-		bool downLastFrame {false};
-	};
-	std::unordered_map<KeyCode, KeyState> _keys;
+    void OnKey(int key, int scanCode, int action, int mods);
+
+  private:
+    struct KeyState {
+        bool downThisFrame {false};
+        bool downLastFrame {false};
+    };
+    std::unordered_map<KeyCode, KeyState> _keys;
 };
 
 } // namespace EngineS

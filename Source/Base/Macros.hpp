@@ -23,13 +23,13 @@
 #ifndef ES_ASSERT
 #if defined(ES_DEBUG) && ES_DEBUG > 0
 #define ES_ASSERT(COND, MSG)                         \
-	do {                                             \
-		if (!(COND)) {                               \
-			if (std::strlen(MSG) > 0)                \
-				LOG_FATAL("Assert failed: {}", MSG); \
-			assert((COND));                          \
-		}                                            \
-	} while (0)
+    do {                                             \
+        if (!(COND)) {                               \
+            if (std::strlen(MSG) > 0)                \
+                LOG_FATAL("Assert failed: {}", MSG); \
+            assert((COND));                          \
+        }                                            \
+    } while (0)
 #define ES_ASSERT_NOMSG(COND) assert((COND));
 #else
 #define ES_ASSERT(COND, MSG)

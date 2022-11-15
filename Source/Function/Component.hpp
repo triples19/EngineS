@@ -10,14 +10,14 @@ class Renderer;
 
 class Component : public Object {
   public:
-	virtual void Initialize(GameObject* parent);
-	virtual void Update(float deltaTime) {}
+    virtual void Initialize(GameObject* parent);
+    virtual void Update(float deltaTime) {}
 
   public:
-	bool		 enabled {true};
-	GameObject*	 gameObject {nullptr};
-	Transform2D* transform {nullptr};
-	Renderer*	 renderer {nullptr};
+    bool         enabled {true};
+    GameObject*  gameObject {nullptr};
+    Transform2D* transform {nullptr};
+    Renderer*    renderer {nullptr};
 };
 
 } // namespace EngineS

@@ -4,9 +4,9 @@ namespace EngineS {
 
 class DeviceInfo {
   public:
-	const char* GetVendor() const;
-	const char* GetRenderer() const;
-	const char* GetVersion() const;
+    const char* GetVendor() const;
+    const char* GetRenderer() const;
+    const char* GetVersion() const;
 };
 
 } // namespace EngineS

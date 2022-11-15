@@ -13,10 +13,10 @@ class SceneManager;
 
 class Global {
   public:
-	static Global* Instance();
+    static Global* Instance();
 
-	void Initialize();
-	void Shutdown();
+    void Initialize();
+    void Shutdown();
 };
 
 } // namespace EngineS

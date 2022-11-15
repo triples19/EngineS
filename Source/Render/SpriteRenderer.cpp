@@ -13,12 +13,12 @@ namespace EngineS {
 SpriteRenderer::SpriteRenderer(std::shared_ptr<Material2D> material) : _material {material} {}
 
 void SpriteRenderer::Render(const Matrix4x4& modelMat) {
-	auto renderSystem = RenderSystem::Instance();
-	renderSystem->AddToBatch(_material, modelMat, _anchor, _color);
+    auto renderSystem = RenderSystem::Instance();
+    renderSystem->AddToBatch(_material, modelMat, _anchor, _color);
 }
 
 void SpriteRenderer::Initialize(GameObject* parent) {
-	Renderer::Initialize(parent);
+    Renderer::Initialize(parent);
 }
 
 } // namespace EngineS

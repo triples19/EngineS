@@ -19,15 +19,15 @@ class Resource : public Object {};
  * @brief A handle of some resource.
  */
 class ResourceHandleBase : public Object {
-	friend class ResourceManager;
+    friend class ResourceManager;
 
   public:
-	ResourceHandleBase()		  = default;
-	virtual ~ResourceHandleBase() = default;
-	size_t ID;
+    ResourceHandleBase()          = default;
+    virtual ~ResourceHandleBase() = default;
+    size_t ID;
 
   private:
-	ResourceHandleBase(size_t id) : ID {id} {}
+    ResourceHandleBase(size_t id) : ID {id} {}
 };
 
 /**
@@ -36,19 +36,19 @@ class ResourceHandleBase : public Object {
  */
 class ResourceLoader : public Object {
   public:
-	virtual Resource* CreateResource(const fs::path& path) const = 0;
-	virtual void	  ReloadResource(std::shared_ptr<Resource>& resource, const fs::path& path) const {
-		 resource.reset(CreateResource(path));
-	}
-	virtual std::string GetName() const = 0;
+    virtual Resource* CreateResource(const fs::path& path) const = 0;
+    virtual void      ReloadResource(std::shared_ptr<Resource>& resource, const fs::path& path) const {
+        resource.reset(CreateResource(path));
+    }
+    virtual std::string GetName() const = 0;
 
   protected:
-	std::string ReadString(const fs::path& path) const {
-		std::ifstream	  file(path);
-		std::stringstream ss;
-		ss << file.rdbuf();
-		return ss.str();
-	}
+    std::string ReadString(const fs::path& path) const {
+        std::ifstream     file(path);
+        std::stringstream ss;
+        ss << file.rdbuf();
+        return ss.str();
+    }
 };
 
 } // namespace EngineS

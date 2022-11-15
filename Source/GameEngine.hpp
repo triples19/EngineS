@@ -8,39 +8,39 @@ namespace EngineS {
 
 class GameEngine {
   public:
-	static GameEngine* Instance();
+    static GameEngine* Instance();
 
-	void StartEngine();
-	void Shutdown();
-	void Run();
+    void StartEngine();
+    void Shutdown();
+    void Run();
 
-	int GetFPS() const { return _fpsCalculator.fps; }
+    int GetFPS() const { return _fpsCalculator.fps; }
 
-	using UpdateFunc = std::function<void(float)>;
-	void RegisterUpdateFunc(UpdateFunc func) { _updateFuncs.push_back(func); }
-
-  private:
-	float GetDeltaTime();
-	void  Update(float deltaTime);
-	void  LogicUpdate(float deltaTime);
-	void  RenderUpdate();
+    using UpdateFunc = std::function<void(float)>;
+    void RegisterUpdateFunc(UpdateFunc func) { _updateFuncs.push_back(func); }
 
   private:
-	struct FPSCalculator {
-		static constexpr float fpsSmoothing = 0.1f;
-		int					   frameCount;
-		float				   averageDuration;
-		int					   fps;
+    float GetDeltaTime();
+    void  Update(float deltaTime);
+    void  LogicUpdate(float deltaTime);
+    void  RenderUpdate();
 
-		int Calculate(float deltaTime);
-	};
+  private:
+    struct FPSCalculator {
+        static constexpr float fpsSmoothing = 0.1f;
+        int                    frameCount;
+        float                  averageDuration;
+        int                    fps;
 
-	FPSCalculator _fpsCalculator;
+        int Calculate(float deltaTime);
+    };
 
-	std::chrono::steady_clock::time_point _lastTickTime {std::chrono::steady_clock::now()};
-	std::vector<UpdateFunc>				  _updateFuncs;
+    FPSCalculator _fpsCalculator;
 
-	bool _shouldShutdown {false};
+    std::chrono::steady_clock::time_point _lastTickTime {std::chrono::steady_clock::now()};
+    std::vector<UpdateFunc>               _updateFuncs;
+
+    bool _shouldShutdown {false};
 };
 
 } // namespace EngineS

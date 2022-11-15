@@ -7,7 +7,7 @@ namespace EngineS {
 
 class Renderer : public Component {
   public:
-	virtual void Render(const Matrix4x4& modelMat) = 0;
+    virtual void Render(const Matrix4x4& modelMat) = 0;
 };
 
 } // namespace EngineS
