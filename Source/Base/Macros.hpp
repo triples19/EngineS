@@ -6,8 +6,7 @@
 #include <cassert>
 
 // Logging macros
-#define FILENAME (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
-#define LOG_PREFIX fmt::format("[{0}:{1}] {2} > ", FILENAME, __LINE__, __FUNCTION__)
+#define LOG_PREFIX LoggingSystem::Instance()->GetPrefix(__FILE__, __LINE__, __FUNCTION__)
 #define LOG_DEBUG(...) LoggingSystem::Instance()->Debug(LOG_PREFIX, __VA_ARGS__)
 #define LOG_INFO(...) LoggingSystem::Instance()->Info(LOG_PREFIX, __VA_ARGS__)
 #define LOG_WARN(...) LoggingSystem::Instance()->Warn(LOG_PREFIX, __VA_ARGS__)

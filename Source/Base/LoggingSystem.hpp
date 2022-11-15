@@ -3,7 +3,7 @@
 #include "Global.hpp"
 
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
 
 #include <cstdint>
 #include <memory>
@@ -18,6 +18,11 @@ class LoggingSystem {
     static LoggingSystem* Instance();
     LoggingSystem();
     ~LoggingSystem();
+
+    std::string GetPrefix(const char* file, int line, const char* function) {
+        const char* filename = strrchr(file, '/') ? strrchr(file, '/') + 1 : file;
+        return fmt::format("[{0}: {1}] {2} > ", filename, line, function);
+    }
 
     template<class T, class... Ts>
     void Debug(T&& prefix, fmt::format_string<Ts...> format, Ts&&... args) {
