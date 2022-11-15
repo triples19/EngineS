@@ -1,6 +1,5 @@
 #include "SceneManager.hpp"
-
-#include <cassert>
+#include "Core/Base/Macros.hpp"
 
 namespace EngineS {
 
@@ -9,7 +8,7 @@ static SceneManager* s_SharedInstance;
 SceneManager* SceneManager::Instance() {
 	if (!s_SharedInstance) {
 		s_SharedInstance = new (std::nothrow) SceneManager;
-		assert(s_SharedInstance != nullptr);
+		ES_ASSERT_NOMSG(s_SharedInstance != nullptr);
 	}
 	return s_SharedInstance;
 }

@@ -1,7 +1,8 @@
 #pragma once
 
+#include "Core/Base/Macros.hpp"
 #include "Math.hpp"
-#include <cassert>
+
 #include <cmath>
 #include <iostream>
 
@@ -24,12 +25,12 @@ class Vector4 {
 	explicit Vector4(float coords[4]) : x {coords[0]}, y {coords[1]}, z {coords[2]}, w {coords[3]} {}
 
 	float operator[](size_t i) const {
-		assert(i < 4);
+		ES_ASSERT(i < 4, "index out of range!");
 		return *(&x + i);
 	}
 
 	float& operator[](size_t i) {
-		assert(i < 4);
+		ES_ASSERT(i < 4, "index out of range!");
 		return *(&x + i);
 	}
 
@@ -57,11 +58,11 @@ class Vector4 {
 	Vector4 operator*(float scalar) const { return Vector4(x * scalar, y * scalar, z * scalar, w * scalar); }
 	Vector4 operator*(const Vector4& rhs) const { return Vector4(rhs.x * x, rhs.y * y, rhs.z * z, rhs.w * w); }
 	Vector4 operator/(float scalar) const {
-		assert(scalar != 0.0);
+		ES_ASSERT(scalar != 0.0, "divided by zero!");
 		return Vector4(x / scalar, y / scalar, z / scalar, w / scalar);
 	}
 	Vector4 operator/(const Vector4& rhs) const {
-		assert(rhs.x != 0 && rhs.y != 0 && rhs.z != 0 && rhs.w != 0);
+		ES_ASSERT(rhs.x != 0 && rhs.y != 0 && rhs.z != 0 && rhs.w != 0, "divided by zero!");
 		return Vector4(x / rhs.x, y / rhs.y, z / rhs.z, w / rhs.w);
 	}
 
@@ -74,7 +75,7 @@ class Vector4 {
 	}
 
 	friend Vector4 operator/(float scalar, const Vector4& rhs) {
-		assert(rhs.x != 0 && rhs.y != 0 && rhs.z != 0 && rhs.w != 0);
+		ES_ASSERT(rhs.x != 0 && rhs.y != 0 && rhs.z != 0 && rhs.w != 0, "divided by zero!");
 		return Vector4(scalar / rhs.x, scalar / rhs.y, scalar / rhs.z, scalar / rhs.w);
 	}
 
@@ -119,7 +120,7 @@ class Vector4 {
 	}
 
 	Vector4& operator/=(float scalar) {
-		assert(scalar != 0.0);
+		ES_ASSERT(scalar != 0.0, "divided by zero!");
 
 		x /= scalar;
 		y /= scalar;
@@ -129,7 +130,7 @@ class Vector4 {
 	}
 
 	Vector4& operator/=(const Vector4& rhs) {
-		assert(rhs.x != 0 && rhs.y != 0 && rhs.z != 0);
+		ES_ASSERT(rhs.x != 0 && rhs.y != 0 && rhs.z != 0 && rhs.w != 0, "divided by zero!");
 		x /= rhs.x;
 		y /= rhs.y;
 		z /= rhs.z;

@@ -1,5 +1,6 @@
 #include "Core/Base/PoolManager.hpp"
 #include "Core/Base/AutoReleasePool.hpp"
+#include "Core/Base/Macros.hpp"
 
 namespace EngineS {
 
@@ -8,7 +9,7 @@ static PoolManager* s_SharedInstance;
 PoolManager* PoolManager::Instance() {
 	if (!s_SharedInstance) {
 		s_SharedInstance = new (std::nothrow) PoolManager;
-		assert(s_SharedInstance != nullptr);
+		ES_ASSERT_NOMSG(s_SharedInstance != nullptr);
 		// Add first pool
 		new AutoReleasePool();
 	}

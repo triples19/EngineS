@@ -1,7 +1,8 @@
 #pragma once
 
+#include "Core/Base/Macros.hpp"
 #include "Math.hpp"
-#include <cassert>
+
 #include <cmath>
 #include <iostream>
 
@@ -32,11 +33,11 @@ class Vector3 {
 	explicit operator Vector2() const;
 
 	float operator[](size_t i) const {
-		assert(i < 3);
+		ES_ASSERT(i < 3, "index out of range!");
 		return *(&x + i);
 	}
 	float& operator[](size_t i) {
-		assert(i < 3);
+		ES_ASSERT(i < 3, "index out of range!");
 		return *(&x + i);
 	}
 
@@ -62,11 +63,11 @@ class Vector3 {
 	Vector3 operator*(float scalar) const { return {x * scalar, y * scalar, z * scalar}; }
 	Vector3 operator*(const Vector3& rhs) const { return {x * rhs.x, y * rhs.y, z * rhs.z}; }
 	Vector3 operator/(float scalar) const {
-		assert(scalar != 0.0);
+		ES_ASSERT(scalar != 0.0f, "divided by zero!");
 		return {x / scalar, y / scalar, z / scalar};
 	}
 	Vector3 operator/(const Vector3& rhs) const {
-		assert((rhs.x != 0 && rhs.y != 0 && rhs.z != 0));
+		ES_ASSERT((rhs.x != 0 && rhs.y != 0 && rhs.z != 0), "divided by zero!");
 		return {x / rhs.x, y / rhs.y, z / rhs.z};
 	}
 	const Vector3& operator+() const { return *this; }
@@ -100,14 +101,14 @@ class Vector3 {
 		return *this;
 	}
 	Vector3& operator/=(float scalar) {
-		assert(scalar != 0.0);
+		ES_ASSERT(scalar != 0.0, "divided by zero!");
 		x /= scalar;
 		y /= scalar;
 		z /= scalar;
 		return *this;
 	}
 	Vector3& operator/=(const Vector3& rhs) {
-		assert(rhs.x != 0 && rhs.y != 0 && rhs.z != 0);
+		ES_ASSERT(rhs.x != 0 && rhs.y != 0 && rhs.z != 0, "divided by zero!");
 		x /= rhs.x;
 		y /= rhs.y;
 		z /= rhs.z;

@@ -1,7 +1,8 @@
 #pragma once
 
+#include "Core/Base/Macros.hpp"
 #include "Math.hpp"
-#include <cassert>
+
 #include <cmath>
 #include <iostream>
 
@@ -36,11 +37,11 @@ class Vector2 {
 	}
 
 	float operator[](size_t i) const {
-		assert(i < 2);
+		ES_ASSERT(i < 2, "index out of range!");
 		return (i == 0 ? x : y);
 	}
 	float& operator[](size_t i) {
-		assert(i < 2);
+		ES_ASSERT(i < 2, "index out of range!");
 		return (i == 0 ? x : y);
 	}
 
@@ -57,7 +58,7 @@ class Vector2 {
 	Vector2 operator*(float scalar) const { return {x * scalar, y * scalar}; }
 	Vector2 operator*(const Vector2& rhs) const { return {x * rhs.x, y * rhs.y}; }
 	Vector2 operator/(float scalar) const {
-		assert(scalar != 0.0f);
+		ES_ASSERT(scalar != 0.0f, "divided by zero!");
 		float inv = 1.0f / scalar;
 		return {x * inv, y * inv};
 	}
@@ -84,7 +85,7 @@ class Vector2 {
 		return *this;
 	}
 	Vector2& operator/=(float scalar) {
-		assert(scalar != 0.0);
+		ES_ASSERT(scalar != 0.0f, "divided by zero!");
 		float inv = 1.0f / scalar;
 		x *= inv;
 		y *= inv;

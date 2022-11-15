@@ -1,5 +1,6 @@
 #include "Global.hpp"
 
+#include "Core/Base/Macros.hpp"
 #include "Core/Logging/LoggingSystem.hpp"
 #include "Function/Input/InputSystem.hpp"
 #include "Function/Render/RenderSystem.hpp"
@@ -7,7 +8,6 @@
 #include "Function/Scene/SceneManager.hpp"
 #include "Resource/ResourceManager.hpp"
 
-#include <cassert>
 #include <new>
 
 namespace EngineS {
@@ -17,7 +17,7 @@ static Global* globalInstance;
 Global* Global::Instance() {
 	if (!globalInstance) {
 		globalInstance = new (std::nothrow) Global;
-		assert(globalInstance != nullptr);
+		ES_ASSERT_NOMSG(globalInstance != nullptr);
 	}
 	return globalInstance;
 }
