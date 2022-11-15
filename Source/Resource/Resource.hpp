@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Base/Object.hpp"
+#include "Base/Object.hpp"
 #include "MetaData.hpp"
 
 #include <filesystem>
@@ -38,7 +38,7 @@ class ResourceLoader : public Object {
   public:
 	virtual Resource* CreateResource(const fs::path& path) const = 0;
 	virtual void	  ReloadResource(std::shared_ptr<Resource>& resource, const fs::path& path) const {
-			 resource.reset(CreateResource(path));
+		 resource.reset(CreateResource(path));
 	}
 	virtual std::string GetName() const = 0;
 

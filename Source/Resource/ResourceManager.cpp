@@ -1,8 +1,8 @@
 #include "ResourceManager.hpp"
 
-#include "Function/Render/Program.hpp"
-#include "Function/Render/Texture2D.hpp"
-#include "Resource/CommonResources/Text.hpp"
+#include "Render/Program.hpp"
+#include "Render/Texture2D.hpp"
+#include "Resource/Text.hpp"
 
 #include <algorithm>
 

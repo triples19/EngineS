@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Base/Object.hpp"
+#include "Base/Object.hpp"
 
 #include <filesystem>
 #include <nlohmann/json.hpp>

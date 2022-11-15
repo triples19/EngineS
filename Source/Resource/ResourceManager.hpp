@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core/Base/Hash.hpp"
-#include "Core/Base/Macros.hpp"
+#include "Base/Hash.hpp"
+#include "Base/Macros.hpp"
 #include "Resource/Resource.hpp"
 
 #include <concepts>
