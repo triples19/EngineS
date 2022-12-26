@@ -1,22 +1,22 @@
 #pragma once
 
-#include "Object.hpp"
-
 #include <vector>
 
 namespace EngineS {
+
+class Ref;
 
 class AutoReleasePool {
   public:
     AutoReleasePool();
     ~AutoReleasePool();
 
-    void AddObject(Object* obj);
+    void AddObject(Ref* obj);
 
     void Clear();
 
   private:
-    std::vector<Object*> _managedObjects;
+    std::vector<Ref*> _managedObjects;
 };
 
 } // namespace EngineS

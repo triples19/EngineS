@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Math/MathHeaders.hpp"
+#include "Math/Math.hpp"
 #include "Platform/GLCommon.hpp"
 #include "Resource/Resource.hpp"
 #include "Shader.hpp"

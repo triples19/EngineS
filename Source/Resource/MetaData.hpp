@@ -7,7 +7,7 @@
 
 namespace EngineS {
 
-class MetaData : public Object {
+class MetaData {
   public:
     MetaData(const std::filesystem::path& path);
 

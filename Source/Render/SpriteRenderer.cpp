@@ -1,9 +1,8 @@
 #include "SpriteRenderer.hpp"
 
-#include "Base/Global.hpp"
 #include "Function/GameObject.hpp"
 #include "Function/Transform2D.hpp"
-#include "Math/MathHeaders.hpp"
+#include "Math/Math.hpp"
 #include "Program.hpp"
 #include "RenderSystem.hpp"
 #include "Texture2D.hpp"

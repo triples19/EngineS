@@ -26,11 +26,6 @@ class RenderSystem {
     ~RenderSystem();
 
     /**
-     * Called before glfw window is initialized
-     */
-    void PreWindowInitialize();
-
-    /**
      * Called after glfw window is initialized
      */
     void Initialize();

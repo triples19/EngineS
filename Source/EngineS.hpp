@@ -1,9 +1,7 @@
 #pragma once
 
-#include "GameEngine.hpp"
-
-#include "Base/Global.hpp"
 #include "Base/Macros.hpp"
+#include "Engine/Engine.hpp"
 #include "Function/Camera.hpp"
 #include "Function/Component.hpp"
 #include "Function/GameObject.hpp"

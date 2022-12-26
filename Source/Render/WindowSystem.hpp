@@ -15,12 +15,13 @@ class WindowSystem {
     WindowSystem() = default;
     ~WindowSystem();
 
-    void                 Initialize(int width, int height, const char* title);
+    void                 Initialize();
     void                 PollEvents() const;
     bool                 ShouldClose() const;
     void                 SetTitle(const std::string& title);
-    GLFWwindow*          GetWindow() const { return _window; }
-    std::tuple<int, int> GetWindowSize() const { return {_width, _height}; }
+    void                 SetWindowSize(int width, int height);
+    GLFWwindow*          GetWindow() const;
+    std::tuple<int, int> GetWindowSize() const;
 
     using OnResetFunc       = std::function<void()>;
     using OnKeyFunc         = std::function<void(int, int, int, int)>;
@@ -94,9 +95,10 @@ class WindowSystem {
     }
 
   private:
-    GLFWwindow* _window {nullptr};
-    int         _width {0};
-    int         _height {0};
+    GLFWwindow* _window = nullptr;
+    int         _width  = 1280;
+    int         _height = 720;
+    std::string _title  = "Game";
 
     std::vector<OnResetFunc>       _onResetFuncs;
     std::vector<OnKeyFunc>         _onKeyFuncs;

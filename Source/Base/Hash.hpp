@@ -1,19 +1,31 @@
 #pragma once
 
+#include "Base/PrimitiveTypes.hpp"
+
 #include <cstddef>
 #include <filesystem>
-namespace fs = std::filesystem;
+
+namespace EngineS {
 
 template<class>
 struct Hasher;
 
 template<>
-struct Hasher<fs::path> {
-    std::size_t operator()(const fs::path& path) const { return fs::hash_value(path); }
+struct Hasher<std::filesystem::path> {
+    hash32 operator()(const std::filesystem::path& path) const { return std::filesystem::hash_value(path); }
 };
 
 template<typename T, typename... Rest>
-void HashCombine(std::size_t& seed, const T& v, const Rest&... rest) {
+inline void HashCombine(hash32& seed, const T& v, const Rest&... rest) {
     seed ^= std::hash<T> {}(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
     (HashCombine(seed, rest), ...);
 }
+
+/**
+ * Update a hash with the given 8-bit value using the SDBM algorithm.
+ */
+inline constexpr hash32 SDBMHash(hash32 hash, u8 c) {
+    return c + (hash << 6u) + (hash << 16u) - hash;
+}
+
+} // namespace EngineS

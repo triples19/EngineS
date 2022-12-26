@@ -1,24 +1,15 @@
 #pragma once
 
-#include <cstddef>
+#include "Base/Ref.hpp"
 
 namespace EngineS {
 
-class Object {
+class Object : public Ref {
   public:
     static Object* Create();
 
     Object();
     virtual ~Object();
-
-    std::size_t GetReferenceCount() const;
-
-    void Retain();
-    void Release();
-    void AutoRelease();
-
-  protected:
-    std::size_t _referenceCount;
 };
 
 } // namespace EngineS

@@ -1,6 +1,5 @@
 #include "Scene.hpp"
 
-#include "Base/Global.hpp"
 #include "Function/Camera.hpp"
 #include "Function/GameObject.hpp"
 #include "Function/GameObjectFactory.hpp"

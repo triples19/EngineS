@@ -1,5 +1,6 @@
-#include "AutoReleasePool.hpp"
-#include "PoolManager.hpp"
+#include "Base/AutoReleasePool.hpp"
+#include "Base/PoolManager.hpp"
+#include "Base/Ref.hpp"
 
 namespace EngineS {
 
@@ -13,12 +14,12 @@ AutoReleasePool::~AutoReleasePool() {
     PoolManager::Instance()->PopPool();
 }
 
-void AutoReleasePool::AddObject(Object* obj) {
+void AutoReleasePool::AddObject(Ref* obj) {
     _managedObjects.push_back(obj);
 }
 
 void AutoReleasePool::Clear() {
-    std::vector<Object*> releasings;
+    std::vector<Ref*> releasings;
     releasings.swap(_managedObjects);
     for (const auto& obj : releasings) {
         obj->Release();

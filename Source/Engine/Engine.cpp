@@ -1,6 +1,5 @@
-#include "GameEngine.hpp"
+#include "Engine/Engine.hpp"
 #include "Base/AutoReleasePool.hpp"
-#include "Base/Global.hpp"
 #include "Base/LoggingSystem.hpp"
 #include "Base/Macros.hpp"
 #include "Base/PoolManager.hpp"
@@ -13,17 +12,17 @@
 
 namespace EngineS {
 
-static GameEngine* s_SharedInstance;
+static Engine* s_SharedInstance;
 
-GameEngine* GameEngine::Instance() {
+Engine* Engine::Instance() {
     if (!s_SharedInstance) {
-        s_SharedInstance = new (std::nothrow) GameEngine;
+        s_SharedInstance = new (std::nothrow) Engine;
         assert(s_SharedInstance != nullptr);
     }
     return s_SharedInstance;
 }
 
-int GameEngine::FPSCalculator::Calculate(float deltaTime) {
+int Engine::FPSCalculator::Calculate(float deltaTime) {
     frameCount++;
     if (frameCount == 1) {
         averageDuration = deltaTime;
@@ -34,30 +33,34 @@ int GameEngine::FPSCalculator::Calculate(float deltaTime) {
     return fps;
 }
 
-void GameEngine::StartEngine() {
-    Global::Instance()->Initialize();
+void Engine::StartEngine() {
+    ResourceManager::Instance()->Initialize();
+    WindowSystem::Instance()->Initialize();
+    RenderSystem::Instance()->Initialize();
+    InputSystem::Instance()->Initialize();
+    SceneManager::Instance()->Initialize();
+
     LOG_INFO("Engine started");
 }
 
-void GameEngine::Shutdown() {
+void Engine::Shutdown() {
     LOG_INFO("Engine shutting down");
     _shouldShutdown = true;
 }
 
-void GameEngine::Run() {
+void Engine::Run() {
     auto window = WindowSystem::Instance();
     while (!window->ShouldClose()) {
         const float deltaTime = GetDeltaTime();
         Update(deltaTime);
 
         if (_shouldShutdown) {
-            Global::Instance()->Shutdown();
             break;
         }
     }
 }
 
-float GameEngine::GetDeltaTime() {
+float Engine::GetDeltaTime() {
     float deltaTime;
     auto  nowTime  = std::chrono::steady_clock::now();
     auto  timeSpan = std::chrono::duration_cast<std::chrono::duration<float>>(nowTime - _lastTickTime);
@@ -66,7 +69,7 @@ float GameEngine::GetDeltaTime() {
     return deltaTime;
 }
 
-void GameEngine::Update(float deltaTime) {
+void Engine::Update(float deltaTime) {
     ResourceManager::Instance()->Update();
     InputSystem::Instance()->Update();
     WindowSystem::Instance()->PollEvents();
@@ -81,14 +84,14 @@ void GameEngine::Update(float deltaTime) {
     PoolManager::Instance()->GetCurrentPool()->Clear();
 }
 
-void GameEngine::LogicUpdate(float deltaTime) {
+void Engine::LogicUpdate(float deltaTime) {
     const auto& objs = SceneManager::Instance()->GetCurrentScene()->GetGameObjects();
     for (auto& obj : objs) {
         obj->Update(deltaTime);
     }
 }
 
-void GameEngine::RenderUpdate() {
+void Engine::RenderUpdate() {
     RenderSystem::Instance()->Update();
 }
 

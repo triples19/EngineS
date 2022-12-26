@@ -1,6 +1,5 @@
 #include "SpriteBatch.hpp"
 
-#include "Base/Global.hpp"
 #include "Function/Camera.hpp"
 #include "Function/SceneManager.hpp"
 #include "Function/Transform2D.hpp"

@@ -13,12 +13,12 @@ namespace EngineS {
 /**
  * @brief Resource / Asset
  */
-class Resource : public Object {};
+class Resource {};
 
 /**
  * @brief A handle of some resource.
  */
-class ResourceHandleBase : public Object {
+class ResourceHandleBase {
     friend class ResourceManager;
 
   public:

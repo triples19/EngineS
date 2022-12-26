@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Base/Types.hpp"
-#include "Math/MathHeaders.hpp"
+#include "Math/Math.hpp"
 #include "Platform/GLCommon.hpp"
+#include "Render/BufferTypes.hpp"
 
 #include <array>
 #include <memory>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Function/Component.hpp"
-#include "Math/MathHeaders.hpp"
+#include "Math/Math.hpp"
 
 #include <functional>
 #include <unordered_set>

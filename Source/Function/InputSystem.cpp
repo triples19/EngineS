@@ -1,5 +1,4 @@
 #include "InputSystem.hpp"
-#include "Base/Global.hpp"
 #include "Base/Macros.hpp"
 #include "Render/WindowSystem.hpp"
 

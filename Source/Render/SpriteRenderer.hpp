@@ -2,9 +2,9 @@
 
 #include <memory>
 
-#include "Base/Types.hpp"
 #include "Function/Component.hpp"
-#include "Math/MathHeaders.hpp"
+#include "Math/Math.hpp"
+#include "Render/BufferTypes.hpp"
 #include "Renderer.hpp"
 
 namespace EngineS {

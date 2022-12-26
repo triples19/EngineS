@@ -6,9 +6,9 @@
 
 namespace EngineS {
 
-class GameEngine {
+class Engine {
   public:
-    static GameEngine* Instance();
+    static Engine* Instance();
 
     void StartEngine();
     void Shutdown();

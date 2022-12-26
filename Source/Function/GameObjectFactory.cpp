@@ -1,6 +1,5 @@
 #include "GameObjectFactory.hpp"
 
-#include "Base/Global.hpp"
 #include "Function/Camera.hpp"
 #include "Function/Transform2D.hpp"
 #include "GameObject.hpp"

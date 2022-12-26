@@ -24,13 +24,21 @@ WindowSystem::~WindowSystem() {
     glfwTerminate();
 }
 
-void WindowSystem::Initialize(int width, int height, const char* title) {
+void WindowSystem::Initialize() {
     LOG_INFO("Initializing WindowSystem (GLFW)");
 
-    _width  = width;
-    _height = height;
+    if (!glfwInit()) {
+        LOG_FATAL("Failed to initialize GLFW");
+        return;
+    }
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
 
-    _window = glfwCreateWindow(width, height, title, nullptr, nullptr);
+    _window = glfwCreateWindow(_width, _height, _title.c_str(), nullptr, nullptr);
     if (!_window) {
         LOG_FATAL("Failed to create GLFW window");
         glfwTerminate();
@@ -63,6 +71,20 @@ bool WindowSystem::ShouldClose() const {
 
 void WindowSystem::SetTitle(const std::string& title) {
     glfwSetWindowTitle(_window, title.c_str());
+}
+
+void WindowSystem::SetWindowSize(int width, int height) {
+    _width  = width;
+    _height = height;
+    glfwSetWindowSize(_window, width, height);
+}
+
+GLFWwindow* WindowSystem::GetWindow() const {
+    return _window;
+}
+
+std::tuple<int, int> WindowSystem::GetWindowSize() const {
+    return {_width, _height};
 }
 
 } // namespace EngineS

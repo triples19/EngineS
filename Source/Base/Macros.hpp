@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Global.hpp"
 #include "LoggingSystem.hpp"
 
 #include <cassert>

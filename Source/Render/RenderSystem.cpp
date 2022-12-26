@@ -1,6 +1,5 @@
 #include "RenderSystem.hpp"
 
-#include "Base/Global.hpp"
 #include "Base/Hash.hpp"
 #include "Base/Macros.hpp"
 #include "DeviceInfo.hpp"
@@ -9,7 +8,7 @@
 #include "Function/SceneManager.hpp"
 #include "Function/Transform2D.hpp"
 #include "Material2D.hpp"
-#include "Math/MathHeaders.hpp"
+#include "Math/Math.hpp"
 #include "Program.hpp"
 #include "SpriteRenderer.hpp"
 #include "Texture2D.hpp"
@@ -29,19 +28,6 @@ RenderSystem* RenderSystem::Instance() {
 
 RenderSystem::RenderSystem()  = default;
 RenderSystem::~RenderSystem() = default;
-
-void RenderSystem::PreWindowInitialize() {
-    if (!glfwInit()) {
-        LOG_FATAL("Failed to initialize GLFW");
-        return;
-    }
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-}
 
 void RenderSystem::Initialize() {
     _window = WindowSystem::Instance()->GetWindow();
@@ -103,7 +89,7 @@ void RenderSystem::AddToBatch(std::shared_ptr<Material2D> material,
 
 std::shared_ptr<Material2D> RenderSystem::GetOrCreateMaterial(std::shared_ptr<Program>   program,
                                                               std::shared_ptr<Texture2D> texture) {
-    std::size_t hash = 0;
+    hash32 hash = 0;
     HashCombine(hash, program->GetID(), texture->GetID());
     auto iter = _materials.find(hash);
     if (iter == _materials.end()) {
