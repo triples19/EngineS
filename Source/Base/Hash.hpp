@@ -7,8 +7,10 @@
 
 namespace EngineS {
 
-template<class>
-struct Hasher;
+template<class T>
+struct Hasher {
+    hash32 operator()(const T& obj) const { return std::hash<T> {}(obj); }
+};
 
 template<>
 struct Hasher<std::filesystem::path> {
