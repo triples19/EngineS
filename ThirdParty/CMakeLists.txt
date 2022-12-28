@@ -16,9 +16,14 @@ if (NOT TARGET glad)
     add_subdirectory(glad)
 endif ()
 
+if (NOT TARGET fmt)
+    add_subdirectory(fmt)
+endif ()
+
 if (NOT TARGET spdlog)
     option(SPDLOG_BUILD_EXAMPLE "" OFF)
     option(SPDLOG_INSTALL "" OFF)
+    option(SPDLOG_FMT_EXTERNAL "" ON)
     add_subdirectory(spdlog)
     set_target_properties(spdlog PROPERTIES FOLDER ${third_party_folder}/spdlog)
 endif ()
@@ -30,4 +35,8 @@ endif ()
 
 if (NOT TARGET stb)
     include(stb.cmake)
+endif ()
+
+if (NOT TARGET bustache)
+    include(bustache.cmake)
 endif ()

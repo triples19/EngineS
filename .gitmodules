@@ -10,3 +10,9 @@
 [submodule "json"]
 	path = ThirdParty/json
 	url = https://github.com/nlohmann/json.git
+[submodule "fmt"]
+	path = ThirdParty/fmt
+	url = https://github.com/fmtlib/fmt.git
+[submodule "bustache"]
+	path = ThirdParty/bustache
+	url = https://github.com/jamboree/bustache.git
