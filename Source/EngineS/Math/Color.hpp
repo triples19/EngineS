@@ -6,9 +6,9 @@
 
 namespace EngineS {
 
-class Color3B;
-class Color4B;
-class Color4F;
+struct Color3B;
+struct Color4B;
+struct Color4F;
 
 struct Color3B {
     uint8_t r {0}, g {0}, b {0};
