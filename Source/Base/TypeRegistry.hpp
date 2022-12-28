@@ -1,3 +1,25 @@
 #pragma once
 
-namespace EngineS {}
+#include "Base/PrimitiveTypes.hpp"
+
+#include <string>
+#include <unordered_map>
+
+namespace EngineS {
+
+class Type;
+
+class TypeRegistry {
+  public:
+    static TypeRegistry* Instance();
+
+    void RegisterType(const Type* type);
+
+    const Type* GetType(const std::string& name) const;
+    const Type* GetType(hash32 hash) const;
+
+  private:
+    std::unordered_map<hash32, const Type*> _types;
+};
+
+} // namespace EngineS

@@ -1,6 +1,11 @@
 #pragma once
 
+#include "Base/Hash.hpp"
 #include "Base/Macros.hpp"
+#include "Base/PrimitiveTypes.hpp"
+#include "Base/SharedPtr.hpp"
+#include "Base/Type.hpp"
+#include "Base/TypeRegistry.hpp"
 #include "Engine/Engine.hpp"
 #include "Function/Camera.hpp"
 #include "Function/Component.hpp"
