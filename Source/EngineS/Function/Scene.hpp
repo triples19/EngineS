@@ -13,7 +13,7 @@ class Transform2D;
 class Scene {
   public:
     Scene();
-    ~Scene();
+    virtual ~Scene();
 
     virtual void Initialize();
 
