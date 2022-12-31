@@ -57,7 +57,7 @@ template<class T>
 class TypeImpl : public Type {
   public:
     TypeImpl(const std::string& name, const Type* baseType) : Type(name, baseType) {}
-    virtual Object* CreateObject() const { return T::Create(); }
+    virtual Object* CreateObject() const { return new T; }
 };
 
 } // namespace Detail
