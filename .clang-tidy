@@ -43,7 +43,6 @@ Checks: '-*,
     readability-make-member-function-const,
     readability-misplaced-array-index,
     readability-non-const-parameter,
-    readability-qualified-auto,
     readability-redundant-control-flow,
     readability-redundant-function-ptr-dereference,
     readability-redundant-smartptr-get,
@@ -178,7 +177,7 @@ CheckOptions:
   - key: readability-identifier-naming.PrivateMemberPrefix
     value: _
   - key: readability-identifier-naming.ProtectedMemberPrefix
-    value: ''
+    value: _
   - key: readability-identifier-naming.PublicMemberCase
     value: camelBack
   - key: readability-identifier-naming.MethodCase
