@@ -2,6 +2,8 @@
 #include "BustacheNlohmann.hpp"
 #include "Template.hpp"
 
+#include <algorithm>
+#include <execution>
 #include <fstream>
 #include <sstream>
 
@@ -70,13 +72,15 @@ std::unique_ptr<ReflCompiler> ReflCompiler::Create(
 }
 
 void ReflCompiler::Run() {
-    for (const auto& source : _sources) {
-        // path relative to includeRootPath
-        // used in #include
+    std::mutex objectsMutex, outsMutex;
+    auto       runLambda = [&](const std::filesystem::path& source) {
         auto relativePathStr = std::filesystem::relative(source, _includeRootPath).string();
         std::replace(relativePathStr.begin(), relativePathStr.end(), '\\', '/');
 
-        outs() << "Searching in " << relativePathStr << "...";
+        std::unique_lock outsLk {outsMutex, std::defer_lock};
+        outsLk.lock();
+        outs() << "Searching in " << relativePathStr << "...\n";
+        outsLk.unlock();
 
         // check whether the file has ES_OBJECT
         // if not, we just ignore the file for speed
@@ -90,11 +94,8 @@ void ReflCompiler::Run() {
             }
             return false;
         }();
-        if (!hasObjectMacro) {
-            outs() << "Ignored\n";
-            continue;
-        }
-        outs() << "\n";
+        if (!hasObjectMacro)
+            return;
 
         ClangTool           tool(*_compilationDB, {source.string()});
         ObjectMatchCallback callback;
@@ -102,13 +103,21 @@ void ReflCompiler::Run() {
         finder.addMatcher(ObjectMatcher, &callback);
         tool.run(newFrontendActionFactory(&finder).get());
 
+        std::lock_guard lk(objectsMutex);
         // retrive matched objects
         for (auto info : callback.getObjectInfos()) {
+            outsLk.lock();
             outs() << "Found: " << info.className << "\n";
+            outsLk.unlock();
             info.filePath = relativePathStr;
             _objects.push_back(info);
         }
-    }
+    };
+    std::for_each(std::execution::par_unseq, _sources.begin(), _sources.end(), runLambda);
+
+    // running this in parallel will result in different order per run
+    // we don't care about the order, but it's best to result in the same when nothing changes
+    std::sort(_objects.begin(), _objects.end(), [](const auto& a, const auto& b) { return a.className < b.className; });
 
     outs() << "Writing " << _outputPath.string() << "\n";
 
