@@ -38,8 +38,8 @@ class Program : public Resource {
   private:
     GLuint _program {0};
 
-    Shader* _vertexShader;
-    Shader* _fragmentShader;
+    Shader* _vertexShader {nullptr};
+    Shader* _fragmentShader {nullptr};
 };
 
 } // namespace EngineS

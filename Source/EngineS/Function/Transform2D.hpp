@@ -31,7 +31,7 @@ class Transform2D : public Component {
 
   private:
     std::unordered_set<Transform2D*> _children;
-    Transform2D*                     _parent;
+    Transform2D*                     _parent {nullptr};
 };
 
 } // namespace EngineS
