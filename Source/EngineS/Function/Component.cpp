@@ -4,9 +4,9 @@
 namespace EngineS {
 
 void Component::Initialize(GameObject* parent) {
-    gameObject = parent;
-    transform  = gameObject->transform;
-    renderer   = gameObject->renderer;
+    _gameObject = parent;
+    _transform  = _gameObject->transform;
+    _renderer   = _gameObject->renderer;
 }
 
 } // namespace EngineS

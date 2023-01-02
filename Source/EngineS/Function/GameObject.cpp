@@ -6,7 +6,7 @@ namespace EngineS {
 void GameObject::Update(float deltaTime) {
     for (auto& pair : _components) {
         auto& component = pair.second;
-        if (component->enabled) {
+        if (component->GetEnabled()) {
             component->Update(deltaTime);
         }
     }

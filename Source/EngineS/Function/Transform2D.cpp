@@ -11,7 +11,7 @@ Matrix4x4 Transform2D::MakeModelMatrix() const {
 
 void Transform2D::Visit(const Matrix4x4& parentModelMat, VisitFunc func) {
     auto model = parentModelMat * MakeModelMatrix();
-    func(gameObject, model);
+    func(GetGameObject(), model);
     for (auto& child : _children) {
         child->Visit(model, func);
     }
