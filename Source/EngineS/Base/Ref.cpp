@@ -1,12 +1,13 @@
 #include "Base/Ref.hpp"
 #include "Base/AutoReleasePool.hpp"
-#include "Base/PoolManager.hpp"
 
 namespace EngineS {
 
-Ref::Ref() : _refCount(1) {}
+Ref::Ref() : _refCount(1) {
+    AutoRelease();
+}
 
-Ref::~Ref() {}
+Ref::~Ref() = default;
 
 void Ref::Retain() {
     ++_refCount;

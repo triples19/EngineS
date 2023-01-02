@@ -2,8 +2,8 @@
 
 #include "Math/Math.hpp"
 #include "Platform/GLCommon.hpp"
+#include "Render/Shader.hpp"
 #include "Resource/Resource.hpp"
-#include "Shader.hpp"
 
 #include <memory>
 #include <optional>
@@ -12,16 +12,16 @@
 namespace EngineS {
 
 class Program : public Resource {
-    friend class ProgramLoader;
+    ES_OBJECT
 
   public:
-    Program(std::shared_ptr<Shader> vertexShaderModule, std::shared_ptr<Shader> fragShaderModule);
+    ~Program();
+
+    virtual bool Load(const std::filesystem::path& path) override;
 
     void Use() const;
 
-    void Link();
-
-    unsigned int GetID() { return _program; }
+    unsigned int GetID() const { return _program; }
 
     void Set(const std::string& name, bool value) const;
     void Set(const std::string& name, int value) const;
@@ -38,15 +38,8 @@ class Program : public Resource {
   private:
     GLuint _program {0};
 
-    std::shared_ptr<Shader> _vertexShaderModule;
-    std::shared_ptr<Shader> _fragmentShaderModule;
-};
-
-class ProgramLoader : public ResourceLoader {
-  public:
-    virtual Resource*   CreateResource(const fs::path& path) const;
-    virtual void        ReloadResource(std::shared_ptr<Resource>& resource, const fs::path& path) const;
-    virtual std::string GetName() const { return "ProgramLoader"; }
+    Shader* _vertexShader;
+    Shader* _fragmentShader;
 };
 
 } // namespace EngineS

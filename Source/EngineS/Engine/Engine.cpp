@@ -2,9 +2,9 @@
 #include "Base/AutoReleasePool.hpp"
 #include "Base/LoggingSystem.hpp"
 #include "Base/Macros.hpp"
-#include "Base/PoolManager.hpp"
 #include "Function/GameObject.hpp"
 #include "Function/InputSystem.hpp"
+#include "Function/Scene.hpp"
 #include "Function/SceneManager.hpp"
 #include "Render/RenderSystem.hpp"
 #include "Render/WindowSystem.hpp"
@@ -18,6 +18,7 @@ Engine* Engine::Instance() {
     if (!s_SharedInstance) {
         s_SharedInstance = new (std::nothrow) Engine;
         assert(s_SharedInstance != nullptr);
+        s_SharedInstance->Retain();
     }
     return s_SharedInstance;
 }
@@ -34,11 +35,18 @@ int Engine::FPSCalculator::Calculate(float deltaTime) {
 }
 
 void Engine::StartEngine() {
-    ResourceManager::Instance()->Initialize();
+    WindowSystem::Instance()->Retain();
+    RenderSystem::Instance()->Retain();
+    InputSystem::Instance()->Retain();
+    SceneManager::Instance()->Retain();
+    ResourceManager::Instance()->Retain();
+
     WindowSystem::Instance()->Initialize();
     RenderSystem::Instance()->Initialize();
     InputSystem::Instance()->Initialize();
     SceneManager::Instance()->Initialize();
+
+    ResourceManager::Instance()->AddResourceDir("../Assets");
 
     LOG_INFO("Engine started");
 }
@@ -70,7 +78,7 @@ float Engine::GetDeltaTime() {
 }
 
 void Engine::Update(float deltaTime) {
-    ResourceManager::Instance()->Update();
+    // ResourceManager::Instance()->Update();
     InputSystem::Instance()->Update();
     WindowSystem::Instance()->PollEvents();
 

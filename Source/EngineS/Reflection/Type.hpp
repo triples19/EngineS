@@ -24,7 +24,7 @@ class Type {
 
     template<class T>
     bool Is() const {
-        return Is(T::GetType());
+        return Is(T::GetTypeStatic());
     }
 
     bool IsBaseOf(const std::string& name) const;
@@ -32,7 +32,7 @@ class Type {
 
     template<class T>
     bool IsBaseOf() const {
-        return IsBaseOf(T::GetType());
+        return IsBaseOf(T::GetTypeStatic());
     }
 
     bool DerivedFrom(const std::string& name) const;
@@ -40,7 +40,7 @@ class Type {
 
     template<class T>
     bool DerivedFrom() const {
-        return DerivedFrom(T::GetType());
+        return DerivedFrom(T::GetTypeStatic());
     }
 
     friend bool operator==(const Type& lhs, const Type& rhs) { return lhs._hash == rhs._hash; }
@@ -55,6 +55,14 @@ namespace Detail {
 
 template<class T>
 class TypeImpl : public Type {
+  public:
+    TypeImpl(const std::string& name, const Type* baseType) : Type(name, baseType) {}
+    virtual Object* CreateObject() const { return nullptr; }
+};
+
+template<class T>
+    requires DefaultInitializable<T>
+class TypeImpl<T> : public Type {
   public:
     TypeImpl(const std::string& name, const Type* baseType) : Type(name, baseType) {}
     virtual Object* CreateObject() const { return new T; }

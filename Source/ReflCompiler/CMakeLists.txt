@@ -2,25 +2,27 @@ find_package(LLVM REQUIRED CONFIG)
 find_package(Clang REQUIRED CONFIG)
 
 add_executable(ReflCompiler
-    main.cpp
-    ReflCompiler.cpp
-    ReflCompiler.hpp
-    BustacheNlohmann.hpp
-    Template.hpp
-)
+        main.cpp
+        ReflCompiler.cpp
+        ReflCompiler.hpp
+        BustacheNlohmann.hpp
+        Template.hpp
+        Template.mustache
+        )
+
 target_link_libraries(ReflCompiler PRIVATE
-    clangTooling
-    clangFrontend
-    clangSerialization
-    clangToolingCore
-    clangASTMatchers
-    clangAST
-    clangBasic
-    LLVMSupport
-    LLVMCore
-    bustache
-    nlohmann_json::nlohmann_json
-)
+        clangTooling
+        clangFrontend
+        clangSerialization
+        clangToolingCore
+        clangASTMatchers
+        clangAST
+        clangBasic
+        LLVMSupport
+        LLVMCore
+        bustache
+        nlohmann_json::nlohmann_json
+        )
 
 target_include_directories(ReflCompiler PRIVATE ${LLVM_INCLUDE_DIRS})
 separate_arguments(LLVM_DEFINITIONS_LIST NATIVE_COMMAND ${LLVM_DEFINITIONS})

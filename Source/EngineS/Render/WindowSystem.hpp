@@ -1,14 +1,16 @@
 #pragma once
 
-#include "GLFW/glfw3.h"
+#include "Base/Object.hpp"
 
 #include <functional>
+#include <GLFW/glfw3.h>
 #include <string>
 #include <vector>
 
 namespace EngineS {
 
-class WindowSystem {
+class WindowSystem : public Object {
+    ES_OBJECT
   public:
     static WindowSystem* Instance();
 

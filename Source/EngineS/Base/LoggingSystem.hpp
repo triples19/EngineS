@@ -1,14 +1,18 @@
 #pragma once
 
+#include "Base/Object.hpp"
+
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
 #include <spdlog/spdlog.h>
 
 #include <cstdint>
+#include <filesystem>
 #include <memory>
 
 namespace EngineS {
 
-class LoggingSystem {
+class LoggingSystem : public Object {
+    ES_OBJECT
   public:
     enum class LogLevel : uint8_t { Debug, Info, Warn, Error, Fatal };
 
@@ -18,8 +22,9 @@ class LoggingSystem {
     ~LoggingSystem();
 
     std::string GetPrefix(const char* file, int line, const char* function) {
-        const char* filename = strrchr(file, '/') ? strrchr(file, '/') + 1 : file;
-        return fmt::format("[{0}: {1}] {2} > ", filename, line, function);
+        const char* lastSlash = strrchr(file, '/') ? strrchr(file, '/') : strrchr(file, '\\');
+        const char* filename  = lastSlash ? lastSlash + 1 : file;
+        return fmt::format("[{0}:{1}] {2} > ", filename, line, function);
     }
 
     template<class T, class... Ts>

@@ -6,8 +6,9 @@
 namespace EngineS {
 
 class Renderer : public Component {
+    ES_OBJECT
   public:
-    virtual void Render(const Matrix4x4& modelMat) = 0;
+    virtual void Render(const Matrix4x4& modelMat) {}
 };
 
 } // namespace EngineS

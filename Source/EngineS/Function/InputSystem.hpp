@@ -1,5 +1,8 @@
 #pragma once
-#include "KeyCode.hpp"
+
+#include "Base/Object.hpp"
+#include "Function/KeyCode.hpp"
+
 #include <functional>
 #include <unordered_map>
 #include <vector>
@@ -10,7 +13,8 @@ enum class KeyAction { Press, Release };
 
 class WindowSystem;
 
-class InputSystem {
+class InputSystem : public Object {
+    ES_OBJECT
   public:
     static InputSystem* Instance();
     InputSystem() = default;

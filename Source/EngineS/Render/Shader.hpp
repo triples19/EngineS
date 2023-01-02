@@ -13,17 +13,17 @@ namespace EngineS {
 enum class ShaderStage : uint32_t { Vertex, Fragment };
 
 class Shader : public Resource {
+    ES_OBJECT
   public:
-    Shader(ShaderStage stage);
     ~Shader();
 
     GLuint GetShader() const { return _shader; }
 
-    void Compile(const std::string& src);
-    void Compile(const std::vector<std::string>& src);
+    bool Compile(ShaderStage stage, const std::string& src);
+    bool Compile(ShaderStage stage, const std::vector<std::string>& src);
 
   private:
-    void Compile(const GLchar** src, std::size_t size);
+    bool CompileInternal(ShaderStage stage, const GLchar** src, std::size_t size);
 
   private:
     GLuint      _shader {0};

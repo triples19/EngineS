@@ -6,6 +6,7 @@
 namespace EngineS {
 
 class Camera : public Component {
+    ES_OBJECT
   public:
     void Initialize(GameObject* parent) override;
     void Update(float deltaTime) override;

@@ -6,21 +6,28 @@ namespace EngineS {
 
 class Type;
 
-#define ES_OBJECT                 \
-  public:                         \
-    static const Type* GetType(); \
-                                  \
-  private:                        \
+#define ES_OBJECT                            \
+  public:                                    \
+    static const Type* GetTypeStatic() {     \
+        return __es_type;                    \
+    }                                        \
+    virtual const Type* GetType() override { \
+        return GetTypeStatic();              \
+    }                                        \
+                                             \
+  private:                                   \
     static Type* __es_type;
 
 class Object : public Ref {
   public:
-    static Object* Create();
-
     Object();
     virtual ~Object();
 
-    static const Type* GetType();
+    static const Type*  GetTypeStatic() { return __es_type; }
+    virtual const Type* GetType() { return GetTypeStatic(); }
+
+  private:
+    static Type* __es_type;
 };
 
 } // namespace EngineS

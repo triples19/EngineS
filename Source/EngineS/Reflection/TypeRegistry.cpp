@@ -1,6 +1,6 @@
-#include "Base/TypeRegistry.hpp"
+#include "Reflection/TypeRegistry.hpp"
 #include "Base/Hash.hpp"
-#include "Base/Type.hpp"
+#include "Reflection/Type.hpp"
 
 #include <cassert>
 #include <memory>

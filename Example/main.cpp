@@ -1,11 +1,5 @@
 #include <EngineS.hpp>
 
-#include <filesystem>
-#include <fstream>
-#include <iostream>
-#include <memory>
-#include <sstream>
-
 #include "TestScene.hpp"
 
 using namespace EngineS;
@@ -18,9 +12,9 @@ int main() {
     auto* engine = Engine::Instance();
     engine->StartEngine();
     engine->RegisterUpdateFunc(ENGINES_CALLBACK(TestUpdate));
-    auto scene = std::make_unique<TestScene>();
+    auto scene = new TestScene;
     scene->Initialize();
-    SceneManager::Instance()->SetCurrentScene(std::move(scene));
+    SceneManager::Instance()->SetCurrentScene(scene);
     engine->Run();
 
     return 0;

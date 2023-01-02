@@ -1,12 +1,15 @@
 #pragma once
 
+#include "Base/Object.hpp"
+
 #include <chrono>
 #include <functional>
 #include <vector>
 
 namespace EngineS {
 
-class Engine {
+class Engine : public Object {
+    ES_OBJECT
   public:
     static Engine* Instance();
 

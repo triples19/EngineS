@@ -1,5 +1,6 @@
-#include "SceneManager.hpp"
+#include "Function/SceneManager.hpp"
 #include "Base/Macros.hpp"
+#include "Function/Scene.hpp"
 
 namespace EngineS {
 
@@ -14,5 +15,12 @@ SceneManager* SceneManager::Instance() {
 }
 
 void SceneManager::Initialize() {}
+
+void EngineS::SceneManager::SetCurrentScene(EngineS::Scene* scene) {
+    if (_currentScene)
+        _currentScene->Release();
+    _currentScene = scene;
+    _currentScene->Retain();
+}
 
 } // namespace EngineS

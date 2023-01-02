@@ -1,22 +1,25 @@
 #pragma once
 
-#include "Scene.hpp"
+#include "Base/Object.hpp"
 
 #include <memory>
 
 namespace EngineS {
 
-class SceneManager {
+class Scene;
+
+class SceneManager : public Object {
+    ES_OBJECT
   public:
     static SceneManager* Instance();
 
     void Initialize();
 
-    void   SetCurrentScene(std::unique_ptr<Scene> scene) { _currentScene = std::move(scene); }
-    Scene* GetCurrentScene() { return _currentScene.get(); }
+    void   SetCurrentScene(Scene* scene);
+    Scene* GetCurrentScene() { return _currentScene; }
 
   private:
-    std::unique_ptr<Scene> _currentScene;
+    Scene* _currentScene {nullptr};
 };
 
 } // namespace EngineS

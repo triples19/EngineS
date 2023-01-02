@@ -1,5 +1,4 @@
-#include "Component.hpp"
-
+#include "Function/Component.hpp"
 #include "Function/GameObject.hpp"
 
 namespace EngineS {

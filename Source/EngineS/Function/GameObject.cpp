@@ -1,14 +1,7 @@
-#include "GameObject.hpp"
+#include "Function/GameObject.hpp"
+#include "Function/Component.hpp"
 
 namespace EngineS {
-
-GameObject* GameObject::Create() {
-    auto obj = new (std::nothrow) GameObject();
-    if (obj) {
-        obj->AutoRelease();
-    }
-    return obj;
-}
 
 void GameObject::Update(float deltaTime) {
     for (auto& pair : _components) {

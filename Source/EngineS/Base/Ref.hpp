@@ -16,9 +16,11 @@ class Ref {
 
     void Retain();
     void Release();
-    void AutoRelease();
 
     i32 GetRefCount() const;
+
+  private:
+    void AutoRelease();
 
   protected:
     i32 _refCount;

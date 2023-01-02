@@ -7,6 +7,22 @@
 
 namespace EngineS {
 
+bool Texture2D::Load(const std::filesystem::path& path) {
+    int  width, height, nrChannels;
+    auto data = stbi_load(path.string().c_str(), &width, &height, &nrChannels, 0);
+    if (!data) {
+        LOG_ERROR("Failed to load image");
+        return false;
+    }
+    if (nrChannels == 4) {
+        _internalFormat = GL_RGBA;
+        _imageFormat    = GL_RGBA;
+    }
+    Generate(width, height, data);
+    stbi_image_free(data);
+    return true;
+}
+
 void Texture2D::Generate(unsigned int width, unsigned int height, unsigned char* data) {
     this->_width  = width;
     this->_height = height;
@@ -23,24 +39,6 @@ void Texture2D::Generate(unsigned int width, unsigned int height, unsigned char*
 
 void Texture2D::Bind() const {
     glBindTexture(GL_TEXTURE_2D, _id);
-}
-
-Resource* Texture2DLoader::CreateResource(const fs::path& path) const {
-    stbi_set_flip_vertically_on_load(true);
-    auto texture = new Texture2D;
-    int  width, height, nrChannels;
-    auto data = stbi_load(path.string().c_str(), &width, &height, &nrChannels, 0);
-    if (!data) {
-        LOG_ERROR("Failed to load image {}", path.string());
-        return nullptr;
-    }
-    if (nrChannels == 4) {
-        texture->_internalFormat = GL_RGBA;
-        texture->_imageFormat    = GL_RGBA;
-    }
-    texture->Generate(width, height, data);
-    stbi_image_free(data);
-    return texture;
 }
 
 } // namespace EngineS

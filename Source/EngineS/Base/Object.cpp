@@ -1,25 +1,13 @@
 #include "Base/Object.hpp"
-#include "Base/Type.hpp"
+#include "Reflection/Type.hpp"
 
 #include <memory>
 
 namespace EngineS {
 
-static Detail::TypeImpl<Object> s_Object_Type("Object", nullptr);
-const Type*                     Object::GetType() {
-    return &s_Object_Type;
-}
+Type* Object::__es_type = new Detail::TypeImpl<EngineS::Object>("EngineS::Object", nullptr);
 
-Object* Object::Create() {
-    auto obj = new (std::nothrow) Object();
-    if (obj) {
-        obj->AutoRelease();
-    }
-    return obj;
-}
-
-Object::Object() {}
-
-Object::~Object() {}
+Object::Object()  = default;
+Object::~Object() = default;
 
 } // namespace EngineS

@@ -6,10 +6,9 @@
 namespace EngineS {
 
 class Texture2D : public Resource {
-    friend class Texture2DLoader;
-
+    ES_OBJECT
   public:
-    Texture2D() = default;
+    virtual bool Load(const std::filesystem::path& path) override;
 
     void Generate(unsigned int width, unsigned int height, unsigned char* data);
 
@@ -26,12 +25,6 @@ class Texture2D : public Resource {
     unsigned int _imageFormat {GL_RGB};
     unsigned int _wrapS {GL_REPEAT}, _wrapT {GL_REPEAT};
     unsigned int _filterMin {GL_LINEAR}, _filterMax {GL_LINEAR};
-};
-
-class Texture2DLoader : public ResourceLoader {
-  public:
-    virtual Resource*   CreateResource(const fs::path& path) const;
-    virtual std::string GetName() const { return "Texture2DLoader"; }
 };
 
 } // namespace EngineS

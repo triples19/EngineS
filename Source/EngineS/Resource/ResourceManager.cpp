@@ -1,10 +1,11 @@
-#include "ResourceManager.hpp"
+#include "Resource/ResourceManager.hpp"
+#include "Base/Macros.hpp"
+#include "Reflection/Type.hpp"
+#include "Resource/Resource.hpp"
 
-#include "Render/Program.hpp"
-#include "Render/Texture2D.hpp"
-#include "Resource/Text.hpp"
+#include <fstream>
 
-#include <algorithm>
+namespace fs = std::filesystem;
 
 namespace EngineS {
 
@@ -14,101 +15,75 @@ ResourceManager* ResourceManager::Instance() {
     if (!s_SharedInstance) {
         s_SharedInstance = new (std::nothrow) ResourceManager;
         ES_ASSERT_NOMSG(s_SharedInstance != nullptr);
+        s_SharedInstance->Retain();
     }
     return s_SharedInstance;
 }
 
-void ResourceManager::Initialize() {
-    RegisterLoader<TextLoader>();
-    RegisterLoader<ProgramLoader>();
-    RegisterLoader<Texture2DLoader>();
-
-    AddAllHandles();
-}
-
-void ResourceManager::Update() {
-    for (auto& [id, lastWriteTime] : _watchedHandles) {
-        auto currentLastWriteTime = fs::last_write_time(_handles.at(id).path);
-        if (currentLastWriteTime != lastWriteTime) {
-            // file modified
-            ReloadResource(ResourceHandleBase {id});
-            lastWriteTime = currentLastWriteTime;
+Resource* ResourceManager::Load(const Type* type, const fs::path& path) {
+    // Return one if it has already been loaded
+    if (_resources.contains(path)) {
+        auto resource = _resources[path];
+        if (!type->Is(resource->GetType())) {
+            LOG_ERROR(
+                "Resource type '{}' does not match the loaded one '{}': {}",
+                type->GetName(),
+                resource->GetType()->GetName(),
+                path.string()
+            );
+            return nullptr;
         }
+        return resource;
     }
-}
 
-void ResourceManager::AddHandle(const fs::path& metaPath, const fs::path& resourcePath) {
-    auto        id = GetNextID();
-    MetaData    meta(metaPath);
-    const auto& loader = *_loaders[meta.GetLoaderName()];
-    _handles.try_emplace(id, resourcePath, std::move(meta));
-    _pathToID.emplace(fs::absolute(resourcePath), id);
-}
-
-void ResourceManager::AddAllHandles() {
-    for (const auto& dirEntry : fs::recursive_directory_iterator(_assetsPath)) {
-        const auto& path = std::filesystem::absolute(dirEntry.path());
-        if (path.extension() == ".meta") {
-            auto originPath = path;
-            originPath.replace_extension();
-            if (exists(originPath)) {
-                AddHandle(path, originPath);
-            }
-        }
-    }
-}
-
-void ResourceManager::AddWatch(const ResourceHandleBase& handle) {
-    if (_watchedHandles.find(handle.ID) != _watchedHandles.end()) {
-        return;
-    }
-    _watchedHandles.emplace(handle.ID, fs::last_write_time(_handles.at(handle.ID).path));
-}
-
-void ResourceManager::RemoveWatch(const ResourceHandleBase& handle) {
-    _watchedHandles.erase(handle.ID);
-}
-
-ResourceLoader* ResourceManager::GetLoader(const ResourceHandleBase& handle) {
-    auto loaderName = _handles.at(handle.ID).meta.GetLoaderName();
-    auto iter       = _loaders.find(loaderName);
-    if (iter == _loaders.end()) {
-        LOG_ERROR("Unregistered loader: {}", loaderName);
+    auto absolutePath = FindResourcePath(path);
+    if (!absolutePath) {
+        LOG_ERROR("File does not exist: {}", path.string());
         return nullptr;
     }
-    return iter->second.get();
-}
 
-void ResourceManager::LoadResource(const ResourceHandleBase& handle) {
-    const auto& loader   = GetLoader(handle);
-    auto        resource = loader->CreateResource(_handles.at(handle.ID).path);
-    _cache.emplace(handle.ID, resource);
-}
-
-void ResourceManager::UnloadResource(const ResourceHandleBase& handle) {
-    _cache.erase(handle.ID);
-}
-
-void ResourceManager::ReloadResource(const ResourceHandleBase& handle) {
-    auto        iter   = _cache.find(handle.ID);
-    const auto& loader = GetLoader(handle);
-    loader->ReloadResource(iter->second, _handles.at(handle.ID).path);
-}
-
-void ResourceManager::UnloadUnusedResources() {
-    std::erase_if(_cache, [](const auto& item) {
-        auto const& [handle, resource] = item;
-        return resource.use_count() == 1;
-    });
-}
-
-std::shared_ptr<Resource> ResourceManager::GetLoadedResource(const ResourceHandleBase& handle) {
-    auto iter = _cache.find(handle.ID);
-    if (iter == _cache.end()) {
-        LOG_ERROR("Unloaded resource: {}", _handles.at(handle.ID).path.string());
+    // Create a object of 'type' and cast it to Resource*
+    auto resource = dynamic_cast<Resource*>(type->CreateObject());
+    if (!resource) {
+        // dynamic_cast failed
+        // which means 'type' is not a subclass of Resource
+        LOG_ERROR("Could not load resource type: {}", type->GetName());
         return nullptr;
     }
-    return iter->second;
+
+    if (!resource->Load(*absolutePath)) {
+        // Load failure
+        return nullptr;
+    }
+
+    _resources[path] = resource; // Cache it
+    resource->Retain();          // Own a reference
+    return resource;
+}
+
+bool ResourceManager::AddResourceDir(const fs::path& path) {
+    if (!fs::is_directory(path)) {
+        LOG_ERROR("Could not open directory: {}", path.string());
+        return false;
+    }
+
+    if (std::find_if(_resourceDirs.begin(), _resourceDirs.end(), [&](const auto& p) {
+            return fs::equivalent(path, p);
+        }) != _resourceDirs.end()) {
+        return true;
+    }
+
+    _resourceDirs.push_back(fs::absolute(path));
+    return true;
+}
+
+std::optional<fs::path> ResourceManager::FindResourcePath(const fs::path& path) const {
+    for (const auto& dir : _resourceDirs) {
+        auto concated = dir / path;
+        if (fs::exists(concated))
+            return concated;
+    }
+    return std::nullopt;
 }
 
 } // namespace EngineS

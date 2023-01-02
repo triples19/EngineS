@@ -9,6 +9,7 @@ class Transform2D;
 class Renderer;
 
 class Component : public Object {
+    ES_OBJECT
   public:
     virtual void Initialize(GameObject* parent);
     virtual void Update(float deltaTime) {}

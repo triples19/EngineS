@@ -1,22 +1,22 @@
-#include "SpriteBatch.hpp"
-
+#include "Render/SpriteBatch.hpp"
 #include "Function/Camera.hpp"
+#include "Function/Scene.hpp"
 #include "Function/SceneManager.hpp"
 #include "Function/Transform2D.hpp"
-#include "Material2D.hpp"
-#include "Program.hpp"
-#include "Texture2D.hpp"
+#include "Render/Material2D.hpp"
+#include "Render/Program.hpp"
+#include "Render/Texture2D.hpp"
 
 namespace EngineS {
 
-SpriteBatch::SpriteBatch(std::shared_ptr<Texture2D> texture, std::shared_ptr<Program> program) :
-    _texture {texture}, _program {program} {
-    glGenVertexArrays(1, &_vao);
-    glGenBuffers(1, &_vbo);
-}
+// SpriteBatch::SpriteBatch(std::shared_ptr<Texture2D> texture, std::shared_ptr<Program> program) :
+//     _texture {texture}, _program {program} {
+//     glGenVertexArrays(1, &_vao);
+//     glGenBuffers(1, &_vbo);
+// }
 
-SpriteBatch::SpriteBatch(std::shared_ptr<Material2D> material) :
-    SpriteBatch(material->GetTexture(), material->GetProgram()) {}
+// SpriteBatch::SpriteBatch(std::shared_ptr<Material2D> material) :
+//     SpriteBatch(material->GetTexture(), material->GetProgram()) {}
 
 void SpriteBatch::Draw() {
     glBindVertexArray(_vao);
@@ -26,20 +26,24 @@ void SpriteBatch::Draw() {
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(V2F_C4F_T2F), nullptr);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1,
-                          4,
-                          GL_FLOAT,
-                          GL_FALSE,
-                          sizeof(V2F_C4F_T2F),
-                          reinterpret_cast<const void*>(sizeof(Vector2)));
+    glVertexAttribPointer(
+        1,
+        4,
+        GL_FLOAT,
+        GL_FALSE,
+        sizeof(V2F_C4F_T2F),
+        reinterpret_cast<const void*>(sizeof(Vector2))
+    );
     glEnableVertexAttribArray(1);
 
-    glVertexAttribPointer(2,
-                          2,
-                          GL_FLOAT,
-                          GL_FALSE,
-                          sizeof(V2F_C4F_T2F),
-                          reinterpret_cast<const void*>(sizeof(Vector2) + sizeof(Color4F)));
+    glVertexAttribPointer(
+        2,
+        2,
+        GL_FLOAT,
+        GL_FALSE,
+        sizeof(V2F_C4F_T2F),
+        reinterpret_cast<const void*>(sizeof(Vector2) + sizeof(Color4F))
+    );
     glEnableVertexAttribArray(2);
 
     glActiveTexture(GL_TEXTURE0);

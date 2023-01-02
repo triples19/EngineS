@@ -1,6 +1,6 @@
-#include "Base/Type.hpp"
+#include "Type.hpp"
 #include "Base/Hash.hpp"
-#include "Base/TypeRegistry.hpp"
+#include "TypeRegistry.hpp"
 
 namespace EngineS {
 

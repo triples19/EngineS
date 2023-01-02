@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Base/Object.hpp"
+
 #include <memory>
 #include <unordered_set>
 #include <vector>
@@ -10,7 +12,8 @@ class GameObject;
 class Camera;
 class Transform2D;
 
-class Scene {
+class Scene : public Object {
+    ES_OBJECT
   public:
     Scene();
     virtual ~Scene();

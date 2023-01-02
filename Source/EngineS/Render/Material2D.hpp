@@ -1,5 +1,10 @@
 #pragma once
 
+#include "Base/Object.hpp"
+#include "Base/SharedPtr.hpp"
+#include "Render/Program.hpp"
+#include "Render/Texture2D.hpp"
+
 #include <memory>
 
 namespace EngineS {
@@ -7,19 +12,17 @@ namespace EngineS {
 class Program;
 class Texture2D;
 
-class Material2D {
+class Material2D : public Object {
+    ES_OBJECT
   public:
-    Material2D(std::shared_ptr<Program> program, std::shared_ptr<Texture2D> texture);
+    Material2D(Program* program, Texture2D* texture);
 
-    auto GetProgram() const { return _program; }
-    auto GetTexture() const { return _texture; }
-    auto GetID() const { return _id; };
+    Program*   GetProgram() const { return _program.Get(); }
+    Texture2D* GetTexture() const { return _texture.Get(); }
 
   private:
-    static unsigned int        _maxID;
-    unsigned int               _id;
-    std::shared_ptr<Program>   _program;
-    std::shared_ptr<Texture2D> _texture;
+    SharedPtr<Program>   _program;
+    SharedPtr<Texture2D> _texture;
 };
 
 } // namespace EngineS

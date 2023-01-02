@@ -7,7 +7,7 @@
 
 namespace EngineS {
 
-template<DerivedFrom<Ref> T>
+template<class T>
 class SharedPtr {
   public:
     SharedPtr() : _ptr(nullptr) {}
@@ -54,6 +54,9 @@ class SharedPtr {
     T* operator->() const { return _ptr; }
     T& operator*() const { return *_ptr; }
     T& operator[](int i) { return _ptr[i]; }
+    T* Get() const { return _ptr; }
+
+    operator bool() const { return _ptr != nullptr; }
 
     template<DerivedFrom<T> U>
     bool operator<=>(const SharedPtr<U>& rhs) const {

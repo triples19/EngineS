@@ -1,22 +1,23 @@
 #pragma once
 
+#include "Base/Object.hpp"
+
 #include <memory>
 #include <type_traits>
 #include <typeindex>
 #include <unordered_map>
 #include <vector>
 
-#include "Base/Object.hpp"
-#include "Component.hpp"
-#include "Function/Transform2D.hpp"
-#include "Render/Renderer.hpp"
-
 namespace EngineS {
+
+class Component;
+class Renderer;
+class Transform2D;
 
 class GameObject : public Object {
   public:
-    static GameObject* Create();
-
+    GameObject() = default;
+    ~GameObject();
     virtual void Update(float deltaTime);
 
     template<class T>
@@ -38,10 +39,9 @@ class GameObject : public Object {
         return comps;
     }
 
-    template<class T, class... Args>
-    T* AddComponent(Args&&... args) {
-        auto comp = new T(std::forward<Args>(args)...);
-        comp->AutoRelease();
+    template<class T>
+    T* AddComponent() {
+        auto comp = new T;
         comp->Retain();
         comp->Initialize(this);
         auto inserted = _components.insert(std::make_pair(static_cast<std::type_index>(typeid(T)), comp));
@@ -63,10 +63,6 @@ class GameObject : public Object {
   public:
     Transform2D* transform {nullptr};
     Renderer*    renderer {nullptr};
-
-  private:
-    GameObject() = default;
-    ~GameObject();
 
   private:
     std::unordered_multimap<std::type_index, Component*> _components;

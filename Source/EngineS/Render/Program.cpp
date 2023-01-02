@@ -1,44 +1,39 @@
-#include "Program.hpp"
-
+#include "Render/Program.hpp"
 #include "Base/Macros.hpp"
-#include "Shader.hpp"
+#include "IO/FileUtils.hpp"
+#include "Render/Shader.hpp"
 
 namespace EngineS {
 
-Resource* ProgramLoader::CreateResource(const fs::path& path) const {
-    auto src            = ReadString(path);
-    auto vertexShader   = std::make_shared<Shader>(ShaderStage::Vertex);
-    auto fragmentShader = std::make_shared<Shader>(ShaderStage::Fragment);
-    vertexShader->Compile({"#version 330 core\n", "#define VERTEX\n", src});
-    fragmentShader->Compile({"#version 330 core\n", "#define FRAGMENT\n", src});
-    auto program = new Program(vertexShader, fragmentShader);
-    program->Link();
-    return program;
+Program::~Program() {
+    _vertexShader->Release();
+    _fragmentShader->Release();
 }
 
-void ProgramLoader::ReloadResource(std::shared_ptr<Resource>& resource, const fs::path& path) const {
-    LOG_INFO("Reloading program {}", fs::relative(path).string());
-    auto program = std::static_pointer_cast<Program>(resource);
-    auto src     = ReadString(path);
-    program->_vertexShaderModule->Compile({"#version 330 core\n", "#define VERTEX\n", src});
-    program->_fragmentShaderModule->Compile({"#version 330 core\n", "#define FRAGMENT\n", src});
-    program->Link();
-}
+bool Program::Load(const std::filesystem::path& path) {
+    if (_vertexShader)
+        _vertexShader->Release();
+    if (_fragmentShader)
+        _fragmentShader->Release();
 
-Program::Program(std::shared_ptr<Shader> vertexShaderModule, std::shared_ptr<Shader> fragShaderModule) :
-    _vertexShaderModule {vertexShaderModule}, _fragmentShaderModule {fragShaderModule} {
-    _program        = glCreateProgram();
-    auto vertShader = _vertexShaderModule->GetShader();
-    auto fragShader = _fragmentShaderModule->GetShader();
-    glAttachShader(_program, vertShader);
-    glAttachShader(_program, fragShader);
-}
+    auto src = FileUtils::ReadFileStr(path);
 
-void Program::Use() const {
-    glUseProgram(_program);
-}
+    _vertexShader = new Shader;
+    if (!_vertexShader->Compile(ShaderStage::Vertex, {"#version 330 core\n", "#define VERTEX\n", src})) {
+        return false;
+    }
+    _vertexShader->Retain();
 
-void Program::Link() {
+    _fragmentShader = new Shader;
+    if (!_fragmentShader->Compile(ShaderStage::Fragment, {"#version 330 core\n", "#define FRAGMENT\n", src})) {
+        return false;
+    }
+    _fragmentShader->Retain();
+
+    _program = glCreateProgram();
+    glAttachShader(_program, _fragmentShader->GetShader());
+    glAttachShader(_program, _vertexShader->GetShader());
+
     glLinkProgram(_program);
 
     GLint status = 0;
@@ -47,7 +42,13 @@ void Program::Link() {
         char infoLog[1024];
         glGetProgramInfoLog(_program, 1024, nullptr, infoLog);
         LOG_ERROR("Failed to link program\n{}", infoLog);
+        return false;
     }
+    return true;
+}
+
+void Program::Use() const {
+    glUseProgram(_program);
 }
 
 void Program::Set(const std::string& name, bool value) const {
