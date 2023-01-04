@@ -8,6 +8,8 @@ namespace EngineS {
 class Texture2D : public Resource {
     ES_OBJECT
   public:
+    ~Texture2D();
+
     virtual bool Load(const std::filesystem::path& path) override;
 
     void Generate(unsigned int width, unsigned int height, unsigned char* data);

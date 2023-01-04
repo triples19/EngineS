@@ -6,8 +6,10 @@
 namespace EngineS {
 
 Program::~Program() {
-    _vertexShader->Release();
-    _fragmentShader->Release();
+    if (_vertexShader)
+        _vertexShader->Release();
+    if (_fragmentShader)
+        _fragmentShader->Release();
 }
 
 bool Program::Load(const std::filesystem::path& path) {

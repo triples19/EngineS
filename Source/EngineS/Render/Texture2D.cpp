@@ -7,6 +7,11 @@
 
 namespace EngineS {
 
+Texture2D::~Texture2D() {
+    if (_id)
+        glDeleteTextures(1, &_id);
+}
+
 bool Texture2D::Load(const std::filesystem::path& path) {
     int  width, height, nrChannels;
     auto data = stbi_load(path.string().c_str(), &width, &height, &nrChannels, 0);
