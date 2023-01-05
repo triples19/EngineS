@@ -18,8 +18,8 @@ Type* EngineS::Engine::__es_type = new Detail::TypeImpl<EngineS::Engine>("Engine
 #include "Function/InputSystem.hpp"
 Type* EngineS::InputSystem::__es_type = new Detail::TypeImpl<EngineS::InputSystem>("EngineS::InputSystem", Object::GetTypeStatic());
 
-#include "Base/LoggingSystem.hpp"
-Type* EngineS::LoggingSystem::__es_type = new Detail::TypeImpl<EngineS::LoggingSystem>("EngineS::LoggingSystem", Object::GetTypeStatic());
+#include "IO/Logger.hpp"
+Type* EngineS::Logger::__es_type = new Detail::TypeImpl<EngineS::Logger>("EngineS::Logger", Object::GetTypeStatic());
 
 #include "Render/Material2D.hpp"
 Type* EngineS::Material2D::__es_type = new Detail::TypeImpl<EngineS::Material2D>("EngineS::Material2D", Object::GetTypeStatic());

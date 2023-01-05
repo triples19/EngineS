@@ -1,16 +1,8 @@
 #pragma once
 
-#include "LoggingSystem.hpp"
+#include "IO/Logger.hpp"
 
 #include <cassert>
-
-// Logging macros
-#define LOG_PREFIX LoggingSystem::Instance()->GetPrefix(__FILE__, __LINE__, __FUNCTION__)
-#define LOG_DEBUG(...) LoggingSystem::Instance()->Debug(LOG_PREFIX, __VA_ARGS__)
-#define LOG_INFO(...) LoggingSystem::Instance()->Info(LOG_PREFIX, __VA_ARGS__)
-#define LOG_WARN(...) LoggingSystem::Instance()->Warn(LOG_PREFIX, __VA_ARGS__)
-#define LOG_ERROR(...) LoggingSystem::Instance()->Error(LOG_PREFIX, __VA_ARGS__)
-#define LOG_FATAL(...) LoggingSystem::Instance()->Fatal(LOG_PREFIX, __VA_ARGS__)
 
 // callback macro using lambda
 #define ENGINES_CALLBACK(func) [&](auto... args) { func(args...); }
@@ -20,13 +12,13 @@
 
 #ifndef ES_ASSERT
 #if defined(ES_DEBUG) && ES_DEBUG > 0
-#define ES_ASSERT(COND, MSG)                         \
-    do {                                             \
-        if (!(COND)) {                               \
-            if (std::strlen(MSG) > 0)                \
-                LOG_FATAL("Assert failed: {}", MSG); \
-            assert((COND));                          \
-        }                                            \
+#define ES_ASSERT(COND, MSG)                             \
+    do {                                                 \
+        if (!(COND)) {                                   \
+            if (std::strlen(MSG) > 0)                    \
+                Logger::Error("Assert failed: {}", MSG); \
+            assert((COND));                              \
+        }                                                \
     } while (0)
 #define ES_ASSERT_NOMSG(COND) assert((COND));
 #else

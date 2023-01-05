@@ -16,7 +16,7 @@ bool Texture2D::Load(const std::filesystem::path& path) {
     int  width, height, nrChannels;
     auto data = stbi_load(path.string().c_str(), &width, &height, &nrChannels, 0);
     if (!data) {
-        LOG_ERROR("Failed to load image");
+        Logger::Error("Failed to load image");
         return false;
     }
     if (nrChannels == 4) {

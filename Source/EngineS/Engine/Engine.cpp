@@ -1,11 +1,11 @@
 #include "Engine/Engine.hpp"
 #include "Base/AutoReleasePool.hpp"
-#include "Base/LoggingSystem.hpp"
 #include "Base/Macros.hpp"
 #include "Function/GameObject.hpp"
 #include "Function/InputSystem.hpp"
 #include "Function/Scene.hpp"
 #include "Function/SceneManager.hpp"
+#include "IO/Logger.hpp"
 #include "Render/RenderSystem.hpp"
 #include "Render/WindowSystem.hpp"
 #include "Resource/ResourceManager.hpp"
@@ -48,11 +48,11 @@ void Engine::StartEngine() {
 
     ResourceManager::Instance()->AddResourceDir("../Assets");
 
-    LOG_INFO("Engine started");
+    Logger::Info("Engine started");
 }
 
 void Engine::Shutdown() {
-    LOG_INFO("Engine shutting down");
+    Logger::Info("Engine shutting down");
     _shouldShutdown = true;
 }
 
@@ -78,7 +78,7 @@ float Engine::GetDeltaTime() {
 }
 
 void Engine::Update(float deltaTime) {
-    // ResourceManager::Instance()->Update();
+    ResourceManager::Instance()->Update();
     InputSystem::Instance()->Update();
     WindowSystem::Instance()->PollEvents();
 

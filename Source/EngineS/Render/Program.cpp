@@ -43,7 +43,7 @@ bool Program::Load(const std::filesystem::path& path) {
     if (status == GL_FALSE) {
         char infoLog[1024];
         glGetProgramInfoLog(_program, 1024, nullptr, infoLog);
-        LOG_ERROR("Failed to link program\n{}", infoLog);
+        Logger::Error("Failed to link program\n{}", infoLog);
         return false;
     }
     return true;

@@ -50,7 +50,7 @@ bool Shader::CompileInternal(ShaderStage stage, const GLchar** src, std::size_t 
     if (!status) {
         char infoLog[1024];
         glGetShaderInfoLog(_shader, 1024, nullptr, infoLog);
-        LOG_ERROR("Failed to compile shader\n{}", infoLog);
+        Logger::Error("Failed to compile shader\n{}", infoLog);
         return false;
     }
     return true;

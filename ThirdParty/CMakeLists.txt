@@ -20,13 +20,6 @@ if (NOT TARGET fmt)
     add_subdirectory(fmt)
 endif ()
 
-if (NOT TARGET spdlog)
-    option(SPDLOG_BUILD_EXAMPLE "" OFF)
-    option(SPDLOG_INSTALL "" OFF)
-    add_subdirectory(spdlog)
-    set_target_properties(spdlog PROPERTIES FOLDER ${third_party_folder}/spdlog)
-endif ()
-
 if (NOT TARGET nlohmann_json)
     set(JSON_BuildTests OFF CACHE INTERNAL "")
     add_subdirectory(json)

@@ -33,14 +33,14 @@ void RenderSystem::Initialize() {
     _window = WindowSystem::Instance()->GetWindow();
 
     if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
-        LOG_FATAL("Failed to initialize GLAD");
+        Logger::Error("Failed to initialize GLAD");
         return;
     }
 
-    LOG_INFO("Initializing RenderSystem (OpenGL)");
-    LOG_INFO("Vendor:\t{}", _deviceInfo.GetVendor());
-    LOG_INFO("Version:\t{}", _deviceInfo.GetVersion());
-    LOG_INFO("Renderer:\t{}", _deviceInfo.GetRenderer());
+    Logger::Info("Initializing RenderSystem (OpenGL)");
+    Logger::Info("Vendor:\t{}", _deviceInfo.GetVendor());
+    Logger::Info("Version:\t{}", _deviceInfo.GetVersion());
+    Logger::Info("Renderer:\t{}", _deviceInfo.GetRenderer());
 
     WindowSystem::Instance()->RegisterOnWindowSizeFunc([](int w, int h) { glViewport(0, 0, w, h); });
 

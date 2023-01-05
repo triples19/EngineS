@@ -1,6 +1,6 @@
 #include "WindowSystem.hpp"
-#include "Base/LoggingSystem.hpp"
 #include "Base/Macros.hpp"
+#include "IO/Logger.hpp"
 
 #define GLFW_CALLBACK(functionName)                                                          \
     [](GLFWwindow* window, auto... args) {                                                   \
@@ -25,10 +25,10 @@ WindowSystem::~WindowSystem() {
 }
 
 void WindowSystem::Initialize() {
-    LOG_INFO("Initializing WindowSystem (GLFW)");
+    Logger::Info("Initializing WindowSystem (GLFW)");
 
     if (!glfwInit()) {
-        LOG_FATAL("Failed to initialize GLFW");
+        Logger::Error("Failed to initialize GLFW");
         return;
     }
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -40,7 +40,7 @@ void WindowSystem::Initialize() {
 
     _window = glfwCreateWindow(_width, _height, _title.c_str(), nullptr, nullptr);
     if (!_window) {
-        LOG_FATAL("Failed to create GLFW window");
+        Logger::Error("Failed to create GLFW window");
         glfwTerminate();
         return;
     }

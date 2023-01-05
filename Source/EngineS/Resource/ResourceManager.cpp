@@ -20,12 +20,25 @@ ResourceManager* ResourceManager::Instance() {
     return s_SharedInstance;
 }
 
+void ResourceManager::Update() {
+    if (_autoReloadEnabled) {
+        for (auto& [_, desc] : _resources) {
+            auto time = fs::last_write_time(desc.absolutePath);
+            if (time != desc.lastWriteTime) {
+                // file modified
+                desc.lastWriteTime = time;
+                desc.resource->Load(desc.absolutePath);
+            }
+        }
+    }
+}
+
 Resource* ResourceManager::Load(const Type* type, const fs::path& path) {
     // Return one if it has already been loaded
     if (_resources.contains(path)) {
-        auto resource = _resources[path];
+        auto resource = _resources[path].resource;
         if (!type->Is(resource->GetType())) {
-            LOG_ERROR(
+            Logger::Error(
                 "Resource type '{}' does not match the loaded one '{}': {}",
                 type->GetName(),
                 resource->GetType()->GetName(),
@@ -38,7 +51,7 @@ Resource* ResourceManager::Load(const Type* type, const fs::path& path) {
 
     auto absolutePath = FindResourcePath(path);
     if (!absolutePath) {
-        LOG_ERROR("File does not exist: {}", path.string());
+        Logger::Error("File does not exist: {}", path.string());
         return nullptr;
     }
 
@@ -47,7 +60,7 @@ Resource* ResourceManager::Load(const Type* type, const fs::path& path) {
     if (!resource) {
         // dynamic_cast failed
         // which means 'type' is not a subclass of Resource
-        LOG_ERROR("Could not load resource type: {}", type->GetName());
+        Logger::Error("Could not load resource type: {}", type->GetName());
         return nullptr;
     }
 
@@ -56,14 +69,21 @@ Resource* ResourceManager::Load(const Type* type, const fs::path& path) {
         return nullptr;
     }
 
-    _resources[path] = resource; // Cache it
-    resource->Retain();          // Own a reference
+    resource->Retain(); // Own a reference
+
+    ResourceDescriptor descriptor;
+    descriptor.resource      = resource;
+    descriptor.relativePath  = path;
+    descriptor.absolutePath  = *absolutePath;
+    descriptor.lastWriteTime = fs::last_write_time(*absolutePath);
+    _resources[path]         = descriptor;
+
     return resource;
 }
 
 bool ResourceManager::AddResourceDir(const fs::path& path) {
     if (!fs::is_directory(path)) {
-        LOG_ERROR("Could not open directory: {}", path.string());
+        Logger::Error("Could not open directory: {}", path.string());
         return false;
     }
 
