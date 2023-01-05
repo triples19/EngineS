@@ -11,6 +11,7 @@ using namespace llvm;
 using namespace clang::tooling;
 using namespace llvm::sys;
 using namespace clang::ast_matchers;
+using namespace clang;
 
 auto ObjectMatcher = cxxRecordDecl(
                          isExpansionInMainFile(),
@@ -45,7 +46,11 @@ std::unique_ptr<ReflCompiler> ReflCompiler::Create(
 
     // --- get compilation database (compile_commands.json) ---
     std::string errorMsg;
-    auto        compilations = CompilationDatabase::autoDetectFromDirectory(buildPath.string(), errorMsg);
+    auto        compilations = std::make_unique<ArgumentsAdjustingCompilations>(
+        std::move(CompilationDatabase::autoDetectFromDirectory(buildPath.string(), errorMsg))
+    );
+    compilations->appendArgumentsAdjuster(getInsertArgumentAdjuster("-DREFL_COMPILER", ArgumentInsertPosition::BEGIN));
+
     if (!compilations) {
         errs() << errorMsg;
         return nullptr;
