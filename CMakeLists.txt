@@ -15,6 +15,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${ES_ROOT_DIR}/bin/$<0:>)
 
 add_subdirectory(ThirdParty)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set(ES_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Source/EngineS)
 add_subdirectory(Source/EngineS)
 
