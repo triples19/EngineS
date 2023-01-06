@@ -39,7 +39,7 @@ bool Type::DerivedFrom(const Type* type) const {
         return true;
     if (_baseType == nullptr)
         return false;
-    return _baseType->IsBaseOf(type);
+    return _baseType->DerivedFrom(type);
 }
 
 } // namespace EngineS

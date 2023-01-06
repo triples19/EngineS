@@ -2,6 +2,8 @@
 
 #include "Base/Object.hpp"
 
+#include <vector>
+
 namespace EngineS {
 
 class GameObject;
@@ -17,15 +19,36 @@ class Component : public Object {
     void SetEnabled(bool value) { _enabled = value; }
     bool GetEnabled() const { return _enabled; }
 
-    GameObject*  GetGameObject() const { return _gameObject; }
-    Transform2D* GetTransform() const { return _transform; }
-    Renderer*    GetRenderer() const { return _renderer; }
+    GameObject* GetGameObject() const { return _gameObject; }
+
+    Component*              GetComponent(const Type* type) const;
+    std::vector<Component*> GetComponents(const Type* type) const;
+
+    template<class T>
+    T* GetComponent() const;
+
+    template<class T>
+    std::vector<T*> GetComponents() const;
 
   private:
-    bool         _enabled {true};
-    GameObject*  _gameObject {nullptr};
-    Transform2D* _transform {nullptr};
-    Renderer*    _renderer {nullptr};
+    bool        _enabled {true};
+    GameObject* _gameObject {nullptr};
 };
+
+} // namespace EngineS
+
+#include "GameObject.hpp"
+
+namespace EngineS {
+
+template<class T>
+T* Component::GetComponent() const {
+    return _gameObject->GetComponent<T>();
+}
+
+template<class T>
+std::vector<T*> Component::GetComponents() const {
+    return _gameObject->GetComponents<T>();
+}
 
 } // namespace EngineS

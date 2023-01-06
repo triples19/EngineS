@@ -11,10 +11,12 @@ void TestUpdate(float deltaTime) {
 int main() {
     auto* engine = Engine::Instance();
     engine->StartEngine();
-    engine->RegisterUpdateFunc(ENGINES_CALLBACK(TestUpdate));
+    engine->RegisterUpdateFunc(TestUpdate);
     auto scene = new TestScene;
     scene->Initialize();
     SceneManager::Instance()->SetCurrentScene(scene);
+    ResourceManager::Instance()->SetAutoReload(true);
+
     engine->Run();
 
     return 0;

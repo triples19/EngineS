@@ -5,6 +5,7 @@
 using namespace EngineS;
 
 class TestComponent : public Component {
+    ES_OBJECT
   public:
-	void Update(float deltaTime) override;
+    void Update(float deltaTime) override;
 };

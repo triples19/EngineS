@@ -36,12 +36,12 @@ void Scene::Initialize() {
 }
 
 void Scene::AddGameObject(GameObject* gameObject) {
-    AddGameObject(gameObject, _rootGameObject->transform);
+    AddGameObject(gameObject, _rootGameObject->GetComponent<Transform2D>());
 }
 
 void Scene::AddGameObject(GameObject* gameObject, Transform2D* parent) {
     _gameObjects.insert(gameObject);
-    parent->AddChild(gameObject->transform);
+    parent->AddChild(gameObject->GetComponent<Transform2D>());
     gameObject->Retain();
 }
 
@@ -51,7 +51,7 @@ void Scene::RemoveGameObject(GameObject* gameObject) {
 }
 
 Transform2D* Scene::GetRootTransform() {
-    return _rootGameObject->transform;
+    return _rootGameObject->GetComponent<Transform2D>();
 }
 
 } // namespace EngineS

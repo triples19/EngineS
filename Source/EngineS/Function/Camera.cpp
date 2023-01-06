@@ -24,7 +24,7 @@ Matrix4x4 Camera::GetViewMatrix() const {
     //	return LookAt(static_cast<Vector3>(transform->position),
     //				  static_cast<Vector3>(transform->position) + Vector3(0, 0, 1),
     //				  Vector3(0, 1, 0));
-    return GetTransform()->MakeModelMatrix().InverseAffine();
+    return GetComponent<Transform2D>()->MakeModelMatrix().InverseAffine();
 }
 
 } // namespace EngineS

@@ -15,6 +15,9 @@ Type* EngineS::Component::__es_type = new Detail::TypeImpl<EngineS::Component>("
 #include "Engine/Engine.hpp"
 Type* EngineS::Engine::__es_type = new Detail::TypeImpl<EngineS::Engine>("EngineS::Engine", Object::GetTypeStatic());
 
+#include "Function/GameObject.hpp"
+Type* EngineS::GameObject::__es_type = new Detail::TypeImpl<EngineS::GameObject>("EngineS::GameObject", Object::GetTypeStatic());
+
 #include "Function/InputSystem.hpp"
 Type* EngineS::InputSystem::__es_type = new Detail::TypeImpl<EngineS::InputSystem>("EngineS::InputSystem", Object::GetTypeStatic());
 
@@ -47,6 +50,9 @@ Type* EngineS::SceneManager::__es_type = new Detail::TypeImpl<EngineS::SceneMana
 
 #include "Render/Shader.hpp"
 Type* EngineS::Shader::__es_type = new Detail::TypeImpl<EngineS::Shader>("EngineS::Shader", Resource::GetTypeStatic());
+
+#include "Render/SpriteRenderer.hpp"
+Type* EngineS::SpriteRenderer::__es_type = new Detail::TypeImpl<EngineS::SpriteRenderer>("EngineS::SpriteRenderer", Renderer::GetTypeStatic());
 
 #include "Resource/Impl/Text.hpp"
 Type* EngineS::Text::__es_type = new Detail::TypeImpl<EngineS::Text>("EngineS::Text", Resource::GetTypeStatic());

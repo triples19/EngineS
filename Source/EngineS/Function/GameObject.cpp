@@ -1,22 +1,54 @@
 #include "Function/GameObject.hpp"
 #include "Function/Component.hpp"
+#include "IO/Logger.hpp"
+#include "Reflection/Type.hpp"
 
 namespace EngineS {
 
+GameObject::~GameObject() {
+    for (const auto& comp : _components) {
+        comp->Release();
+    }
+}
+
 void GameObject::Update(float deltaTime) {
-    for (auto& pair : _components) {
-        auto& component = pair.second;
-        if (component->GetEnabled()) {
-            component->Update(deltaTime);
+    for (const auto& comp : _components) {
+        if (comp->GetEnabled()) {
+            comp->Update(deltaTime);
         }
     }
 }
 
-GameObject::~GameObject() {
-    for (const auto& pair : _components) {
-        auto& comp = pair.second;
-        comp->Release();
+Component* GameObject::AddComponent(const Type* type) {
+    auto obj  = type->CreateObject();
+    auto comp = dynamic_cast<Component*>(obj);
+    if (!comp) {
+        Logger::Error("Failed to create component of {}", type->GetName());
+        return nullptr;
     }
+    comp->Retain();
+    comp->Initialize(this);
+    _components.push_back(comp);
+    return comp;
+}
+
+Component* GameObject::GetComponent(const Type* type) const {
+    for (const auto& comp : _components) {
+        if (comp->GetType()->DerivedFrom(type)) {
+            return comp;
+        }
+    }
+    return nullptr;
+}
+
+std::vector<Component*> GameObject::GetComponents(const Type* type) const {
+    std::vector<Component*> comps;
+    for (auto& comp : _components) {
+        if (comp->GetType()->DerivedFrom(type)) {
+            comps.push_back(comp);
+        }
+    }
+    return comps;
 }
 
 } // namespace EngineS

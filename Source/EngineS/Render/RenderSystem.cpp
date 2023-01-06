@@ -58,8 +58,9 @@ void RenderSystem::Update() {
     auto* camera = scene->GetMainCamera();
 
     scene->GetRootTransform()->Visit(Matrix4x4::Identity, [](GameObject* gameObject, const Matrix4x4& model) {
-        if (gameObject->renderer) {
-            gameObject->renderer->Render(model);
+        auto renderer = gameObject->GetComponent<Renderer>();
+        if (renderer) {
+            renderer->Render(model);
         }
     });
 

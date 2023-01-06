@@ -14,7 +14,7 @@ void TestScene::Initialize() {
 
     for (auto& pos : positions) {
         auto sprite = GameObjectFactory::CreateSprite("awesomeface.png");
-        AddGameObject(sprite, root->transform);
+        AddGameObject(sprite, root->GetComponent<Transform2D>());
         auto* transform     = sprite->GetComponent<Transform2D>();
         transform->scale    = {0.2f, 0.2f};
         transform->position = pos;

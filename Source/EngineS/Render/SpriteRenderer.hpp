@@ -13,6 +13,7 @@
 namespace EngineS {
 
 class SpriteRenderer : public Renderer {
+    ES_OBJECT
     friend class RenderSystem;
 
   public:

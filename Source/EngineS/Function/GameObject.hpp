@@ -2,10 +2,6 @@
 
 #include "Base/Object.hpp"
 
-#include <memory>
-#include <type_traits>
-#include <typeindex>
-#include <unordered_map>
 #include <vector>
 
 namespace EngineS {
@@ -15,57 +11,38 @@ class Renderer;
 class Transform2D;
 
 class GameObject : public Object {
+    ES_OBJECT
   public:
     GameObject() = default;
     ~GameObject();
     virtual void Update(float deltaTime);
 
-    template<class T>
-    T* GetComponent() {
-        auto iter = _components.find(static_cast<std::type_index>(typeid(T)));
-        if (iter == _components.end())
-            return nullptr;
-        return static_cast<T*>(iter->second);
-    }
-
-    template<class T>
-    std::vector<T*> GetComponents() {
-        auto            range = _components.equal_range(static_cast<std::type_index>(typeid(T)));
-        std::vector<T*> comps;
-        comps.reserve(std::distance(range.first, range.second));
-        for (auto iter = range.first; iter != range.second; ++iter) {
-            comps.push_back(static_cast<T*>(iter->second));
-        }
-        return comps;
-    }
+    Component*              AddComponent(const Type* type);
+    Component*              GetComponent(const Type* type) const;
+    std::vector<Component*> GetComponents(const Type* type) const;
 
     template<class T>
     T* AddComponent() {
-        auto comp = new T;
-        comp->Retain();
-        comp->Initialize(this);
-        auto inserted = _components.insert(std::make_pair(static_cast<std::type_index>(typeid(T)), comp));
-        auto pointer  = static_cast<T*>(inserted->second);
-        SetPropertyIfNeeded(pointer);
-        return static_cast<T*>(pointer);
+        return static_cast<T*>(AddComponent(T::GetTypeStatic()));
     }
 
-  private:
     template<class T>
-    void SetPropertyIfNeeded(T* val) {
-        if constexpr (std::is_base_of_v<Renderer, T>) {
-            renderer = val;
-        } else if constexpr (std::is_base_of_v<Transform2D, T>) {
-            transform = val;
-        }
+    T* GetComponent() const {
+        return static_cast<T*>(GetComponent(T::GetTypeStatic()));
     }
 
-  public:
-    Transform2D* transform {nullptr};
-    Renderer*    renderer {nullptr};
+    template<class T>
+    std::vector<T*> GetComponents() const {
+        auto            comps = GetComponents(T::GetTypeStatic());
+        std::vector<T*> ret;
+        for (const auto& comp : comps) {
+            ret.push_back(static_cast<T*>(comp));
+        }
+        return ret;
+    }
 
   private:
-    std::unordered_multimap<std::type_index, Component*> _components;
+    std::vector<Component*> _components;
 };
 
 } // namespace EngineS

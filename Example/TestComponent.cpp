@@ -1,5 +1,5 @@
 #include "TestComponent.hpp"
 
 void TestComponent::Update(float deltaTime) {
-    GetTransform()->rotation += deltaTime * 30.0f;
+    GetComponent<Transform2D>()->rotation += deltaTime * 30.0f;
 }
