@@ -6,11 +6,23 @@
 
 using namespace EngineS;
 
+#include "Render/Buffer.hpp"
+Type* EngineS::Buffer::__es_type = new Detail::TypeImpl<EngineS::Buffer>("EngineS::Buffer", Object::GetTypeStatic());
+
+#include "Render/OpenGL/BufferOpenGL.hpp"
+Type* EngineS::BufferOpenGL::__es_type = new Detail::TypeImpl<EngineS::BufferOpenGL>("EngineS::BufferOpenGL", Buffer::GetTypeStatic());
+
 #include "Function/Camera.hpp"
 Type* EngineS::Camera::__es_type = new Detail::TypeImpl<EngineS::Camera>("EngineS::Camera", Component::GetTypeStatic());
 
 #include "Function/Component.hpp"
 Type* EngineS::Component::__es_type = new Detail::TypeImpl<EngineS::Component>("EngineS::Component", Object::GetTypeStatic());
+
+#include "Render/DrawList.hpp"
+Type* EngineS::DrawList::__es_type = new Detail::TypeImpl<EngineS::DrawList>("EngineS::DrawList", Object::GetTypeStatic());
+
+#include "Render/OpenGL/DrawListOpenGL.hpp"
+Type* EngineS::DrawListOpenGL::__es_type = new Detail::TypeImpl<EngineS::DrawListOpenGL>("EngineS::DrawListOpenGL", DrawList::GetTypeStatic());
 
 #include "Engine/Engine.hpp"
 Type* EngineS::Engine::__es_type = new Detail::TypeImpl<EngineS::Engine>("EngineS::Engine", Object::GetTypeStatic());
@@ -29,6 +41,15 @@ Type* EngineS::Material2D::__es_type = new Detail::TypeImpl<EngineS::Material2D>
 
 #include "Render/Program.hpp"
 Type* EngineS::Program::__es_type = new Detail::TypeImpl<EngineS::Program>("EngineS::Program", Resource::GetTypeStatic());
+
+#include "Render/OpenGL/ProgramOpenGL.hpp"
+Type* EngineS::ProgramOpenGL::__es_type = new Detail::TypeImpl<EngineS::ProgramOpenGL>("EngineS::ProgramOpenGL", Program::GetTypeStatic());
+
+#include "Render/RenderPipeline.hpp"
+Type* EngineS::RenderPipeline::__es_type = new Detail::TypeImpl<EngineS::RenderPipeline>("EngineS::RenderPipeline", Object::GetTypeStatic());
+
+#include "Render/OpenGL/RenderPipelineOpenGL.hpp"
+Type* EngineS::RenderPipelineOpenGL::__es_type = new Detail::TypeImpl<EngineS::RenderPipelineOpenGL>("EngineS::RenderPipelineOpenGL", RenderPipeline::GetTypeStatic());
 
 #include "Render/RenderSystem.hpp"
 Type* EngineS::RenderSystem::__es_type = new Detail::TypeImpl<EngineS::RenderSystem>("EngineS::RenderSystem", Object::GetTypeStatic());
@@ -49,7 +70,10 @@ Type* EngineS::Scene::__es_type = new Detail::TypeImpl<EngineS::Scene>("EngineS:
 Type* EngineS::SceneManager::__es_type = new Detail::TypeImpl<EngineS::SceneManager>("EngineS::SceneManager", Object::GetTypeStatic());
 
 #include "Render/Shader.hpp"
-Type* EngineS::Shader::__es_type = new Detail::TypeImpl<EngineS::Shader>("EngineS::Shader", Resource::GetTypeStatic());
+Type* EngineS::Shader::__es_type = new Detail::TypeImpl<EngineS::Shader>("EngineS::Shader", Object::GetTypeStatic());
+
+#include "Render/OpenGL/ShaderOpenGL.hpp"
+Type* EngineS::ShaderOpenGL::__es_type = new Detail::TypeImpl<EngineS::ShaderOpenGL>("EngineS::ShaderOpenGL", Shader::GetTypeStatic());
 
 #include "Render/SpriteRenderer.hpp"
 Type* EngineS::SpriteRenderer::__es_type = new Detail::TypeImpl<EngineS::SpriteRenderer>("EngineS::SpriteRenderer", Renderer::GetTypeStatic());
@@ -59,6 +83,9 @@ Type* EngineS::Text::__es_type = new Detail::TypeImpl<EngineS::Text>("EngineS::T
 
 #include "Render/Texture2D.hpp"
 Type* EngineS::Texture2D::__es_type = new Detail::TypeImpl<EngineS::Texture2D>("EngineS::Texture2D", Resource::GetTypeStatic());
+
+#include "Render/OpenGL/Texture2DOpenGL.hpp"
+Type* EngineS::Texture2DOpenGL::__es_type = new Detail::TypeImpl<EngineS::Texture2DOpenGL>("EngineS::Texture2DOpenGL", Texture2D::GetTypeStatic());
 
 #include "Function/Transform2D.hpp"
 Type* EngineS::Transform2D::__es_type = new Detail::TypeImpl<EngineS::Transform2D>("EngineS::Transform2D", Component::GetTypeStatic());

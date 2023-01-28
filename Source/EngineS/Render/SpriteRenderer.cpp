@@ -5,19 +5,29 @@
 #include "Function/SceneManager.hpp"
 #include "Function/Transform2D.hpp"
 #include "Math/Math.hpp"
+#include "Render/Buffer.hpp"
+#include "Render/DrawList.hpp"
 #include "Render/Material2D.hpp"
 #include "Render/Program.hpp"
+#include "Render/RenderDevice.hpp"
+#include "Render/RenderPipeline.hpp"
 #include "Render/RenderSystem.hpp"
 #include "Render/Texture2D.hpp"
 
 namespace EngineS {
 
 SpriteRenderer::SpriteRenderer() {
-    glGenVertexArrays(1, &_vao);
-    glGenBuffers(1, &_vbo);
+    auto device   = RenderDevice::Instance();
+    _vertexBuffer = device->CreateBuffer(6 * sizeof(V2F_C4F_T2F), BufferType::Vertex, BufferUsage::Dynamic);
+    _vertexBuffer->Retain();
+}
+
+SpriteRenderer::~SpriteRenderer() {
+    _vertexBuffer->Release();
 }
 
 void SpriteRenderer::Render(const Matrix4x4& modelMat) {
+    auto device = RenderDevice::Instance();
     if (!_material) {
         return;
     }
@@ -57,38 +67,43 @@ void SpriteRenderer::Render(const Matrix4x4& modelMat) {
 
     std::array<V2F_C4F_T2F, 6> buffer = {quad.tl, quad.br, quad.bl, quad.tl, quad.tr, quad.br};
 
-    glBindVertexArray(_vao);
-    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, buffer.size() * sizeof(V2F_C4F_T2F), buffer.data(), GL_STREAM_DRAW);
+    _vertexBuffer->UpdateData(reinterpret_cast<const byte*>(buffer.data()));
 
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(V2F_C4F_T2F), nullptr);
-    glEnableVertexAttribArray(0);
+    RenderPipelineDescriptor desc {
+        .program = _material->GetProgram(),
+        .vertexLayout =
+            {.attributes =
+                 {VertexAttribute {
+                      .location   = 0,
+                      .offset     = 0,
+                      .format     = VertexFormat::Float2,
+                      .normalized = false,
+                  },
+                  VertexAttribute {
+                      .location   = 1,
+                      .offset     = sizeof(Vector2),
+                      .format     = VertexFormat::Float4,
+                      .normalized = false,
+                  },
+                  VertexAttribute {
+                      .location   = 2,
+                      .offset     = sizeof(Vector2) + sizeof(Color4F),
+                      .format     = VertexFormat::Float2,
+                      .normalized = false,
+                  }},
+             .stride = sizeof(V2F_C4F_T2F)},
+        .renderPrimitive    = RenderPrimitive::Triangles,
+        .rasterizationState = {},
+    };
+    auto pipeline = device->CreateRenderPipeline(desc);
 
-    glVertexAttribPointer(
-        1,
-        4,
-        GL_FLOAT,
-        GL_FALSE,
-        sizeof(V2F_C4F_T2F),
-        reinterpret_cast<const void*>(sizeof(Vector2))
-    );
-    glEnableVertexAttribArray(1);
-
-    glVertexAttribPointer(
-        2,
-        2,
-        GL_FLOAT,
-        GL_FALSE,
-        sizeof(V2F_C4F_T2F),
-        reinterpret_cast<const void*>(sizeof(Vector2) + sizeof(Color4F))
-    );
-    glEnableVertexAttribArray(2);
-
-    glActiveTexture(GL_TEXTURE0);
-    _material->GetTexture()->Bind();
-    _material->GetProgram()->Use();
-
-    glDrawArrays(GL_TRIANGLES, 0, buffer.size());
+    auto dl = device->CreateDrawList();
+    dl->Begin();
+    dl->BindRenderPipeline(pipeline);
+    dl->BindVertexBuffer(_vertexBuffer);
+    dl->BindTexture(_material->GetTexture());
+    dl->Draw(0, buffer.size());
+    dl->End();
 }
 
 void SpriteRenderer::Initialize(GameObject* parent) {

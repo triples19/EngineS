@@ -19,39 +19,39 @@ namespace EngineS {
 //     SpriteBatch(material->GetTexture(), material->GetProgram()) {}
 
 void SpriteBatch::Draw() {
-    glBindVertexArray(_vao);
-    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, _triangles.size() * sizeof(Triangle), _triangles.data(), GL_STREAM_DRAW);
-
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(V2F_C4F_T2F), nullptr);
-    glEnableVertexAttribArray(0);
-
-    glVertexAttribPointer(
-        1,
-        4,
-        GL_FLOAT,
-        GL_FALSE,
-        sizeof(V2F_C4F_T2F),
-        reinterpret_cast<const void*>(sizeof(Vector2))
-    );
-    glEnableVertexAttribArray(1);
-
-    glVertexAttribPointer(
-        2,
-        2,
-        GL_FLOAT,
-        GL_FALSE,
-        sizeof(V2F_C4F_T2F),
-        reinterpret_cast<const void*>(sizeof(Vector2) + sizeof(Color4F))
-    );
-    glEnableVertexAttribArray(2);
-
-    glActiveTexture(GL_TEXTURE0);
-    _texture->Bind();
-
-    _program->Use();
-
-    glDrawArrays(GL_TRIANGLES, 0, 3 * _triangles.size());
+    //    glBindVertexArray(_vao);
+    //    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+    //    glBufferData(GL_ARRAY_BUFFER, _triangles.size() * sizeof(Triangle), _triangles.data(), GL_STREAM_DRAW);
+    //
+    //    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(V2F_C4F_T2F), nullptr);
+    //    glEnableVertexAttribArray(0);
+    //
+    //    glVertexAttribPointer(
+    //        1,
+    //        4,
+    //        GL_FLOAT,
+    //        GL_FALSE,
+    //        sizeof(V2F_C4F_T2F),
+    //        reinterpret_cast<const void*>(sizeof(Vector2))
+    //    );
+    //    glEnableVertexAttribArray(1);
+    //
+    //    glVertexAttribPointer(
+    //        2,
+    //        2,
+    //        GL_FLOAT,
+    //        GL_FALSE,
+    //        sizeof(V2F_C4F_T2F),
+    //        reinterpret_cast<const void*>(sizeof(Vector2) + sizeof(Color4F))
+    //    );
+    //    glEnableVertexAttribArray(2);
+    //
+    //    glActiveTexture(GL_TEXTURE0);
+    //    _texture->Bind();
+    //
+    //    _program->Use();
+    //
+    //    glDrawArrays(GL_TRIANGLES, 0, 3 * _triangles.size());
 }
 
 void SpriteBatch::Add(const Matrix4x4& modelMat, const Vector2& anchor, const Color4F& color) {

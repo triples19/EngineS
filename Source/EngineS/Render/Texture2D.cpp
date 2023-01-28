@@ -7,11 +7,6 @@
 
 namespace EngineS {
 
-Texture2D::~Texture2D() {
-    if (_id)
-        glDeleteTextures(1, &_id);
-}
-
 bool Texture2D::Load(const std::filesystem::path& path) {
     int  width, height, nrChannels;
     auto data = stbi_load(path.string().c_str(), &width, &height, &nrChannels, 0);
@@ -19,31 +14,28 @@ bool Texture2D::Load(const std::filesystem::path& path) {
         Logger::Error("Failed to load image");
         return false;
     }
+
     if (nrChannels == 4) {
-        _internalFormat = GL_RGBA;
-        _imageFormat    = GL_RGBA;
+        _format = PixelFormat::RGBA8888;
+    } else {
+        _format = PixelFormat::RGB888;
     }
-    Generate(width, height, data);
+    _width  = width;
+    _height = height;
+
+    TextureDescriptor desc {
+        .textureType       = TextureType::Texture2D,
+        .textureFormat     = _format,
+        .textureUsage      = TextureUsage::Read,
+        .width             = _width,
+        .height            = _height,
+        .samplerDescriptor = {},
+    };
+    Init(desc);
+    UpdateData(reinterpret_cast<const byte*>(data));
+
     stbi_image_free(data);
     return true;
-}
-
-void Texture2D::Generate(unsigned int width, unsigned int height, unsigned char* data) {
-    this->_width  = width;
-    this->_height = height;
-
-    glGenTextures(1, &_id);
-    glBindTexture(GL_TEXTURE_2D, _id);
-    glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, width, height, 0, _imageFormat, GL_UNSIGNED_BYTE, data);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, _wrapS);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, _wrapT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _filterMin);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _filterMax);
-    glBindTexture(GL_TEXTURE_2D, 0);
-}
-
-void Texture2D::Bind() const {
-    glBindTexture(GL_TEXTURE_2D, _id);
 }
 
 } // namespace EngineS

@@ -33,22 +33,9 @@ class RenderSystem : public Object {
 
     void Update();
 
-    // void AddToBatch(
-    //     std::shared_ptr<Material2D> material,
-    //     const Matrix4x4&            modelMat,
-    //     const Vector2&              anchor,
-    //     const Color4F&              color
-    // );
-
-    // std::shared_ptr<Material2D>
-    // GetOrCreateMaterial(std::shared_ptr<Program> program, std::shared_ptr<Texture2D> texture);
-
   private:
     GLFWwindow* _window;
     DeviceInfo  _deviceInfo;
-
-    // std::unordered_map<std::size_t, std::shared_ptr<Material2D>> _materials;
-    // std::unordered_map<unsigned int, SpriteBatch>                _batches;
 };
 
 } // namespace EngineS

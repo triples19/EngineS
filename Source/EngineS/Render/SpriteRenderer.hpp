@@ -5,12 +5,14 @@
 #include "Base/SharedPtr.hpp"
 #include "Function/Component.hpp"
 #include "Math/Math.hpp"
-#include "Platform/GLCommon.hpp"
 #include "Render/BufferTypes.hpp"
 #include "Render/Material2D.hpp"
 #include "Render/Renderer.hpp"
 
 namespace EngineS {
+
+class Buffer;
+class RenderPipeline;
 
 class SpriteRenderer : public Renderer {
     ES_OBJECT
@@ -18,6 +20,7 @@ class SpriteRenderer : public Renderer {
 
   public:
     SpriteRenderer();
+    ~SpriteRenderer();
 
     virtual void Render(const Matrix4x4& modelMat) override;
 
@@ -32,10 +35,10 @@ class SpriteRenderer : public Renderer {
     void           SetColor(const Color4F& color) { _color = color; }
 
   private:
-    GLuint                _vao, _vbo;
     SharedPtr<Material2D> _material;
     Color4F               _color {Color4F::White};
     Vector2               _anchor {0.5f, 0.5f};
+    Buffer*               _vertexBuffer;
 };
 
 } // namespace EngineS
