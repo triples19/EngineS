@@ -3,6 +3,7 @@
 #include "Math/Math.hpp"
 
 #include <cstdint>
+#include <tuple>
 
 namespace EngineS {
 
@@ -31,6 +32,8 @@ struct Color4F {
     Color4F(float _r, float _g, float _b, float _a) : r {_r}, g {_g}, b {_b}, a {_a} {}
     Color4F(const Color4B& color) :
         r {color.a / 255.0f}, g {color.g / 255.0f}, b {color.b / 255.0f}, a {color.a / 255.0f} {}
+
+    std::tuple<float, float, float, float> Values() const { return {r, g, b, a}; }
 
     static const Color4F White;
     static const Color4F Yellow;
