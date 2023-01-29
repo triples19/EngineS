@@ -1,6 +1,7 @@
 #include "Render/OpenGL/RenderDeviceOpenGL.hpp"
 #include "Render/OpenGL/BufferOpenGL.hpp"
 #include "Render/OpenGL/DrawListOpenGL.hpp"
+#include "Render/OpenGL/FramebufferOpenGL.hpp"
 #include "Render/OpenGL/ProgramOpenGL.hpp"
 #include "Render/OpenGL/RenderPipelineOpenGL.hpp"
 #include "Render/OpenGL/ShaderOpenGL.hpp"
@@ -62,6 +63,14 @@ RenderPipeline* RenderDeviceOpenGL::CreateRenderPipeline(const RenderPipelineDes
 
 const Type* RenderDeviceOpenGL::GetRenderPipelineType() {
     return RenderPipelineOpenGL::GetTypeStatic();
+}
+
+Framebuffer* RenderDeviceOpenGL::CreateFramebuffer(const FramebufferDescriptor& desc) {
+    return new FramebufferOpenGL(desc);
+}
+
+const Type* RenderDeviceOpenGL::GetFramebufferType() {
+    return FramebufferOpenGL::GetTypeStatic();
 }
 
 } // namespace EngineS

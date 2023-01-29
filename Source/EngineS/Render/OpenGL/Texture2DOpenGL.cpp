@@ -10,6 +10,8 @@ Texture2DOpenGL::~Texture2DOpenGL() {
 }
 
 void Texture2DOpenGL::Init(const TextureDescriptor& desc) {
+    Texture2D::Init(desc);
+
     UtilsOpenGL::ConvertPixelFormat(desc.textureFormat, _internalFormat, _imageFormat, _dataType);
 
     _wrapS = UtilsOpenGL::ConvertAddressMode(desc.samplerDescriptor.sAddressMode);
@@ -22,6 +24,7 @@ void Texture2DOpenGL::Init(const TextureDescriptor& desc) {
     _height = desc.height;
 
     glGenTextures(1, &_texture);
+    UpdateData(nullptr);
     UtilsOpenGL::CheckError();
 }
 

@@ -9,8 +9,12 @@ class Shader;
 class Program;
 class Buffer;
 class Texture2D;
+struct TextureDescriptor;
 class DrawList;
 class RenderPipeline;
+struct RenderPipelineDescriptor;
+class Framebuffer;
+struct FramebufferDescriptor;
 
 class RenderDevice {
   public:
@@ -35,6 +39,9 @@ class RenderDevice {
 
     virtual RenderPipeline* CreateRenderPipeline(const RenderPipelineDescriptor& desc) = 0;
     virtual const Type*     GetRenderPipelineType()                                    = 0;
+
+    virtual Framebuffer* CreateFramebuffer(const FramebufferDescriptor& desc) = 0;
+    virtual const Type* GetFramebufferType() = 0;
 };
 
 } // namespace EngineS

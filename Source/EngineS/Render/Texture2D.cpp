@@ -38,4 +38,10 @@ bool Texture2D::Load(const std::filesystem::path& path) {
     return true;
 }
 
+void Texture2D::Init(const TextureDescriptor& desc) {
+    _width  = desc.width;
+    _height = desc.height;
+    _format = desc.textureFormat;
+}
+
 } // namespace EngineS

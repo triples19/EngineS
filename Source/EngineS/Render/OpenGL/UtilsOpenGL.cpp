@@ -3,10 +3,34 @@
 
 namespace EngineS {
 
-bool UtilsOpenGL::CheckError() {
+std::string GetErrorStringGL(GLenum const err) noexcept {
+    switch (err) {
+        case GL_NO_ERROR:
+            return "GL_NO_ERROR";
+        case GL_INVALID_ENUM:
+            return "GL_INVALID_ENUM";
+        case GL_INVALID_VALUE:
+            return "GL_INVALID_VALUE";
+        case GL_INVALID_OPERATION:
+            return "GL_INVALID_OPERATION";
+        case GL_STACK_OVERFLOW:
+            return "GL_STACK_OVERFLOW";
+        case GL_STACK_UNDERFLOW:
+            return "GL_STACK_UNDERFLOW";
+        case GL_OUT_OF_MEMORY:
+            return "GL_OUT_OF_MEMORY";
+        case GL_INVALID_FRAMEBUFFER_OPERATION:
+            return "GL_INVALID_FRAMEBUFFER_OPERATION";
+        default:
+            return "";
+    }
+}
+
+bool UtilsOpenGL::CheckError(const std::source_location& loc) {
     GLenum error = glGetError();
     if (error) {
-        Logger::Error("OpenGL error 0x{:04X}", error);
+        auto errorStr = GetErrorStringGL(error);
+        Logger::Error<GLenum&, std::string&>("OpenGL error 0x{:04X}: {}", error, errorStr, loc);
         return true;
     }
     return false;
@@ -30,6 +54,12 @@ void UtilsOpenGL::ConvertPixelFormat(PixelFormat pixelFormat, GLint& interalForm
             interalFormat = GL_RGBA;
             format        = GL_RGBA;
             type          = GL_UNSIGNED_SHORT_4_4_4_4;
+            break;
+        }
+        case PixelFormat::D16: {
+            interalFormat = GL_DEPTH_COMPONENT;
+            format        = GL_DEPTH_COMPONENT;
+            type          = GL_UNSIGNED_INT;
             break;
         }
     }

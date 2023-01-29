@@ -26,6 +26,9 @@ class RenderDeviceOpenGL : public RenderDevice {
 
     RenderPipeline* CreateRenderPipeline(const RenderPipelineDescriptor& desc) override;
     const Type*     GetRenderPipelineType() override;
+
+    Framebuffer* CreateFramebuffer(const FramebufferDescriptor& desc) override;
+    const Type*  GetFramebufferType() override;
 };
 
 } // namespace EngineS

@@ -26,7 +26,7 @@ SpriteRenderer::~SpriteRenderer() {
     _vertexBuffer->Release();
 }
 
-void SpriteRenderer::Render(const Matrix4x4& modelMat) {
+void SpriteRenderer::Render(const Matrix4x4& modelMat, DrawList* drawList) {
     auto device = RenderDevice::Instance();
     if (!_material) {
         return;
@@ -97,13 +97,11 @@ void SpriteRenderer::Render(const Matrix4x4& modelMat) {
     };
     auto pipeline = device->CreateRenderPipeline(desc);
 
-    auto dl = device->CreateDrawList();
-    dl->Begin();
-    dl->BindRenderPipeline(pipeline);
-    dl->BindVertexBuffer(_vertexBuffer);
-    dl->BindTexture(_material->GetTexture());
-    dl->Draw(0, buffer.size());
-    dl->End();
+    drawList->BindRenderPipeline(pipeline);
+    drawList->BindVertexBuffer(_vertexBuffer);
+    drawList->BindTexture(_material->GetTexture());
+    drawList->Draw(0, buffer.size());
+
 }
 
 void SpriteRenderer::Initialize(GameObject* parent) {

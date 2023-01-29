@@ -8,8 +8,11 @@
 #include "Function/Transform2D.hpp"
 #include "Math/Math.hpp"
 #include "Render/DeviceInfo.hpp"
+#include "Render/DrawList.hpp"
+#include "Render/Framebuffer.hpp"
 #include "Render/Material2D.hpp"
 #include "Render/Program.hpp"
+#include "Render/RenderDevice.hpp"
 #include "Render/SpriteRenderer.hpp"
 #include "Render/Texture2D.hpp"
 #include "Render/WindowSystem.hpp"
@@ -26,8 +29,14 @@ RenderSystem* RenderSystem::Instance() {
     return s_SharedInstance;
 }
 
-RenderSystem::RenderSystem()  = default;
-RenderSystem::~RenderSystem() = default;
+RenderSystem::RenderSystem() = default;
+
+RenderSystem::~RenderSystem() {
+    if (_colorTex)
+        _colorTex->Release();
+    if (_framebuffer)
+        _framebuffer->Release();
+}
 
 void RenderSystem::Initialize() {
     _window = WindowSystem::Instance()->GetWindow();
@@ -44,51 +53,57 @@ void RenderSystem::Initialize() {
 
     WindowSystem::Instance()->RegisterOnWindowSizeFunc([](int w, int h) { glViewport(0, 0, w, h); });
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    auto device = RenderDevice::Instance();
+    _colorTex   = device->CreateTexture2D();
+    _colorTex->Init(TextureDescriptor {
+        .textureType       = TextureType::Texture2D,
+        .textureFormat     = PixelFormat::RGBA8888,
+        .textureUsage      = TextureUsage::RenderTarget,
+        .width             = static_cast<u32>(std::get<0>(WindowSystem::Instance()->GetWindowSize())),
+        .height            = static_cast<u32>(std::get<1>(WindowSystem::Instance()->GetWindowSize())),
+        .samplerDescriptor = {},
+    });
+    _colorTex->Retain();
+
+    //    _depthTex = device->CreateTexture2D();
+    //    _depthTex->Init(TextureDescriptor {
+    //        .textureType       = TextureType::Texture2D,
+    //        .textureFormat     = PixelFormat::D16,
+    //        .textureUsage      = TextureUsage::RenderTarget,
+    //        .width             = static_cast<u32>(std::get<0>(WindowSystem::Instance()->GetWindowSize())),
+    //        .height            = static_cast<u32>(std::get<1>(WindowSystem::Instance()->GetWindowSize())),
+    //        .samplerDescriptor = {},
+    //    });
+
+    _framebuffer = device->CreateFramebuffer(FramebufferDescriptor {
+        .colorAttachments = {Attachment {.texture = _colorTex}},
+    });
+    _framebuffer->Retain();
 }
 
 void RenderSystem::Update() {
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    auto device = RenderDevice::Instance();
+
+    auto drawList = device->CreateDrawList();
+    drawList->Begin(RenderPassDescriptor {
+        .framebuffer     = _framebuffer,
+        .clearColor      = true,
+        .clearColorValue = {0.2f, 0.3f, 0.3f, 1.0f},
+    });
 
     auto* scene  = SceneManager::Instance()->GetCurrentScene();
     auto* camera = scene->GetMainCamera();
 
-    scene->GetRootTransform()->Visit(Matrix4x4::Identity, [](GameObject* gameObject, const Matrix4x4& model) {
+    scene->GetRootTransform()->Visit(Matrix4x4::Identity, [drawList](GameObject* gameObject, const Matrix4x4& model) {
         auto renderer = gameObject->GetComponent<Renderer>();
         if (renderer) {
-            renderer->Render(model);
+            renderer->Render(model, drawList);
         }
     });
 
+    drawList->End();
+
     glfwSwapBuffers(_window);
-    glCheckError();
 }
-
-// void RenderSystem::AddToBatch(
-//     std::shared_ptr<Material2D> material,
-//     const Matrix4x4&            modelMat,
-//     const Vector2&              anchor,
-//     const Color4F&              color
-// ) {
-//     auto iter = _batches.find(material->GetID());
-//     if (iter == _batches.end()) {
-//         iter = _batches.try_emplace(material->GetID(), material).first;
-//     }
-//     auto& batch = iter->second;
-//     batch.Add(modelMat, anchor, color);
-// }
-
-// std::shared_ptr<Material2D>
-// RenderSystem::GetOrCreateMaterial(std::shared_ptr<Program> program, std::shared_ptr<Texture2D> texture) {
-//     hash32 hash = 0;
-//     HashCombine(hash, program->GetID(), texture->GetID());
-//     auto iter = _materials.find(hash);
-//     if (iter == _materials.end()) {
-//         iter = _materials.try_emplace(hash, std::make_shared<Material2D>(program, texture)).first;
-//     }
-//     return iter->second;
-// }
 
 } // namespace EngineS

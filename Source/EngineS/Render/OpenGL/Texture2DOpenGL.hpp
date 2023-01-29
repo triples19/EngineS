@@ -14,6 +14,8 @@ class Texture2DOpenGL : public Texture2D {
     void UpdateData(const byte* data) override;
     void Apply(u32 index) const override;
 
+    GLuint GetHandler() const { return _texture; }
+
   private:
     GLuint  _texture {0};
     GLsizei _width, _height;

@@ -17,6 +17,7 @@ class Transform2D;
 class Program;
 class Texture2D;
 class DeviceInfo;
+class Framebuffer;
 
 class RenderSystem : public Object {
     ES_OBJECT
@@ -26,16 +27,16 @@ class RenderSystem : public Object {
     RenderSystem();
     ~RenderSystem();
 
-    /**
-     * Called after glfw window is initialized
-     */
     void Initialize();
 
     void Update();
 
   private:
-    GLFWwindow* _window;
-    DeviceInfo  _deviceInfo;
+    GLFWwindow*  _window;
+    DeviceInfo   _deviceInfo;
+    Framebuffer* _framebuffer;
+    Texture2D*   _colorTex;
+    Texture2D*   _depthTex;
 };
 
 } // namespace EngineS

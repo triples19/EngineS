@@ -4,10 +4,6 @@
 
 namespace EngineS {
 
-RenderPipelineOpenGL::RenderPipelineOpenGL(const RenderPipelineDescriptor& desc) {
-    _program         = static_cast<ProgramOpenGL*>(desc.program)->GetHandler();
-    _vertexLayout    = desc.vertexLayout;
-    _renderPrimitive = UtilsOpenGL::ConvertRenderPrimitive(desc.renderPrimitive);
-}
+RenderPipelineOpenGL::RenderPipelineOpenGL(const RenderPipelineDescriptor& desc) : RenderPipeline(desc) {}
 
 } // namespace EngineS

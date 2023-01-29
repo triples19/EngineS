@@ -47,6 +47,7 @@ enum class PixelFormat : u32 {
     RGBA8888,
     RGB888,
     RGBA4444,
+    D16,
 };
 
 enum class TextureType : u32 {
@@ -94,49 +95,6 @@ enum class CullMode : u32 {
 enum class FrontFace : u32 {
     Clockwise,
     CounterClockwise,
-};
-
-struct SamplerDescriptor {
-    SamplerFilter      magFilter {SamplerFilter::Linear};
-    SamplerFilter      minFilter {SamplerFilter::Linear};
-    SamplerAddressMode sAddressMode {SamplerAddressMode::ClampToEdge};
-    SamplerAddressMode tAddressMode {SamplerAddressMode::ClampToEdge};
-};
-
-struct TextureDescriptor {
-    TextureType       textureType {TextureType::Texture2D};
-    PixelFormat       textureFormat {PixelFormat::RGBA8888};
-    TextureUsage      textureUsage {TextureUsage::Read};
-    u32               width {0};
-    u32               height {0};
-    u32               depth {0};
-    SamplerDescriptor samplerDescriptor {};
-};
-
-struct VertexAttribute {
-    u32          location;
-    u32          offset;
-    VertexFormat format;
-    bool         normalized {false};
-};
-
-struct VertexLayout {
-    std::vector<VertexAttribute> attributes {};
-    size_t                       stride {0};
-};
-
-struct RenderPipelineRasterizationState {
-    bool      wireframe {false};
-    CullMode  cullMode {CullMode::Back};
-    FrontFace frontFace {FrontFace::CounterClockwise};
-    float     lineWidth {1.0};
-};
-
-struct RenderPipelineDescriptor {
-    Program*                         program;
-    VertexLayout                     vertexLayout;
-    RenderPrimitive                  renderPrimitive;
-    RenderPipelineRasterizationState rasterizationState;
 };
 
 } // namespace EngineS

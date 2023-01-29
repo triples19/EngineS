@@ -3,12 +3,13 @@
 #include "Render/RenderTypes.hpp"
 
 #include <glad/glad.h>
+#include <source_location>
 
 namespace EngineS {
 
 class UtilsOpenGL {
   public:
-    static bool CheckError();
+    static bool CheckError(const std::source_location& loc = std::source_location::current());
 
     static void ConvertPixelFormat(PixelFormat pixelFormat, GLint& interalFormat, GLuint& format, GLenum& type);
 

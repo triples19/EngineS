@@ -5,14 +5,31 @@
 
 namespace EngineS {
 
+struct SamplerDescriptor {
+    SamplerFilter      magFilter {SamplerFilter::Linear};
+    SamplerFilter      minFilter {SamplerFilter::Linear};
+    SamplerAddressMode sAddressMode {SamplerAddressMode::ClampToEdge};
+    SamplerAddressMode tAddressMode {SamplerAddressMode::ClampToEdge};
+};
+
+struct TextureDescriptor {
+    TextureType       textureType {TextureType::Texture2D};
+    PixelFormat       textureFormat {PixelFormat::RGBA8888};
+    TextureUsage      textureUsage {TextureUsage::Read};
+    u32               width {0};
+    u32               height {0};
+    u32               depth {0};
+    SamplerDescriptor samplerDescriptor {};
+};
+
 class Texture2D : public Resource {
     ES_OBJECT
   public:
     virtual bool Load(const std::filesystem::path& path) override;
 
-    virtual void Init(const TextureDescriptor& desc) = 0;
-    virtual void UpdateData(const byte* data)        = 0;
-    virtual void Apply(u32 index) const              = 0;
+    virtual void Init(const TextureDescriptor& desc);
+    virtual void UpdateData(const byte* data) = 0;
+    virtual void Apply(u32 index) const       = 0;
 
     u32 GetWidth() const { return _width; }
     u32 GetHeight() const { return _height; }

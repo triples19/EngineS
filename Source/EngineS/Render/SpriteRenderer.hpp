@@ -13,6 +13,7 @@ namespace EngineS {
 
 class Buffer;
 class RenderPipeline;
+class DrawList;
 
 class SpriteRenderer : public Renderer {
     ES_OBJECT
@@ -22,7 +23,7 @@ class SpriteRenderer : public Renderer {
     SpriteRenderer();
     ~SpriteRenderer();
 
-    virtual void Render(const Matrix4x4& modelMat) override;
+    virtual void Render(const Matrix4x4& modelMat, DrawList* drawList) override;
 
     virtual void Initialize(GameObject* parent) override;
 
