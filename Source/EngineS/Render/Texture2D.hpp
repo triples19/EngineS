@@ -20,6 +20,7 @@ struct TextureDescriptor {
     u32               height {0};
     u32               depth {0};
     SamplerDescriptor samplerDescriptor {};
+    const byte*       data {nullptr};
 };
 
 class Texture2D : public Resource {
@@ -28,8 +29,8 @@ class Texture2D : public Resource {
     virtual bool Load(const std::filesystem::path& path) override;
 
     virtual void Init(const TextureDescriptor& desc);
-    virtual void UpdateData(const byte* data) = 0;
-    virtual void Apply(u32 index) const       = 0;
+    virtual void UpdateData(const byte* data, u32 width, u32 height);
+    virtual void Apply(u32 index) const = 0;
 
     u32 GetWidth() const { return _width; }
     u32 GetHeight() const { return _height; }

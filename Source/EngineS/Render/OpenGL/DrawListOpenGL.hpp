@@ -12,6 +12,7 @@ class DrawListOpenGL : public DrawList {
     ES_OBJECT
   public:
     void Begin(const RenderPassDescriptor& desc) override;
+    void SetViewport(i32 x, i32 y, u32 w, u32 h) override;
     void BindRenderPipeline(const RenderPipeline* pipeline) override;
     void BindVertexBuffer(const Buffer* buffer) override;
     void BindTexture(const Texture2D* texture) override;

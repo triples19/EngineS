@@ -1,12 +1,8 @@
 #pragma once
 
-#include "Platform/GLCommon.hpp"
+#include "Base/Object.hpp"
 #include "Render/DeviceInfo.hpp"
-#include "Render/Program.hpp"
-#include "Render/SpriteBatch.hpp"
-#include "Resource/ResourceManager.hpp"
 
-#include <GLFW/glfw3.h>
 #include <memory>
 #include <utility>
 
@@ -32,11 +28,13 @@ class RenderSystem : public Object {
     void Update();
 
   private:
-    GLFWwindow*  _window;
+    void OnWindowSizeChange(u32 width, u32 height);
+
+  private:
     DeviceInfo   _deviceInfo;
-    Framebuffer* _framebuffer;
-    Texture2D*   _colorTex;
-    Texture2D*   _depthTex;
+    Framebuffer* _framebuffer {nullptr};
+    Texture2D*   _colorTex {nullptr};
+    Texture2D*   _depthTex {nullptr};
 };
 
 } // namespace EngineS

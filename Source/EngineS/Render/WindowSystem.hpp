@@ -3,9 +3,10 @@
 #include "Base/Object.hpp"
 
 #include <functional>
-#include <GLFW/glfw3.h>
 #include <string>
 #include <vector>
+
+struct GLFWwindow;
 
 namespace EngineS {
 
@@ -19,11 +20,12 @@ class WindowSystem : public Object {
 
     void                 Initialize();
     void                 PollEvents() const;
+    void                 SwapBuffers() const;
     bool                 ShouldClose() const;
     void                 SetTitle(const std::string& title);
-    void                 SetWindowSize(int width, int height);
+    void                 SetWindowSize(u32 width, u32 height);
     GLFWwindow*          GetWindow() const;
-    std::tuple<int, int> GetWindowSize() const;
+    std::tuple<u32, u32> GetWindowSize() const;
 
     using OnResetFunc       = std::function<void()>;
     using OnKeyFunc         = std::function<void(int, int, int, int)>;
@@ -34,7 +36,7 @@ class WindowSystem : public Object {
     using OnCursorPosFunc   = std::function<void(double, double)>;
     using OnScrollFunc      = std::function<void(double, double)>;
     using OnDropFunc        = std::function<void(int, const char**)>;
-    using OnWindowSizeFunc  = std::function<void(int, int)>;
+    using OnWindowSizeFunc  = std::function<void(u32, u32)>;
     using OnWindowCloseFunc = std::function<void()>;
 
     void RegisterOnResetFunc(OnResetFunc func) { _onResetFuncs.push_back(func); }
@@ -86,7 +88,7 @@ class WindowSystem : public Object {
         for (auto& func : _onDropFuncs) func(count, paths);
     }
 
-    void OnWindowSize(int width, int height) {
+    void OnWindowSize(u32 width, u32 height) {
         _width  = width;
         _height = height;
         for (auto& func : _onWindowSizeFuncs) func(width, height);
@@ -98,8 +100,8 @@ class WindowSystem : public Object {
 
   private:
     GLFWwindow* _window = nullptr;
-    int         _width  = 1280;
-    int         _height = 720;
+    u32         _width  = 1280;
+    u32         _height = 720;
     std::string _title  = "Game";
 
     std::vector<OnResetFunc>       _onResetFuncs;

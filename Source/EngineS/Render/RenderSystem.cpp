@@ -16,6 +16,7 @@
 #include "Render/SpriteRenderer.hpp"
 #include "Render/Texture2D.hpp"
 #include "Render/WindowSystem.hpp"
+#include "Resource/ResourceManager.hpp"
 
 namespace EngineS {
 
@@ -34,34 +35,34 @@ RenderSystem::RenderSystem() = default;
 RenderSystem::~RenderSystem() {
     if (_colorTex)
         _colorTex->Release();
+    if (_depthTex)
+        _depthTex->Release();
     if (_framebuffer)
         _framebuffer->Release();
 }
 
 void RenderSystem::Initialize() {
-    _window = WindowSystem::Instance()->GetWindow();
-
-    if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
-        Logger::Error("Failed to initialize GLAD");
-        return;
-    }
+    // Must initialize render device first!
+    auto device = RenderDevice::Instance();
 
     Logger::Info("Initializing RenderSystem (OpenGL)");
     Logger::Info("Vendor:\t{}", _deviceInfo.GetVendor());
     Logger::Info("Version:\t{}", _deviceInfo.GetVersion());
     Logger::Info("Renderer:\t{}", _deviceInfo.GetRenderer());
 
-    WindowSystem::Instance()->RegisterOnWindowSizeFunc([](int w, int h) { glViewport(0, 0, w, h); });
+    WindowSystem::Instance()->RegisterOnWindowSizeFunc([this](u32 w, u32 h) { this->OnWindowSizeChange(w, h); });
 
-    auto device = RenderDevice::Instance();
-    _colorTex   = device->CreateTexture2D();
+    auto [width, height] = WindowSystem::Instance()->GetWindowSize();
+
+    _colorTex = device->CreateTexture2D();
     _colorTex->Init(TextureDescriptor {
         .textureType       = TextureType::Texture2D,
         .textureFormat     = PixelFormat::RGBA8888,
         .textureUsage      = TextureUsage::RenderTarget,
-        .width             = static_cast<u32>(std::get<0>(WindowSystem::Instance()->GetWindowSize())),
-        .height            = static_cast<u32>(std::get<1>(WindowSystem::Instance()->GetWindowSize())),
+        .width             = width,
+        .height            = height,
         .samplerDescriptor = {},
+        .data              = nullptr,
     });
     _colorTex->Retain();
 
@@ -70,8 +71,8 @@ void RenderSystem::Initialize() {
     //        .textureType       = TextureType::Texture2D,
     //        .textureFormat     = PixelFormat::D16,
     //        .textureUsage      = TextureUsage::RenderTarget,
-    //        .width             = static_cast<u32>(std::get<0>(WindowSystem::Instance()->GetWindowSize())),
-    //        .height            = static_cast<u32>(std::get<1>(WindowSystem::Instance()->GetWindowSize())),
+    //        .width             = width,
+    //        .height            = height,
     //        .samplerDescriptor = {},
     //    });
 
@@ -91,6 +92,9 @@ void RenderSystem::Update() {
         .clearColorValue = {0.2f, 0.3f, 0.3f, 1.0f},
     });
 
+    auto [winWidth, winHeight] = WindowSystem::Instance()->GetWindowSize();
+    drawList->SetViewport(0, 0, winWidth, winHeight);
+
     auto* scene  = SceneManager::Instance()->GetCurrentScene();
     auto* camera = scene->GetMainCamera();
 
@@ -103,7 +107,14 @@ void RenderSystem::Update() {
 
     drawList->End();
 
-    glfwSwapBuffers(_window);
+    WindowSystem::Instance()->SwapBuffers();
+}
+
+void RenderSystem::OnWindowSizeChange(u32 width, u32 height) {
+    if (_colorTex)
+        _colorTex->UpdateData(nullptr, width, height);
+    if (_depthTex)
+        _depthTex->UpdateData(nullptr, width, height);
 }
 
 } // namespace EngineS

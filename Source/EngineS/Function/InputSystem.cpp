@@ -31,7 +31,7 @@ void InputSystem::Update() {
 void InputSystem::OnKey(int key, int scanCode, int action, int mods) {
     auto  code          = static_cast<KeyCode>(key);
     auto& state         = _keys[code];
-    state.downThisFrame = (action != GLFW_RELEASE);
+    state.downThisFrame = (action != 0); // GLFW_RELEASE=0
 }
 
 bool InputSystem::GetKey(KeyCode key) {
