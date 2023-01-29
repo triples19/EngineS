@@ -7,9 +7,16 @@
 #include "Render/OpenGL/ShaderOpenGL.hpp"
 #include "Render/OpenGL/Texture2DOpenGL.hpp"
 
+#include <GLFW/glfw3.h>
+
 namespace EngineS {
 
 RenderDeviceOpenGL::RenderDeviceOpenGL() {
+    if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
+        Logger::Error("Failed to initialize GLAD");
+        return;
+    }
+
     GLuint vao;
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);

@@ -2,6 +2,8 @@
 #include "Base/Macros.hpp"
 #include "IO/Logger.hpp"
 
+#include <GLFW/glfw3.h>
+
 #define GLFW_CALLBACK(functionName)                                                          \
     [](GLFWwindow* window, auto... args) {                                                   \
         static_cast<WindowSystem*>(glfwGetWindowUserPointer(window))->functionName(args...); \
@@ -65,6 +67,10 @@ void WindowSystem::PollEvents() const {
     glfwPollEvents();
 }
 
+void WindowSystem::SwapBuffers() const {
+    glfwSwapBuffers(_window);
+}
+
 bool WindowSystem::ShouldClose() const {
     return glfwWindowShouldClose(_window);
 }
@@ -73,7 +79,7 @@ void WindowSystem::SetTitle(const std::string& title) {
     glfwSetWindowTitle(_window, title.c_str());
 }
 
-void WindowSystem::SetWindowSize(int width, int height) {
+void WindowSystem::SetWindowSize(u32 width, u32 height) {
     _width  = width;
     _height = height;
     glfwSetWindowSize(_window, width, height);
@@ -83,7 +89,7 @@ GLFWwindow* WindowSystem::GetWindow() const {
     return _window;
 }
 
-std::tuple<int, int> WindowSystem::GetWindowSize() const {
+std::tuple<u32, u32> WindowSystem::GetWindowSize() const {
     return {_width, _height};
 }
 

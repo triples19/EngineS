@@ -20,22 +20,25 @@ void Texture2DOpenGL::Init(const TextureDescriptor& desc) {
     _minFilter = UtilsOpenGL::ConvertFilter(desc.samplerDescriptor.minFilter);
     _magFilter = UtilsOpenGL::ConvertFilter(desc.samplerDescriptor.magFilter);
 
-    _width  = desc.width;
-    _height = desc.height;
-
+    if (_texture) {
+        glDeleteTextures(1, &_texture);
+    }
     glGenTextures(1, &_texture);
-    UpdateData(nullptr);
+
+    UpdateData(desc.data, desc.width, desc.height);
     UtilsOpenGL::CheckError();
 }
 
-void Texture2DOpenGL::UpdateData(const byte* data) {
+void Texture2DOpenGL::UpdateData(const byte* data, u32 width, u32 height) {
+    Texture2D::UpdateData(data, width, height);
+
     glBindTexture(GL_TEXTURE_2D, _texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, _wrapS);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, _wrapT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _minFilter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _magFilter);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, _width, _height, 0, _imageFormat, _dataType, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, width, height, 0, _imageFormat, _dataType, data);
 
     UtilsOpenGL::CheckError();
 

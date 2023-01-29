@@ -5,6 +5,8 @@
 
 namespace EngineS {
 
+class Program;
+
 struct VertexAttribute {
     u32          location;
     u32          offset;

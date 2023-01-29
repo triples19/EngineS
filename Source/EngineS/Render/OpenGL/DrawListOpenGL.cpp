@@ -27,6 +27,10 @@ void DrawListOpenGL::Begin(const RenderPassDescriptor& desc) {
     UtilsOpenGL::CheckError();
 }
 
+void DrawListOpenGL::SetViewport(i32 x, i32 y, u32 w, u32 h) {
+    glViewport(x, y, w, h);
+}
+
 void DrawListOpenGL::BindRenderPipeline(const RenderPipeline* pipeline) {
     _pipeline = static_cast<const RenderPipelineOpenGL*>(pipeline);
 

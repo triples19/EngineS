@@ -30,9 +30,9 @@ bool Texture2D::Load(const std::filesystem::path& path) {
         .width             = _width,
         .height            = _height,
         .samplerDescriptor = {},
+        .data              = reinterpret_cast<const byte*>(data),
     };
     Init(desc);
-    UpdateData(reinterpret_cast<const byte*>(data));
 
     stbi_image_free(data);
     return true;
@@ -42,6 +42,11 @@ void Texture2D::Init(const TextureDescriptor& desc) {
     _width  = desc.width;
     _height = desc.height;
     _format = desc.textureFormat;
+}
+
+void Texture2D::UpdateData(const byte* data, u32 width, u32 height) {
+    _width  = width;
+    _height = height;
 }
 
 } // namespace EngineS

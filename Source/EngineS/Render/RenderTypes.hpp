@@ -6,9 +6,6 @@
 
 namespace EngineS {
 
-class Program;
-class Buffer;
-
 enum class BufferUsage : u32 {
     Static,
     Dynamic,
