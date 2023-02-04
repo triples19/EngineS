@@ -1,6 +1,5 @@
 #include "ReflCompiler.hpp"
 #include "BustacheNlohmann.hpp"
-#include "Template.hpp"
 
 #include <algorithm>
 #include <execution>
@@ -36,6 +35,7 @@ std::unique_ptr<ReflCompiler> ReflCompiler::Create(
     const std::filesystem::path& sourcePath,
     const std::filesystem::path& buildPath,
     const std::filesystem::path& includeRootPath,
+    const std::filesystem::path& templatePath,
     const std::filesystem::path& outputPath
 ) {
     // -- check include root path ---
@@ -68,10 +68,24 @@ std::unique_ptr<ReflCompiler> ReflCompiler::Create(
         }
     }
 
+    // --- read template ---
+    if (!std::filesystem::is_regular_file(templatePath)) {
+        errs() << "Template file does not exist\n";
+        return nullptr;
+    }
+    auto readFile = [](const std::filesystem::path& path) {
+        std::ifstream     file(path);
+        std::stringstream ss;
+        ss << file.rdbuf();
+        return ss.str();
+    };
+    auto templateStr = readFile(templatePath);
+
     auto ptr              = std::make_unique<ReflCompiler>();
     ptr->_compilationDB   = std::move(compilations);
     ptr->_sources         = std::move(sources);
     ptr->_includeRootPath = includeRootPath;
+    ptr->_template        = std::move(templateStr);
     ptr->_outputPath      = outputPath;
     return ptr;
 }
@@ -109,7 +123,7 @@ void ReflCompiler::Run() {
         tool.run(newFrontendActionFactory(&finder).get());
 
         std::lock_guard lk(objectsMutex);
-        // retrive matched objects
+        // retrieve matched objects
         for (auto info : callback.getObjectInfos()) {
             outsLk.lock();
             outs() << "Found: " << info.className << "\n";
@@ -129,7 +143,7 @@ void ReflCompiler::Run() {
     nlohmann::json json = {{"objects", _objects}};
     // outs() << json.dump(2);
 
-    bustache::format fmt(Template);
+    bustache::format fmt(_template);
     std::ofstream    outFile(_outputPath);
     outFile << fmt(json);
 }

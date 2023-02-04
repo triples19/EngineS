@@ -35,6 +35,7 @@ class ReflCompiler {
         const std::filesystem::path& sourcePath,
         const std::filesystem::path& buildPath,
         const std::filesystem::path& includeRootPath,
+        const std::filesystem::path& templatePath,
         const std::filesystem::path& outputPath
     );
 
@@ -46,4 +47,5 @@ class ReflCompiler {
     std::vector<ObjectClassInfo>                         _objects;
     std::filesystem::path                                _includeRootPath;
     std::filesystem::path                                _outputPath;
+    std::string                                          _template;
 };
