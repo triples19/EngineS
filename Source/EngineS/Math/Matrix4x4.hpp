@@ -1,8 +1,10 @@
 #pragma once
 
-#include "Math.hpp"
+#include "MathDefs.hpp"
+
 #include <cassert>
 #include <cmath>
+#include <string>
 
 namespace EngineS {
 
@@ -35,22 +37,24 @@ class Matrix4x4 {
         mat[3][3] = arr[15];
     }
 
-    Matrix4x4(float m00,
-              float m01,
-              float m02,
-              float m03,
-              float m10,
-              float m11,
-              float m12,
-              float m13,
-              float m20,
-              float m21,
-              float m22,
-              float m23,
-              float m30,
-              float m31,
-              float m32,
-              float m33) {
+    Matrix4x4(
+        float m00,
+        float m01,
+        float m02,
+        float m03,
+        float m10,
+        float m11,
+        float m12,
+        float m13,
+        float m20,
+        float m21,
+        float m22,
+        float m23,
+        float m30,
+        float m31,
+        float m32,
+        float m33
+    ) {
         mat[0][0] = m00;
         mat[0][1] = m01;
         mat[0][2] = m02;
@@ -171,31 +175,35 @@ class Matrix4x4 {
     }
 
     Matrix4x4 operator*(float scalar) const {
-        return Matrix4x4(scalar * mat[0][0],
-                         scalar * mat[0][1],
-                         scalar * mat[0][2],
-                         scalar * mat[0][3],
-                         scalar * mat[1][0],
-                         scalar * mat[1][1],
-                         scalar * mat[1][2],
-                         scalar * mat[1][3],
-                         scalar * mat[2][0],
-                         scalar * mat[2][1],
-                         scalar * mat[2][2],
-                         scalar * mat[2][3],
-                         scalar * mat[3][0],
-                         scalar * mat[3][1],
-                         scalar * mat[3][2],
-                         scalar * mat[3][3]);
+        return Matrix4x4(
+            scalar * mat[0][0],
+            scalar * mat[0][1],
+            scalar * mat[0][2],
+            scalar * mat[0][3],
+            scalar * mat[1][0],
+            scalar * mat[1][1],
+            scalar * mat[1][2],
+            scalar * mat[1][3],
+            scalar * mat[2][0],
+            scalar * mat[2][1],
+            scalar * mat[2][2],
+            scalar * mat[2][3],
+            scalar * mat[3][0],
+            scalar * mat[3][1],
+            scalar * mat[3][2],
+            scalar * mat[3][3]
+        );
     }
 
     bool operator==(const Matrix4x4& m2) const {
-        return !(mat[0][0] != m2.mat[0][0] || mat[0][1] != m2.mat[0][1] || mat[0][2] != m2.mat[0][2] ||
-                 mat[0][3] != m2.mat[0][3] || mat[1][0] != m2.mat[1][0] || mat[1][1] != m2.mat[1][1] ||
-                 mat[1][2] != m2.mat[1][2] || mat[1][3] != m2.mat[1][3] || mat[2][0] != m2.mat[2][0] ||
-                 mat[2][1] != m2.mat[2][1] || mat[2][2] != m2.mat[2][2] || mat[2][3] != m2.mat[2][3] ||
-                 mat[3][0] != m2.mat[3][0] || mat[3][1] != m2.mat[3][1] || mat[3][2] != m2.mat[3][2] ||
-                 mat[3][3] != m2.mat[3][3]);
+        return !(
+            mat[0][0] != m2.mat[0][0] || mat[0][1] != m2.mat[0][1] || mat[0][2] != m2.mat[0][2] ||
+            mat[0][3] != m2.mat[0][3] || mat[1][0] != m2.mat[1][0] || mat[1][1] != m2.mat[1][1] ||
+            mat[1][2] != m2.mat[1][2] || mat[1][3] != m2.mat[1][3] || mat[2][0] != m2.mat[2][0] ||
+            mat[2][1] != m2.mat[2][1] || mat[2][2] != m2.mat[2][2] || mat[2][3] != m2.mat[2][3] ||
+            mat[3][0] != m2.mat[3][0] || mat[3][1] != m2.mat[3][1] || mat[3][2] != m2.mat[3][2] ||
+            mat[3][3] != m2.mat[3][3]
+        );
     }
 
     bool operator!=(const Matrix4x4& m2) const {
@@ -208,22 +216,24 @@ class Matrix4x4 {
     }
 
     Matrix4x4 Transposed() const {
-        return Matrix4x4(mat[0][0],
-                         mat[1][0],
-                         mat[2][0],
-                         mat[3][0],
-                         mat[0][1],
-                         mat[1][1],
-                         mat[2][1],
-                         mat[3][1],
-                         mat[0][2],
-                         mat[1][2],
-                         mat[2][2],
-                         mat[3][2],
-                         mat[0][3],
-                         mat[1][3],
-                         mat[2][3],
-                         mat[3][3]);
+        return Matrix4x4(
+            mat[0][0],
+            mat[1][0],
+            mat[2][0],
+            mat[3][0],
+            mat[0][1],
+            mat[1][1],
+            mat[2][1],
+            mat[3][1],
+            mat[0][2],
+            mat[1][2],
+            mat[2][2],
+            mat[3][2],
+            mat[0][3],
+            mat[1][3],
+            mat[2][3],
+            mat[3][3]
+        );
     }
 
     float Minor(size_t r0, size_t r1, size_t r2, size_t c0, size_t c1, size_t c2) const {
@@ -239,6 +249,8 @@ class Matrix4x4 {
 
     bool      IsAffine() const { return mat[3][0] == 0 && mat[3][1] == 0 && mat[3][2] == 0 && mat[3][3] == 1; }
     Matrix4x4 InverseAffine() const;
+
+    std::string ToString() const;
 };
 
 } // namespace EngineS

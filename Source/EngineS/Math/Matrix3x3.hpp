@@ -1,7 +1,9 @@
 #pragma once
 
-#include "Math.hpp"
+#include "MathDefs.hpp"
+
 #include <cstring>
+#include <string>
 
 namespace EngineS {
 
@@ -33,15 +35,17 @@ class Matrix3x3 {
         mat[2][2] = arr[8];
     }
 
-    Matrix3x3(float entry00,
-              float entry01,
-              float entry02,
-              float entry10,
-              float entry11,
-              float entry12,
-              float entry20,
-              float entry21,
-              float entry22) {
+    Matrix3x3(
+        float entry00,
+        float entry01,
+        float entry02,
+        float entry10,
+        float entry11,
+        float entry12,
+        float entry20,
+        float entry21,
+        float entry22
+    ) {
         mat[0][0] = entry00;
         mat[0][1] = entry01;
         mat[0][2] = entry02;
@@ -184,6 +188,8 @@ class Matrix3x3 {
 
         return invMat;
     }
+
+    std::string ToString() const;
 };
 
 } // namespace EngineS

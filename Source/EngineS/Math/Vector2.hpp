@@ -1,10 +1,9 @@
 #pragma once
 
 #include "Base/Macros.hpp"
-#include "Math.hpp"
+#include "MathDefs.hpp"
 
 #include <cmath>
-#include <iostream>
 
 namespace EngineS {
 
@@ -43,11 +42,6 @@ class Vector2 {
     float& operator[](size_t i) {
         ES_ASSERT(i < 2, "index out of range!");
         return (i == 0 ? x : y);
-    }
-
-    friend std::ostream& operator<<(std::ostream& os, const Vector2& v) {
-        os << "Vector2(" << v.x << ", " << v.y << ")";
-        return os;
     }
 
     bool operator==(const Vector2& rhs) const { return x == rhs.x && y == rhs.y; }
@@ -125,6 +119,8 @@ class Vector2 {
         float cos = Math::Cos(deg * Math::Deg2Rad);
         return {cos * in.x - sin * in.y, sin * in.x + cos * in.y};
     }
+
+    std::string ToString() const;
 };
 
 } // namespace EngineS

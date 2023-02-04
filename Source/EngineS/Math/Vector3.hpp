@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Base/Macros.hpp"
-#include "Math.hpp"
+#include "MathDefs.hpp"
 
 #include <cmath>
 #include <iostream>
+#include <string>
 
 namespace EngineS {
 
@@ -48,11 +49,6 @@ class Vector3 {
         x = newX;
         y = newY;
         z = newZ;
-    }
-
-    friend std::ostream& operator<<(std::ostream& os, const Vector3& v) {
-        os << "Vector3(" << v.x << ", " << v.y << ", " << v.z << ")";
-        return os;
     }
 
     bool operator==(const Vector3& rhs) const { return (x == rhs.x && y == rhs.y && z == rhs.z); }
@@ -150,6 +146,8 @@ class Vector3 {
         return {Math::Clamp(v.x, min.x, max.x), Math::Clamp(v.y, min.y, max.y), Math::Clamp(v.z, min.z, max.z)};
     }
     static Vector3 Project(const Vector3& v, const Vector3& normal) { return v - Dot(v, normal) * normal; }
+
+    std::string ToString() const;
 };
 
 } // namespace EngineS

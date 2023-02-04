@@ -1,6 +1,8 @@
 #include "Vector2.hpp"
 #include "Vector3.hpp"
 
+#include <fmt/format.h>
+
 namespace EngineS {
 
 const Vector2 Vector2::Down {0, -1};
@@ -14,6 +16,10 @@ const Vector2 Vector2::Zero {0, 0};
 
 Vector2::operator Vector3() const {
     return {x, y, 0};
+}
+
+std::string Vector2::ToString() const {
+    return fmt::format("Vector2({}, {})", x, y);
 }
 
 } // namespace EngineS
