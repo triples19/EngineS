@@ -15,7 +15,7 @@ class TypeRegistry {
 
     void RegisterType(const Type* type);
 
-    const Type* GetType(const std::string& name) const;
+    const Type* GetType(std::string_view name) const;
     const Type* GetType(hash32 hash) const;
 
   private:

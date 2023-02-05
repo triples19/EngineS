@@ -26,3 +26,6 @@
 #define ES_ASSERT_NOMSG(COND)
 #endif
 #endif
+
+#define ES_CONCAT_IMPL(a, b) a##b
+#define ES_CONCAT(a, b) ES_CONCAT_IMPL(a, b)

@@ -16,7 +16,7 @@ class Type;
     }                                        \
                                              \
   private:                                   \
-    static Type* __es_type;
+    static const Type* __es_type;
 
 class Object : public Ref {
   public:
@@ -27,7 +27,7 @@ class Object : public Ref {
     virtual const Type* GetType() { return GetTypeStatic(); }
 
   private:
-    static Type* __es_type;
+    static const Type* __es_type;
 };
 
 } // namespace EngineS

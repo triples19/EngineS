@@ -14,6 +14,7 @@
 #include "Function/SceneManager.hpp"
 #include "Function/Transform2D.hpp"
 #include "IO/Logger.hpp"
+#include "Reflection/Registration.hpp"
 #include "Reflection/Type.hpp"
 #include "Reflection/TypeRegistry.hpp"
 #include "Render/WindowSystem.hpp"
