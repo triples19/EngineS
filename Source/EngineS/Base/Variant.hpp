@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Base/Concepts.hpp"
 #include "Base/PrimitiveTypes.hpp"
 #include "Math/Math.hpp"
 
@@ -180,15 +181,73 @@ class Variant {
 
     explicit operator double() const { return GetDouble(); }
 
-    Object* GetObject() const {
+    template<IsObject T = Object>
+    T* GetObject() const {
         if (_type == VariantType::Object) {
-            return _val._object;
+            return static_cast<T*>(_val._object);
         } else {
             return nullptr;
         }
     }
 
-    explicit operator Object*() const { return GetObject(); }
+    template<IsObject T>
+    explicit operator T*() const {
+        return GetObject<T>();
+    }
+
+    Vector2 GetVector2() const {
+        if (_type == VariantType::Vector2) {
+            return *_val._vector2;
+        } else {
+            return Vector2::Zero;
+        }
+    }
+
+    explicit operator Vector2() const { return GetVector2(); }
+
+    Vector3 GetVector3() const {
+        if (_type == VariantType::Vector3) {
+            return *_val._vector3;
+        } else {
+            return Vector3::Zero;
+        }
+    }
+
+    explicit operator Vector3() const { return GetVector3(); }
+
+    Vector4 GetVector4() const {
+        if (_type == VariantType::Vector4) {
+            return *_val._vector4;
+        } else {
+            return Vector4::Zero;
+        }
+    }
+
+    explicit operator Vector4() const { return GetVector4(); }
+
+    Matrix3x3 GetMatrix3x3() const {
+        if (_type == VariantType::Matrix3x3) {
+            return *_val._matrix3x3;
+        } else {
+            return Matrix3x3::Zero;
+        }
+    }
+
+    explicit operator Matrix3x3() const { return GetMatrix3x3(); }
+
+    Matrix4x4 GetMatrix4x4() const {
+        if (_type == VariantType::Matrix4x4) {
+            return *_val._matrix4x4;
+        } else {
+            return Matrix4x4::Zero;
+        }
+    }
+
+    explicit operator Matrix4x4() const { return GetMatrix4x4(); }
+
+    std::string GetString() const { return ToString(); }
+
+    explicit operator std::string() const { return GetString(); }
 
     std::string ToString() const;
 

@@ -28,6 +28,42 @@ void ObjectMatchCallback::run(const clang::ast_matchers::MatchFinder::MatchResul
     // get first base class name
     // assuming it's derived from or is EngineS::Object
     info.baseName = node->bases_begin()->getType().getAsString();
+
+    for (auto method : node->methods()) {
+        if (method->getDeclKind() == clang::Decl::CXXConstructor) {
+            // Constructor
+            continue;
+        } else if (method->getDeclKind() == clang::Decl::CXXDestructor) {
+            // Destructor
+            continue;
+        } else if (method->getOverloadedOperator()) {
+            // Overloaded operator
+            continue;
+        }
+
+        MethodInfo methodInfo;
+        methodInfo.methodName     = method->getNameAsString();
+        methodInfo.returnTypeName = method->getReturnType().getAsString();
+        methodInfo.isStatic       = method->isStatic();
+        methodInfo.isConst        = method->isConst();
+        for (auto param : method->parameters()) {
+            ParameterInfo parameterInfo {
+                .typeName  = param->getType().getAsString(),
+                .paramName = param->getNameAsString(),
+            };
+            methodInfo.params.push_back(parameterInfo);
+        }
+        info.methods.push_back(methodInfo);
+    }
+
+    for (auto field : node->fields()) {
+        FieldInfo fieldInfo {
+            .fieldName = field->getNameAsString(),
+            .typeName  = field->getType().getAsString(),
+        };
+        info.fields.push_back(fieldInfo);
+    }
+
     _infos.push_back(info);
 }
 
@@ -141,7 +177,10 @@ void ReflCompiler::Run() {
     outs() << "Writing " << _outputPath.string() << "\n";
 
     nlohmann::json json = {{"objects", _objects}};
-    // outs() << json.dump(2);
+
+    // .\ReflCompiler.exe -t ..\Source\Templates\EngineObjects.mustache -p ..\build\ -o .\Test.cpp -i ..\Source\EngineS\ ..\Source\EngineS\
+
+    outs() << json.dump(2);
 
     bustache::format fmt(_template);
     std::ofstream    outFile(_outputPath);

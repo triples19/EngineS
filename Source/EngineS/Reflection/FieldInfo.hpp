@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Base/Concepts.hpp"
 #include "Base/Variant.hpp"
 #include "Reflection/MemberInfo.hpp"
 #include "Reflection/TypeOf.hpp"
@@ -31,12 +32,20 @@ class FieldInfoImpl : public FieldInfo {
     const Type* GetType() const override { return TypeOf<typename MemberTrait<Ptr>::Type>(); }
 
     virtual Variant GetValue(const Object* obj) const override {
-        return dynamic_cast<const typename MemberTrait<Ptr>::ParentType*>(obj)->*_ptr;
+        // TODO: Handle types that are not convertible from/to Variant
+        if constexpr (std::is_convertible_v<typename MemberTrait<Ptr>::Type, Variant>) {
+            return dynamic_cast<const typename MemberTrait<Ptr>::ParentType*>(obj)->*_ptr;
+        } else {
+            return {};
+        }
     }
 
     void SetValue(Object* obj, Variant val) const override {
-        static_cast<typename MemberTrait<Ptr>::ParentType*>(obj)->*_ptr =
-            static_cast<typename MemberTrait<Ptr>::Type>(val);
+        // TODO: Handle types that are not convertible from/to Variant
+        if constexpr (ExplicitlyConvertibleTo<Variant, typename MemberTrait<Ptr>::Type>) {
+            static_cast<typename MemberTrait<Ptr>::ParentType*>(obj)->*_ptr =
+                static_cast<typename MemberTrait<Ptr>::Type>(val);
+        }
     }
 
   private:

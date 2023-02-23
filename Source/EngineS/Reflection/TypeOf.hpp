@@ -20,9 +20,14 @@ inline const Type* TypeOf(const T& val);
 namespace EngineS {
 
 template<class T>
+inline const Type* TypeOf() {
+    return nullptr;
+}
+
+template<class T>
     requires IsObject<T> || IsObjectPointer<T>
 inline const Type* TypeOf() {
-    return T::GetTypeStatic();
+    return std::remove_pointer_t<T>::GetTypeStatic();
 }
 
 template<class T>

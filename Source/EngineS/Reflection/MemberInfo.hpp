@@ -49,6 +49,15 @@ struct MemberTrait<MemberTypeT ParentTypeT::*> {
     static constexpr bool IsStatic = false;
 };
 
+template<typename ParentTypeT, typename MemberTypeT>
+struct MemberTrait<MemberTypeT ParentTypeT::* const> {
+    using Type              = MemberTypeT;
+    using MemberPointerType = MemberTypeT ParentTypeT::*;
+    using ParentType        = ParentTypeT;
+
+    static constexpr bool IsStatic = false;
+};
+
 } // namespace Detail
 
 } // namespace EngineS

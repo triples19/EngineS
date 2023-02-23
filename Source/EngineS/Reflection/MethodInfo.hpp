@@ -10,6 +10,29 @@
 
 namespace EngineS {
 
+namespace Detail {
+template<class, bool, bool, class, class...>
+struct MethodTypeImpl;
+
+template<class Parent, class Ret, class... Params>
+struct MethodTypeImpl<Parent, false, true, Ret, Params...> {
+    using Type = Ret (Parent::*)(Params...) const;
+};
+
+template<class Parent, class Ret, class... Params>
+struct MethodTypeImpl<Parent, false, false, Ret, Params...> {
+    using Type = Ret (Parent::*)(Params...);
+};
+
+template<bool IsConst, class Parent, class Ret, class... Params>
+struct MethodTypeImpl<Parent, true, IsConst, Ret, Params...> {
+    using Type = Ret (*)(Params...);
+};
+} // namespace Detail
+
+template<class Parent, bool IsStatic, bool IsConst, class Ret, class... Params>
+using MethodType = Detail::MethodTypeImpl<Parent, IsStatic, IsConst, Ret, Params...>::Type;
+
 class Type;
 
 namespace Detail {
@@ -64,10 +87,10 @@ class MethodInfo : public MemberInfo {
 namespace Detail {
 
 template<class>
-struct SignatureTrait;
+struct SignatureTraitBase;
 
 template<class Ret, class... Params>
-struct SignatureTrait<Ret(Params...)> {
+struct SignatureTraitBase<Ret(Params...)> {
     using ReturnType                  = Ret;
     static constexpr auto ParamsCount = sizeof...(Params);
 
@@ -78,6 +101,15 @@ struct SignatureTrait<Ret(Params...)> {
         using Type = std::tuple_element<Index, std::tuple<Params...>>::type;
     };
 };
+
+template<class>
+struct SignatureTrait;
+
+template<class Ret, class... Params>
+struct SignatureTrait<Ret(Params...)> : SignatureTraitBase<Ret(Params...)> {};
+
+template<class Ret, class... Params>
+struct SignatureTrait<Ret(Params...) const> : SignatureTraitBase<Ret(Params...)> {};
 
 template<class Ptr>
 class MethodInfoImpl : public MethodInfo {
@@ -113,9 +145,7 @@ class MethodInfoImpl : public MethodInfo {
 
     Variant Invoke(Object* obj) const override { return InvokeTemplate(obj); }
 
-    Variant Invoke(Object* obj, Variant arg0) const override {
-        return InvokeTemplate(obj, static_cast<TypeOfParam<0>>(arg0));
-    }
+    Variant Invoke(Object* obj, Variant arg0) const override { return InvokeTemplate(obj, arg0); }
 
     Variant Invoke(Object* obj, Variant arg0, Variant arg1) const override { return InvokeTemplate(obj, arg0, arg1); }
 
@@ -151,7 +181,7 @@ class MethodInfoImpl : public MethodInfo {
                 std::invoke(_ptr, std::forward<Args>(args)...);
                 return {};
             } else {
-                std::invoke(_ptr, std::forward<Args>(args)...);
+                return std::invoke(_ptr, std::forward<Args>(args)...);
             }
         } else {
             if constexpr (SameAs<ReturnType, void>) {
@@ -175,20 +205,26 @@ class MethodInfoImpl : public MethodInfo {
     Variant
     InvokeHelper(std::index_sequence<ProvidedN...>, std::index_sequence<DefaultN...>, Object* obj, Args&&... args)
         const {
-        if (sizeof...(ProvidedN) < GetNumOfRequiredArgs() || sizeof...(ProvidedN) > ParamsCount) {
-            // Number of arguments invaild
+        // TODO: Handle types that are not convertible from/to Variant
+        if constexpr ((!std::is_convertible_v<Variant, TypeOfParam<ProvidedN>> || ...) || (!std::is_convertible_v<Variant, TypeOfParam<sizeof...(ProvidedN) + DefaultN>> || ...) || !std::is_convertible_v<ReturnType, Variant>) {
             return {};
+        } else {
+            if (sizeof...(ProvidedN) < GetNumOfRequiredArgs() || sizeof...(ProvidedN) > ParamsCount) {
+                // Number of arguments invaild
+                return {};
+            }
+            if (((TypeOf<TypeOfParam<ProvidedN>>() != TypeOf(args)) || ...)) {
+                // Types do not match
+                return {};
+            }
+            return InvokeInternal(
+                obj,
+                static_cast<TypeOfParam<ProvidedN>>(args)..., // Provided arguments
+                static_cast<TypeOfParam<sizeof...(ProvidedN) + DefaultN>>(
+                    GetDefaultParam(sizeof...(ProvidedN) + DefaultN)
+                )... // Default arguments
+            );
         }
-        if (((TypeOf<TypeOfParam<ProvidedN>>() != TypeOf(args)) || ...)) {
-            // Types do not match
-            return {};
-        }
-        return InvokeInternal(
-            obj,
-            static_cast<TypeOfParam<ProvidedN>>(args)..., // Provided arguments
-            static_cast<TypeOfParam<sizeof...(ProvidedN) + DefaultN>>(GetDefaultParam(sizeof...(ProvidedN) + DefaultN)
-            )... // Default arguments
-        );
     }
 
     template<class... Args>
