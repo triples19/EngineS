@@ -1,5 +1,6 @@
 #include "Reflection/TypeRegistry.hpp"
 #include "Base/Hash.hpp"
+#include "Reflection/Registration.hpp"
 #include "Reflection/Type.hpp"
 
 #include <cassert>
@@ -13,6 +14,7 @@ TypeRegistry* TypeRegistry::Instance() {
     if (!s_SharedInstance) {
         s_SharedInstance = new (std::nothrow) TypeRegistry;
         assert(s_SharedInstance != nullptr);
+        Registration::DoRegistration();
     }
     return s_SharedInstance;
 }
@@ -21,8 +23,8 @@ void TypeRegistry::RegisterType(const Type* type) {
     _types[type->GetHashValue()] = type;
 }
 
-const Type* TypeRegistry::GetType(const std::string& name) const {
-    auto hash = Hasher<std::string> {}(name);
+const Type* TypeRegistry::GetType(std::string_view name) const {
+    auto hash = Hasher<std::string_view> {}(name);
     return GetType(hash);
 }
 

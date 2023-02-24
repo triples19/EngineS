@@ -3,6 +3,8 @@
 #include "Vector3.hpp"
 #include "Vector4.hpp"
 
+#include <fmt/format.h>
+
 namespace EngineS {
 
 const Matrix4x4 Matrix4x4::Identity {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
@@ -29,10 +31,12 @@ Matrix4x4::Matrix4x4(const Vector4& row0, const Vector4& row1, const Vector4& ro
 }
 
 Vector4 Matrix4x4::operator*(const Vector4& v) const {
-    return Vector4(mat[0][0] * v.x + mat[0][1] * v.y + mat[0][2] * v.z + mat[0][3] * v.w,
-                   mat[1][0] * v.x + mat[1][1] * v.y + mat[1][2] * v.z + mat[1][3] * v.w,
-                   mat[2][0] * v.x + mat[2][1] * v.y + mat[2][2] * v.z + mat[2][3] * v.w,
-                   mat[3][0] * v.x + mat[3][1] * v.y + mat[3][2] * v.z + mat[3][3] * v.w);
+    return Vector4(
+        mat[0][0] * v.x + mat[0][1] * v.y + mat[0][2] * v.z + mat[0][3] * v.w,
+        mat[1][0] * v.x + mat[1][1] * v.y + mat[1][2] * v.z + mat[1][3] * v.w,
+        mat[2][0] * v.x + mat[2][1] * v.y + mat[2][2] * v.z + mat[2][3] * v.w,
+        mat[3][0] * v.x + mat[3][1] * v.y + mat[3][2] * v.z + mat[3][3] * v.w
+    );
 }
 
 Matrix4x4 Matrix4x4::InverseAffine() const {
@@ -74,6 +78,28 @@ Matrix4x4 Matrix4x4::InverseAffine() const {
     float r23 = -(r20 * m03 + r21 * m13 + r22 * m23);
 
     return Matrix4x4(r00, r01, r02, r03, r10, r11, r12, r13, r20, r21, r22, r23, 0, 0, 0, 1);
+}
+
+std::string Matrix4x4::ToString() const {
+    return fmt::format(
+        "Matrix4x4(({}, {}, {}, {}), ({}, {}, {}, {}), ({}, {}, {}, {}), ({}, {}, {}, {})",
+        mat[0][0],
+        mat[0][1],
+        mat[0][2],
+        mat[0][3],
+        mat[1][0],
+        mat[1][1],
+        mat[1][2],
+        mat[1][3],
+        mat[2][0],
+        mat[2][1],
+        mat[2][2],
+        mat[2][3],
+        mat[3][0],
+        mat[3][1],
+        mat[3][2],
+        mat[3][3]
+    );
 }
 
 } // namespace EngineS

@@ -1,6 +1,5 @@
 #include "ReflCompiler.hpp"
 #include "BustacheNlohmann.hpp"
-#include "Template.hpp"
 
 #include <algorithm>
 #include <execution>
@@ -29,6 +28,42 @@ void ObjectMatchCallback::run(const clang::ast_matchers::MatchFinder::MatchResul
     // get first base class name
     // assuming it's derived from or is EngineS::Object
     info.baseName = node->bases_begin()->getType().getAsString();
+
+    for (auto method : node->methods()) {
+        if (method->getDeclKind() == clang::Decl::CXXConstructor) {
+            // Constructor
+            continue;
+        } else if (method->getDeclKind() == clang::Decl::CXXDestructor) {
+            // Destructor
+            continue;
+        } else if (method->getOverloadedOperator()) {
+            // Overloaded operator
+            continue;
+        }
+
+        MethodInfo methodInfo;
+        methodInfo.methodName     = method->getNameAsString();
+        methodInfo.returnTypeName = method->getReturnType().getAsString();
+        methodInfo.isStatic       = method->isStatic();
+        methodInfo.isConst        = method->isConst();
+        for (auto param : method->parameters()) {
+            ParameterInfo parameterInfo {
+                .typeName  = param->getType().getAsString(),
+                .paramName = param->getNameAsString(),
+            };
+            methodInfo.params.push_back(parameterInfo);
+        }
+        info.methods.push_back(methodInfo);
+    }
+
+    for (auto field : node->fields()) {
+        FieldInfo fieldInfo {
+            .fieldName = field->getNameAsString(),
+            .typeName  = field->getType().getAsString(),
+        };
+        info.fields.push_back(fieldInfo);
+    }
+
     _infos.push_back(info);
 }
 
@@ -36,6 +71,7 @@ std::unique_ptr<ReflCompiler> ReflCompiler::Create(
     const std::filesystem::path& sourcePath,
     const std::filesystem::path& buildPath,
     const std::filesystem::path& includeRootPath,
+    const std::filesystem::path& templatePath,
     const std::filesystem::path& outputPath
 ) {
     // -- check include root path ---
@@ -68,10 +104,24 @@ std::unique_ptr<ReflCompiler> ReflCompiler::Create(
         }
     }
 
+    // --- read template ---
+    if (!std::filesystem::is_regular_file(templatePath)) {
+        errs() << "Template file does not exist\n";
+        return nullptr;
+    }
+    auto readFile = [](const std::filesystem::path& path) {
+        std::ifstream     file(path);
+        std::stringstream ss;
+        ss << file.rdbuf();
+        return ss.str();
+    };
+    auto templateStr = readFile(templatePath);
+
     auto ptr              = std::make_unique<ReflCompiler>();
     ptr->_compilationDB   = std::move(compilations);
     ptr->_sources         = std::move(sources);
     ptr->_includeRootPath = includeRootPath;
+    ptr->_template        = std::move(templateStr);
     ptr->_outputPath      = outputPath;
     return ptr;
 }
@@ -109,7 +159,7 @@ void ReflCompiler::Run() {
         tool.run(newFrontendActionFactory(&finder).get());
 
         std::lock_guard lk(objectsMutex);
-        // retrive matched objects
+        // retrieve matched objects
         for (auto info : callback.getObjectInfos()) {
             outsLk.lock();
             outs() << "Found: " << info.className << "\n";
@@ -127,9 +177,12 @@ void ReflCompiler::Run() {
     outs() << "Writing " << _outputPath.string() << "\n";
 
     nlohmann::json json = {{"objects", _objects}};
-    // outs() << json.dump(2);
 
-    bustache::format fmt(Template);
+    // .\ReflCompiler.exe -t ..\Source\Templates\EngineObjects.mustache -p ..\build\ -o .\Test.cpp -i ..\Source\EngineS\ ..\Source\EngineS\
+
+    //    outs() << json.dump(2);
+
+    bustache::format fmt(_template);
     std::ofstream    outFile(_outputPath);
     outFile << fmt(json);
 }

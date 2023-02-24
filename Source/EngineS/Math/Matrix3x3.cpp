@@ -1,6 +1,8 @@
 #include "Matrix3x3.hpp"
 #include "Vector3.hpp"
 
+#include <fmt/format.h>
+
 namespace EngineS {
 
 const Matrix3x3 Matrix3x3::Identity {1, 0, 0, 0, 1, 0, 0, 0, 1};
@@ -44,6 +46,21 @@ Vector3 operator*(const Vector3& point, const Matrix3x3& rhs) {
             point.x * rhs.mat[0][rowIndex] + point.y * rhs.mat[1][rowIndex] + point.z * rhs.mat[2][rowIndex];
     }
     return prod;
+}
+
+std::string Matrix3x3::ToString() const {
+    return fmt::format(
+        "Matrix3x3(({}, {}, {}), ({}, {}, {}), ({}, {}, {}))",
+        mat[0][0],
+        mat[0][1],
+        mat[0][2],
+        mat[1][0],
+        mat[1][1],
+        mat[1][2],
+        mat[2][0],
+        mat[2][1],
+        mat[2][2]
+    );
 }
 
 } // namespace EngineS
