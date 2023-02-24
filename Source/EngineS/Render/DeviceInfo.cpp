@@ -1,6 +1,6 @@
 #include "DeviceInfo.hpp"
 
-#include "Platform/GLCommon.hpp"
+#include <glad/glad.h>
 
 namespace EngineS {
 
