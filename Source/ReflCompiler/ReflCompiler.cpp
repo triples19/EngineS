@@ -180,7 +180,7 @@ void ReflCompiler::Run() {
 
     // .\ReflCompiler.exe -t ..\Source\Templates\EngineObjects.mustache -p ..\build\ -o .\Test.cpp -i ..\Source\EngineS\ ..\Source\EngineS\
 
-    outs() << json.dump(2);
+    //    outs() << json.dump(2);
 
     bustache::format fmt(_template);
     std::ofstream    outFile(_outputPath);
