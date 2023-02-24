@@ -76,6 +76,7 @@ GLint UtilsOpenGL::ConvertAddressMode(SamplerAddressMode addressMode) {
         case SamplerAddressMode::DontCare:
             return GL_REPEAT;
     }
+    return 0;
 }
 
 GLint UtilsOpenGL::ConvertFilter(SamplerFilter filter) {
@@ -95,6 +96,7 @@ GLint UtilsOpenGL::ConvertFilter(SamplerFilter filter) {
         case SamplerFilter::DontCare:
             return GL_NEAREST;
     }
+    return 0;
 }
 
 GLenum UtilsOpenGL::ConvertBufferType(BufferType type) {
@@ -104,6 +106,7 @@ GLenum UtilsOpenGL::ConvertBufferType(BufferType type) {
         case BufferType::Index:
             return GL_ELEMENT_ARRAY_BUFFER;
     }
+    return 0;
 }
 
 GLenum UtilsOpenGL::ConvertBufferUsage(BufferUsage usage) {
@@ -113,6 +116,7 @@ GLenum UtilsOpenGL::ConvertBufferUsage(BufferUsage usage) {
         case BufferUsage::Dynamic:
             return GL_DYNAMIC_DRAW;
     }
+    return 0;
 }
 
 GLenum UtilsOpenGL::ConvertShaderStage(ShaderStage stage) {
@@ -122,6 +126,7 @@ GLenum UtilsOpenGL::ConvertShaderStage(ShaderStage stage) {
         case ShaderStage::Fragment:
             return GL_FRAGMENT_SHADER;
     }
+    return 0;
 }
 
 GLenum UtilsOpenGL::ConvertRenderPrimitive(RenderPrimitive renderPrimitive) {
@@ -137,6 +142,7 @@ GLenum UtilsOpenGL::ConvertRenderPrimitive(RenderPrimitive renderPrimitive) {
         case RenderPrimitive::TrianglesStrip:
             return GL_TRIANGLE_STRIP;
     }
+    return 0;
 }
 
 GLsizei UtilsOpenGL::ConvertAttributeSize(VertexFormat format) {
@@ -157,6 +163,7 @@ GLsizei UtilsOpenGL::ConvertAttributeSize(VertexFormat format) {
         case VertexFormat::Int:
             return 1;
     }
+    return 0;
 }
 
 GLenum UtilsOpenGL::ConvertAttributeType(VertexFormat format) {
@@ -177,6 +184,7 @@ GLenum UtilsOpenGL::ConvertAttributeType(VertexFormat format) {
         case VertexFormat::UByte4:
             return GL_UNSIGNED_BYTE;
     }
+    return 0;
 }
 
 } // namespace EngineS
