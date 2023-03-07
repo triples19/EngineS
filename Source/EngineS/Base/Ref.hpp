@@ -1,12 +1,14 @@
 #pragma once
 
 #include "Base/PrimitiveTypes.hpp"
+#include "Reflection/Utils.hpp"
 
 #include <cstddef>
 
 namespace EngineS {
 
 class Ref {
+    ES_REFL_ENABLE
   public:
     Ref();
     virtual ~Ref();

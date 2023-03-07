@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base/Object.hpp"
+#include "Reflection/TypeOf.hpp"
 
 #include <vector>
 
@@ -23,17 +24,17 @@ class GameObject : public Object {
 
     template<class T>
     T* AddComponent() {
-        return static_cast<T*>(AddComponent(T::GetTypeStatic()));
+        return static_cast<T*>(AddComponent(TypeOf<T>()));
     }
 
     template<class T>
     T* GetComponent() const {
-        return static_cast<T*>(GetComponent(T::GetTypeStatic()));
+        return static_cast<T*>(GetComponent(TypeOf<T>()));
     }
 
     template<class T>
     std::vector<T*> GetComponents() const {
-        auto            comps = GetComponents(T::GetTypeStatic());
+        auto            comps = GetComponents(TypeOf<T>());
         std::vector<T*> ret;
         for (const auto& comp : comps) {
             ret.push_back(static_cast<T*>(comp));

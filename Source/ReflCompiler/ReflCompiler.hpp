@@ -12,10 +12,20 @@
 
 #include <nlohmann/json.hpp>
 
+struct BaseInfo {
+    std::string baseName;
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE(BaseInfo, baseName);
+};
+
 struct ParameterInfo {
     std::string typeName;
     std::string paramName;
     NLOHMANN_DEFINE_TYPE_INTRUSIVE(ParameterInfo, typeName, paramName)
+};
+
+struct ConstructorInfo {
+    std::vector<ParameterInfo> params;
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE(ConstructorInfo, params);
 };
 
 struct MethodInfo {
@@ -34,19 +44,20 @@ struct FieldInfo {
 };
 
 struct ObjectClassInfo {
-    std::string             className; // name of the class
-    std::string             baseName;  // name of the base class (derived from or is Object)
-    std::string             filePath;  // file path relative to EngineS's include dir
-    std::vector<MethodInfo> methods;
-    std::vector<FieldInfo>  fields;
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE(ObjectClassInfo, className, baseName, filePath, methods, fields)
+    std::string                  className; // name of the class
+    std::vector<BaseInfo>        bases;
+    std::string                  filePath; // file path relative to EngineS's include dir
+    std::vector<MethodInfo>      methods;
+    std::vector<FieldInfo>       fields;
+    std::vector<ConstructorInfo> constructors;
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE(ObjectClassInfo, className, bases, filePath, methods, fields, constructors)
 };
 
 class ObjectMatchCallback : public clang::ast_matchers::MatchFinder::MatchCallback {
   public:
     virtual void run(const clang::ast_matchers::MatchFinder::MatchResult& Result);
 
-    const std::vector<ObjectClassInfo>& getObjectInfos() const { return _infos; }
+    const std::vector<ObjectClassInfo>& GetObjectInfos() const { return _infos; }
 
   private:
     std::vector<ObjectClassInfo> _infos;
@@ -59,7 +70,8 @@ class ReflCompiler {
         const std::filesystem::path& buildPath,
         const std::filesystem::path& includeRootPath,
         const std::filesystem::path& templatePath,
-        const std::filesystem::path& outputPath
+        const std::filesystem::path& outputPath,
+        const std::filesystem::path& outputJsonPath
     );
 
     void Run();
@@ -70,5 +82,6 @@ class ReflCompiler {
     std::vector<ObjectClassInfo>                         _objects;
     std::filesystem::path                                _includeRootPath;
     std::filesystem::path                                _outputPath;
+    std::filesystem::path                                _outputJsonPath;
     std::string                                          _template;
 };

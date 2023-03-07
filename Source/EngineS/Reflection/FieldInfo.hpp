@@ -1,9 +1,10 @@
 #pragma once
 
 #include "Base/Concepts.hpp"
-#include "Base/Variant.hpp"
+#include "Reflection/Instance.hpp"
 #include "Reflection/MemberInfo.hpp"
 #include "Reflection/TypeOf.hpp"
+#include "Reflection/Variant.hpp"
 
 namespace EngineS {
 
@@ -13,10 +14,16 @@ class FieldInfo : public MemberInfo {
   public:
     using MemberInfo::MemberInfo;
 
-    bool                IsStatic() const override                = 0;
-    virtual const Type* GetType() const                          = 0;
-    virtual Variant     GetValue(const Object* obj) const        = 0;
-    virtual void        SetValue(Object* obj, Variant val) const = 0;
+    bool                IsStatic() const override = 0;
+    virtual const Type* GetType() const           = 0;
+
+    virtual Variant GetValue(Instance instance) const = 0;
+    template<class T>
+    T GetValue(Instance instance) const {
+        return GetValue(instance).GetValue<T>();
+    }
+
+    virtual void SetValue(Instance instance, Variant val) const = 0;
 };
 
 namespace Detail {
@@ -31,20 +38,21 @@ class FieldInfoImpl : public FieldInfo {
 
     const Type* GetType() const override { return TypeOf<typename MemberTrait<Ptr>::Type>(); }
 
-    virtual Variant GetValue(const Object* obj) const override {
-        // TODO: Handle types that are not convertible from/to Variant
-        if constexpr (std::is_convertible_v<typename MemberTrait<Ptr>::Type, Variant>) {
-            return dynamic_cast<const typename MemberTrait<Ptr>::ParentType*>(obj)->*_ptr;
+    virtual Variant GetValue(Instance instance) const override {
+        if constexpr (MemberTrait<Ptr>::IsStatic) {
+            return *_ptr;
         } else {
-            return {};
+            auto p = instance.TryConvert<typename MemberTrait<Ptr>::ParentType>();
+            return p->*_ptr;
         }
     }
 
-    void SetValue(Object* obj, Variant val) const override {
-        // TODO: Handle types that are not convertible from/to Variant
-        if constexpr (ExplicitlyConvertibleTo<Variant, typename MemberTrait<Ptr>::Type>) {
-            static_cast<typename MemberTrait<Ptr>::ParentType*>(obj)->*_ptr =
-                static_cast<typename MemberTrait<Ptr>::Type>(val);
+    void SetValue(Instance instance, Variant val) const override {
+        if constexpr (MemberTrait<Ptr>::IsStatic) {
+            *_ptr = val.GetValue<typename MemberTrait<Ptr>::Type>();
+        } else {
+            auto p   = instance.TryConvert<typename MemberTrait<Ptr>::ParentType>();
+            p->*_ptr = val.GetValue<typename MemberTrait<Ptr>::Type>();
         }
     }
 

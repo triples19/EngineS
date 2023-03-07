@@ -7,4 +7,5 @@ add_executable(Example
         TestScene.cpp
         TestComponent.cpp)
 
-target_link_libraries(Example EngineS)
+target_link_libraries(Example PRIVATE EngineS)
+target_include_directories(Example PRIVATE .)

@@ -5,30 +5,41 @@
 
 #include <string>
 #include <string_view>
+#include <typeindex>
 #include <unordered_map>
+#include <vector>
 
 namespace EngineS {
 
-class Object;
-class MemberInfo;
-class FieldInfo;
-class MethodInfo;
+namespace Detail {
+struct BaseInfo;
+}
+
 namespace Registration {
 template<class>
 class Class;
 }
 
+class Object;
+class MemberInfo;
+class FieldInfo;
+class MethodInfo;
+class ConstructorInfo;
+class DestructorInfo;
+
 class Type {
     template<class>
     friend class Registration::Class;
+    friend class TypeRegistry;
 
   protected:
-    Type(std::string_view name, const Type* baseType);
+    Type(std::string_view name, std::type_index typeIndex);
 
   public:
-    virtual Object*  CreateObject() const { return nullptr; }
+    virtual ~Type();
     std::string_view GetName() const { return _name; }
     hash32           GetHashValue() const { return _hash; }
+    std::type_index  GetTypeIndex() const { return _typeIndex; }
 
     bool Is(std::string_view name) const;
     bool Is(const Type* type) const;
@@ -50,6 +61,15 @@ class Type {
 
     friend bool operator==(const Type& lhs, const Type& rhs) { return lhs._hash == rhs._hash; }
 
+    virtual void* Cast(void* ptr) const = 0;
+
+    static void* ApplyOffset(const Type* targetType, const Type* sourceType, void* ptr);
+
+    template<class TargetType, class SourceType>
+    static TargetType DynamicCast(SourceType obj);
+
+    const std::vector<const Type*>& GetBases() const;
+
     std::vector<const FieldInfo*> GetFields() const;
 
     const FieldInfo* GetField(std::string_view name) const;
@@ -58,13 +78,27 @@ class Type {
 
     std::vector<const MethodInfo*> GetMethods(std::string_view name) const;
 
+    const MethodInfo*
+    GetMethod(std::string_view name, const Type* returnType, std::vector<const Type*> paramTypes) const;
+
+    const ConstructorInfo* GetConstructor(std::vector<const Type*> paramTypes) const;
+
+    std::vector<const ConstructorInfo*> GetConstructors() const;
+
+    const DestructorInfo* GetDestructor() const;
+
   private:
     hash32           _hash;
-    const Type*      _baseType;
+    std::type_index  _typeIndex;
     std::string_view _name;
 
-    std::unordered_map<hash32, const FieldInfo*>       _fields;
-    std::unordered_multimap<hash32, const MethodInfo*> _methods;
+    std::vector<const Type*> _bases;
+
+    std::vector<FieldInfo*>       _fields;
+    std::vector<MethodInfo*>      _methods;
+    std::vector<ConstructorInfo*> _ctors;
+
+    DestructorInfo* _dtor;
 };
 
 namespace Detail {
@@ -72,40 +106,11 @@ namespace Detail {
 template<class T>
 class TypeImpl : public Type {
   public:
-    TypeImpl(std::string_view name, const Type* baseType) : Type(name, baseType) {}
-    virtual Object* CreateObject() const { return nullptr; }
-};
-
-template<class T>
-    requires DerivedFrom<T, Object> && DefaultInitializable<T>
-class TypeImpl<T> : public Type {
-  public:
-    TypeImpl(std::string_view name, const Type* baseType) : Type(name, baseType) {}
-    virtual Object* CreateObject() const { return new T; }
+    TypeImpl(std::string_view name) : Type(name, typeid(T)) {}
+    void* Cast(void* ptr) const override { return static_cast<void*>(static_cast<T*>(ptr)); }
 };
 
 } // namespace Detail
-
-} // namespace EngineS
-
-#include "Reflection/TypeOf.hpp"
-
-namespace EngineS {
-
-template<class T>
-bool Type::Is() const {
-    return Is(T::GetTypeStatic());
-}
-
-template<class T>
-bool Type::IsBaseOf() const {
-    return IsBaseOf(T::GetTypeStatic());
-}
-
-template<class T>
-bool Type::DerivedFrom() const {
-    return DerivedFrom(T::GetTypeStatic());
-}
 
 } // namespace EngineS
 
@@ -113,3 +118,5 @@ template<>
 struct std::hash<EngineS::Type> {
     std::size_t operator()(const EngineS::Type& type) { return type.GetHashValue(); }
 };
+
+#include "Reflection/Impl/Type.inl"

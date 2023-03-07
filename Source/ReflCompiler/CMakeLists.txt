@@ -14,7 +14,7 @@ add_executable(ReflCompiler
         main.cpp
         ReflCompiler.cpp
         ReflCompiler.hpp
-        BustacheNlohmann.hpp
+        ExBustache.hpp
         )
 
 target_link_libraries(ReflCompiler PRIVATE

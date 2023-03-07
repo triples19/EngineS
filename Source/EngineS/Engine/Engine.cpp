@@ -5,6 +5,7 @@
 #include "Function/InputSystem.hpp"
 #include "Function/Scene.hpp"
 #include "Function/SceneManager.hpp"
+#include "Generated/Refl.hpp"
 #include "IO/Logger.hpp"
 #include "Reflection/Registration.hpp"
 #include "Render/RenderSystem.hpp"
@@ -36,6 +37,7 @@ int Engine::FPSCalculator::Calculate(float deltaTime) {
 }
 
 void Engine::StartEngine() {
+    Registration::RegisterEngineObjects();
     TypeRegistry::Instance();
     WindowSystem::Instance()->Retain();
     RenderSystem::Instance()->Retain();

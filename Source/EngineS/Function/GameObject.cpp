@@ -1,6 +1,7 @@
 #include "Function/GameObject.hpp"
 #include "Function/Component.hpp"
 #include "IO/Logger.hpp"
+#include "Reflection/ConstructorInfo.hpp"
 #include "Reflection/Type.hpp"
 
 namespace EngineS {
@@ -20,8 +21,7 @@ void GameObject::Update(float deltaTime) {
 }
 
 Component* GameObject::AddComponent(const Type* type) {
-    auto obj  = type->CreateObject();
-    auto comp = dynamic_cast<Component*>(obj);
+    auto comp = type->GetConstructor({})->Invoke().GetValue<Component*>();
     if (!comp) {
         Logger::Error("Failed to create component of {}", type->GetName());
         return nullptr;

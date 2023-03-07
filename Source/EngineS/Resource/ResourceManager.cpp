@@ -1,5 +1,6 @@
 #include "Resource/ResourceManager.hpp"
 #include "Base/Macros.hpp"
+#include "Reflection/ConstructorInfo.hpp"
 #include "Reflection/Type.hpp"
 #include "Resource/Resource.hpp"
 
@@ -55,8 +56,8 @@ Resource* ResourceManager::Load(const Type* type, const fs::path& path) {
         return nullptr;
     }
 
-    // Create a object of 'type' and cast it to Resource*
-    auto resource = dynamic_cast<Resource*>(type->CreateObject());
+    // Create an object of 'type' and cast it to Resource*
+    auto resource = type->GetConstructor({})->Invoke().Convert<Resource*>();
     if (!resource) {
         // dynamic_cast failed
         // which means 'type' is not a subclass of Resource

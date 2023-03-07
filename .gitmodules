@@ -13,3 +13,6 @@
 [submodule "bustache"]
 	path = ThirdParty/bustache
 	url = https://github.com/jamboree/bustache.git
+[submodule "Catch2"]
+	path = ThirdParty/Catch2
+	url = https://github.com/catchorg/Catch2.git

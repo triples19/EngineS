@@ -6,8 +6,6 @@
 
 namespace EngineS {
 
-const Type* Object::__es_type = Registration::Class<EngineS::Object>("EngineS::Object", nullptr).Get();
-
 Object::Object()  = default;
 Object::~Object() = default;
 

@@ -32,3 +32,7 @@ endif ()
 if (NOT TARGET bustache)
     include(bustache.cmake)
 endif ()
+
+if (NOT TARGET Catch2)
+    add_subdirectory(Catch2)
+endif ()

@@ -17,6 +17,7 @@ class Type;
 class MemberInfo {
   public:
     MemberInfo(std::string_view name, AccessLevel accessLevel) : _name(name), _accLevel(accessLevel) {}
+    virtual ~MemberInfo() = default;
 
     std::string_view GetName() const { return _name; }
     AccessLevel      GetAccessLevel() const { return _accLevel; }
@@ -50,7 +51,7 @@ struct MemberTrait<MemberTypeT ParentTypeT::*> {
 };
 
 template<typename ParentTypeT, typename MemberTypeT>
-struct MemberTrait<MemberTypeT ParentTypeT::* const> {
+struct MemberTrait<MemberTypeT ParentTypeT::*const> {
     using Type              = MemberTypeT;
     using MemberPointerType = MemberTypeT ParentTypeT::*;
     using ParentType        = ParentTypeT;

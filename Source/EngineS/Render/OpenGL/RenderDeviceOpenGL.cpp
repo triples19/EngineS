@@ -29,7 +29,7 @@ Shader* RenderDeviceOpenGL::CreateShader() {
 }
 
 const Type* RenderDeviceOpenGL::GetShaderType() {
-    return ShaderOpenGL::GetTypeStatic();
+    return TypeOf<ShaderOpenGL>();
 }
 
 Program* RenderDeviceOpenGL::CreateProgram() {
@@ -37,7 +37,7 @@ Program* RenderDeviceOpenGL::CreateProgram() {
 }
 
 const Type* RenderDeviceOpenGL::GetProgramType() {
-    return ProgramOpenGL::GetTypeStatic();
+    return TypeOf<ProgramOpenGL>();
 }
 
 Buffer* RenderDeviceOpenGL::CreateBuffer(std::size_t size, BufferType type, BufferUsage usage) {
@@ -45,7 +45,7 @@ Buffer* RenderDeviceOpenGL::CreateBuffer(std::size_t size, BufferType type, Buff
 }
 
 const Type* RenderDeviceOpenGL::GetBufferType() {
-    return BufferOpenGL::GetTypeStatic();
+    return TypeOf<BufferOpenGL>();
 }
 
 Texture2D* RenderDeviceOpenGL::CreateTexture2D() {
@@ -53,7 +53,7 @@ Texture2D* RenderDeviceOpenGL::CreateTexture2D() {
 }
 
 const Type* RenderDeviceOpenGL::GetTexture2DType() {
-    return Texture2DOpenGL::GetTypeStatic();
+    return TypeOf<Texture2DOpenGL>();
 }
 
 DrawList* RenderDeviceOpenGL::CreateDrawList() {
@@ -61,7 +61,7 @@ DrawList* RenderDeviceOpenGL::CreateDrawList() {
 }
 
 const Type* RenderDeviceOpenGL::GetDrawListType() {
-    return DrawListOpenGL::GetTypeStatic();
+    return TypeOf<DrawListOpenGL>();
 }
 
 RenderPipeline* RenderDeviceOpenGL::CreateRenderPipeline(const RenderPipelineDescriptor& desc) {
@@ -69,7 +69,7 @@ RenderPipeline* RenderDeviceOpenGL::CreateRenderPipeline(const RenderPipelineDes
 }
 
 const Type* RenderDeviceOpenGL::GetRenderPipelineType() {
-    return RenderPipelineOpenGL::GetTypeStatic();
+    return TypeOf<RenderPipelineOpenGL>();
 }
 
 Framebuffer* RenderDeviceOpenGL::CreateFramebuffer(const FramebufferDescriptor& desc) {
@@ -77,7 +77,7 @@ Framebuffer* RenderDeviceOpenGL::CreateFramebuffer(const FramebufferDescriptor& 
 }
 
 const Type* RenderDeviceOpenGL::GetFramebufferType() {
-    return FramebufferOpenGL::GetTypeStatic();
+    return TypeOf<FramebufferOpenGL>();
 }
 
 } // namespace EngineS

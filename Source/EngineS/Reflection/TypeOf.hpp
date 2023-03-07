@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Reflection/Utils.hpp"
+
 namespace EngineS {
 
 class Type;
@@ -12,45 +14,35 @@ inline const Type* TypeOf(const T& val);
 
 } // namespace EngineS
 
-#include "Base/Concepts.hpp"
-#include "Base/Object.hpp"
-#include "Base/Variant.hpp"
+#include "Base/TypeTraits.hpp"
 #include "Reflection/TypeRegistry.hpp"
 
 namespace EngineS {
 
 template<class T>
+concept CanGetTypeId = requires { typeid(RawType<T>); };
+
+template<class T>
 inline const Type* TypeOf() {
+    if constexpr (CanGetTypeId<T>) {
+        return TypeRegistry::Instance()->GetType(typeid(RawType<T>));
+    }
     return nullptr;
 }
 
 template<class T>
-    requires IsObject<T> || IsObjectPointer<T>
-inline const Type* TypeOf() {
-    return std::remove_pointer_t<T>::GetTypeStatic();
-}
-
-template<class T>
 inline const Type* TypeOf(const T& val) {
-    if constexpr (IsObjectPointer<T>) {
-        return val->GetType();
-    } else if constexpr (SameAs<T, Variant>) {
-        return val.GetType();
+    if constexpr (HasGetTypeMethod<RawType<T>>) {
+        if constexpr (IsPointer<T>) {
+            return val->GetType();
+        } else if constexpr (IsReference<T>) {
+            return val.GetType();
+        } else {
+            return TypeOf<T>();
+        }
     } else {
-        return TypeOf<T>();
+        return TypeOf<RawType<T>>();
     }
 }
-
-#define ES_DEFINE_TYPEOF(type)                           \
-    template<>                                           \
-    inline const Type* TypeOf<type>() {                  \
-        return TypeRegistry::Instance()->GetType(#type); \
-    }
-
-ES_DEFINE_TYPEOF(void)
-ES_DEFINE_TYPEOF(int)
-ES_DEFINE_TYPEOF(bool)
-ES_DEFINE_TYPEOF(float)
-ES_DEFINE_TYPEOF(double)
 
 } // namespace EngineS
