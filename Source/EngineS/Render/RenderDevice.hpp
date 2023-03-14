@@ -41,7 +41,7 @@ class RenderDevice {
     virtual const Type*     GetRenderPipelineType()                                    = 0;
 
     virtual Framebuffer* CreateFramebuffer(const FramebufferDescriptor& desc) = 0;
-    virtual const Type* GetFramebufferType() = 0;
+    virtual const Type*  GetFramebufferType()                                 = 0;
 };
 
 } // namespace EngineS

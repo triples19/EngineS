@@ -20,4 +20,4 @@ class Text : public Resource {
     std::string _text;
 };
 
-}
+} // namespace EngineS

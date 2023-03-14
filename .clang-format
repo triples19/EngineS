@@ -44,7 +44,7 @@ IncludeBlocks: Preserve
 IndentCaseLabels: true
 IndentWidth: 4
 IndentExternBlock: AfterExternBlock
-IndentPPDirectives: None
+IndentPPDirectives: AfterHash
 IndentWrappedFunctionNames: false
 JavaScriptQuotes: Leave
 JavaScriptWrapImports: true

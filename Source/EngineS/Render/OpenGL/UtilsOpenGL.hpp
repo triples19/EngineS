@@ -3,7 +3,7 @@
 #include "Render/RenderTypes.hpp"
 
 #ifdef REFL_COMPILER
-#define __cpp_consteval
+#    define __cpp_consteval
 #endif
 
 #include <glad/glad.h>

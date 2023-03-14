@@ -101,7 +101,6 @@ void SpriteRenderer::Render(const Matrix4x4& modelMat, DrawList* drawList) {
     drawList->BindVertexBuffer(_vertexBuffer);
     drawList->BindTexture(_material->GetTexture());
     drawList->Draw(0, buffer.size());
-
 }
 
 void SpriteRenderer::Initialize(GameObject* parent) {

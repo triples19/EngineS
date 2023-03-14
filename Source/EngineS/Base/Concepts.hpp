@@ -8,8 +8,7 @@ template<class T, class U>
 concept SameAs = std::same_as<T, U>;
 
 template<class T, class U>
-concept NotSameAs = not
-std::same_as<T, U>;
+concept NotSameAs = not std::same_as<T, U>;
 
 template<class T, class U>
 concept DifferentAs = std::same_as<T, U>;

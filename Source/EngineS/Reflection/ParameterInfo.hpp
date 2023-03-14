@@ -18,4 +18,4 @@ class ParameterInfo {
     const Type*      _type;
 };
 
-}
+} // namespace EngineS
