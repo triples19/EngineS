@@ -6,13 +6,16 @@
 namespace EngineS {
 
 class Type;
+class Variant;
 
 class Instance {
   public:
     Instance();
 
+    Instance(const Variant& var);
+
     template<class T>
-        requires NotSameAs<RemoveCVRef<T>, Instance>
+        requires NotSameAs<RemoveCVRef<T>, Instance> && NotSameAs<RemoveCVRef<T>, Variant>
     Instance(T& val);
 
     Instance(const Instance& other);
@@ -36,7 +39,7 @@ class Instance {
 namespace EngineS {
 
 template<class T>
-    requires NotSameAs<RemoveCVRef<T>, Instance>
+    requires NotSameAs<RemoveCVRef<T>, Instance> && NotSameAs<RemoveCVRef<T>, Variant>
 Instance::Instance(T& val) : _type(TypeOf(val)), _address(RawAddressOf(val)) {}
 
 template<class T>

@@ -14,7 +14,8 @@ struct VariantTypeHandlerImplEmpty : VariantTypeHandler {
     VariantData Create(const void* val) const override { return {}; }
     VariantData Copy(VariantData other) const override { return {}; }
     void        Destroy(VariantData obj) const override {}
-    void*       GetRawPointer(VariantData obj) const override { return nullptr; }
+    void*       GetAddress(VariantData obj) const override { return nullptr; }
+    void*       GetRawAddress(VariantData obj) const override { return nullptr; }
     bool        IsValid() const override { return false; }
 
     std::unique_ptr<VariantTypeHandler> Clone() const override {
@@ -28,7 +29,8 @@ struct VariantTypeHandlerImplHeap : VariantTypeHandler {
     VariantData Create(const void* val) const override { return new T(*static_cast<const T*>(val)); }
     VariantData Copy(VariantData other) const override { return Create(other.ptr); }
     void        Destroy(VariantData obj) const override { delete static_cast<T*>(obj.ptr); }
-    void*       GetRawPointer(VariantData obj) const override {
+    void*       GetAddress(VariantData obj) const override { return obj.ptr; }
+    void*       GetRawAddress(VariantData obj) const override {
         auto ptr = static_cast<T*>(obj.ptr);
         return const_cast<void*>(static_cast<const void*>(RawAddressOf(ptr)));
     }
@@ -70,6 +72,7 @@ struct VariantTypeHandlerImpl<VariantMap> : VariantTypeHandlerImplHeap<VariantMa
 } // namespace Detail
 
 template<class T>
+    requires NotSameAs<T, Variant>
 Variant::Variant(const T& val) : _handler(new Detail::VariantTypeHandlerImpl<T>) {
     _data = _handler->Create(reinterpret_cast<void*>(const_cast<RemoveCVRef<T*>>(&val)));
 }
@@ -102,7 +105,7 @@ const T& Variant::GetValue() const {
 
 template<class T>
 T Variant::Convert() const {
-    return static_cast<T>(Type::ApplyOffset(TypeOf<T>(), _handler->GetType(), _handler->GetRawPointer(_data)));
+    return static_cast<T>(Type::ApplyOffset(TypeOf<T>(), _handler->GetType(), _handler->GetRawAddress(_data)));
 }
 
 template<class T>
@@ -121,6 +124,39 @@ T* Variant::UnsafeCast() {
 template<class T>
 const T* Variant::UnsafeCast() const {
     return reinterpret_cast<const T*>(_data.ptr);
+}
+
+template<class T>
+T Variant::ToNumber() const {
+    if (IsType<int>()) {
+        return static_cast<T>(GetValue<int>());
+    } else if (IsType<signed char>()) {
+        return static_cast<T>(GetValue<signed char>());
+    } else if (IsType<unsigned char>()) {
+        return static_cast<T>(GetValue<unsigned char>());
+    } else if (IsType<short int>()) {
+        return static_cast<T>(GetValue<short int>());
+    } else if (IsType<unsigned short int>()) {
+        return static_cast<T>(GetValue<unsigned short int>());
+    } else if (IsType<long int>()) {
+        return static_cast<T>(GetValue<long int>());
+    } else if (IsType<unsigned long int>()) {
+        return static_cast<T>(GetValue<unsigned long int>());
+    } else if (IsType<long long int>()) {
+        return static_cast<T>(GetValue<long long int>());
+    } else if (IsType<unsigned long long int>()) {
+        return static_cast<T>(GetValue<unsigned long long int>());
+    } else if (IsType<bool>()) {
+        return static_cast<T>(GetValue<bool>());
+    } else if (IsType<float>()) {
+        return static_cast<T>(GetValue<float>());
+    } else if (IsType<double>()) {
+        return static_cast<T>(GetValue<double>());
+    } else if (IsType<long double>()) {
+        return static_cast<T>(GetValue<long double>());
+    } else {
+        return static_cast<T>(0);
+    }
 }
 
 } // namespace EngineS

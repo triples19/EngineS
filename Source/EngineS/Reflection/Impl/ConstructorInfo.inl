@@ -6,12 +6,14 @@
 #include "Reflection/TypeOf.hpp"
 #include "Reflection/Variant.hpp"
 
+#include <cassert>
 #include <string_view>
 #include <tuple>
 
 namespace EngineS::Detail {
 
 template<class T, class... ParamTypes>
+    requires std::constructible_from<T, ParamTypes...>
 class ConstructorInfoImpl : public ConstructorInfo {
   public:
     using ParamTypesTuple             = std::tuple<ParamTypes...>;
@@ -59,13 +61,22 @@ class ConstructorInfoImpl : public ConstructorInfo {
         return InvokeTemplate(arg0, arg1, arg2, arg3, arg4, arg5);
     }
 
+    Variant InvokeVariadic(const std::vector<Argument>& args) const override {
+        if (args.size() != ParamsCount)
+            return {};
+        return [&]<size_t... ArgIdx>(std::index_sequence<ArgIdx...>) {
+            return InvokeTemplate(args[ArgIdx]...);
+        }(std::make_index_sequence<ParamsCount>());
+    }
+
+  private:
     template<class... Args>
     T* InvokeTemplate(Args&&... args) const {
         if constexpr (sizeof...(Args) != ParamsCount) {
             return nullptr;
         } else {
-            return [&]<size_t... N>(std::index_sequence<N...>) {
-                return new T(std::forward<Args>(args).template GetValue<TypeOfParam<N>>()...);
+            return [&]<size_t... ArgIdx>(std::index_sequence<ArgIdx...>) {
+                return new T(std::forward<Args>(args).template GetValue<TypeOfParam<ArgIdx>>()...);
             }(std::make_index_sequence<ParamsCount>());
         }
     }

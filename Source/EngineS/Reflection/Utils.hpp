@@ -3,23 +3,10 @@
 #include "Base/Concepts.hpp"
 #include "Base/Platform.hpp"
 #include "Base/TypeTraits.hpp"
-#include "Reflection/TypeOf.hpp"
 
 #include <algorithm>
 #include <iterator>
 #include <memory>
-
-#define ES_REFL_ENABLE                        \
-  public:                                     \
-    ES_BEGIN_DISABLE_OVERRIDE_WARNING         \
-    virtual const Type* GetType() const {     \
-        return TypeOf(*this);                 \
-    }                                         \
-    virtual void* GetPointer() {              \
-        return reinterpret_cast<void*>(this); \
-    }                                         \
-    ES_END_DISABLE_OVERRIDE_WARNING           \
-  private:
 
 namespace EngineS {
 
@@ -69,7 +56,7 @@ struct MethodTypeImpl<Parent, true, IsConst, Ret, Params...> {
 } // namespace Detail
 
 template<class Parent, bool IsStatic, bool IsConst, class Ret, class... Params>
-using MethodType = Detail::MethodTypeImpl<Parent, IsStatic, IsConst, Ret, Params...>::Type;
+using MethodType = typename Detail::MethodTypeImpl<Parent, IsStatic, IsConst, Ret, Params...>::Type;
 
 template<class SourceContainer, class TargetContainer>
     requires IsConvertible<typename SourceContainer::value_type, typename TargetContainer::value_type>
@@ -86,3 +73,17 @@ inline TargetContainer* CopyContainer(const void* ptr) {
 }
 
 } // namespace EngineS
+
+#include "Reflection/TypeOf.hpp"
+
+#define ES_REFL_ENABLE                        \
+  public:                                     \
+    ES_BEGIN_DISABLE_OVERRIDE_WARNING         \
+    virtual const Type* GetType() const {     \
+        return TypeOf(*this);                 \
+    }                                         \
+    virtual void* GetPointer() {              \
+        return reinterpret_cast<void*>(this); \
+    }                                         \
+    ES_END_DISABLE_OVERRIDE_WARNING           \
+  private:

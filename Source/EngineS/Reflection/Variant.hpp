@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Base/Concepts.hpp"
 #include "Base/TypeTraits.hpp"
 #include "Reflection/TypeOf.hpp"
 
@@ -35,7 +36,8 @@ struct VariantTypeHandler {
     virtual VariantData Create(const void* val) const        = 0;
     virtual VariantData Copy(VariantData other) const        = 0;
     virtual void        Destroy(VariantData obj) const       = 0;
-    virtual void*       GetRawPointer(VariantData obj) const = 0;
+    virtual void*       GetAddress(VariantData obj) const    = 0;
+    virtual void*       GetRawAddress(VariantData obj) const = 0;
     virtual bool        IsValid() const                      = 0;
 
     virtual std::unique_ptr<VariantTypeHandler> Clone() const = 0;
@@ -49,6 +51,7 @@ class Variant {
     ~Variant();
 
     template<class T>
+        requires NotSameAs<T, Variant>
     Variant(const T& val);
 
     Variant(const Variant& other);
@@ -84,9 +87,17 @@ class Variant {
 
     Detail::VariantTypeHandler* GetHandler() const;
 
-    void* GetPointer() const;
+    void* GetAddress() const;
+
+    void* GetRawAddress() const;
 
     const Type* GetType() const;
+
+    int GetInt() const;
+
+    float GetFloat() const;
+
+    double GetDouble() const;
 
   private:
     template<class T>
@@ -94,6 +105,9 @@ class Variant {
 
     template<class T>
     inline const T* UnsafeCast() const;
+
+    template<class T>
+    T ToNumber() const;
 
   private:
     Detail::VariantData                         _data {};

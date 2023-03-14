@@ -25,7 +25,7 @@ TargetType Type::DynamicCast(SourceType obj) {
     return static_cast<TargetType>(Type::ApplyOffset(
         TypeOf<TargetType>(),
         static_cast<SourceTypeNoCVPtr*>(obj)->GetType(),
-        static_cast<SourceTypeNoCVPtr*>(obj)->GetRawPointer()
+        static_cast<SourceTypeNoCVPtr*>(obj)->GetRawAddress()
     ));
 }
 

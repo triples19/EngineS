@@ -22,6 +22,8 @@ class TypeRegistry {
     const Type* GetType(hash32 hash) const;
     const Type* GetType(std::type_index typeIndex) const;
 
+    std::vector<const Type*> GetTypes() const;
+
     void AddBases(const Type* type, const std::vector<std::type_index>& baseIndices);
 
     void ProcessBases();

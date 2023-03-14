@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Reflection/Variant.hpp"
+
 namespace EngineS {
 
 class Variant;

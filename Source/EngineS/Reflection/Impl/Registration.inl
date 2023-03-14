@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Base/Concepts.hpp"
 #include "Base/Hash.hpp"
 #include "Reflection/ConstructorInfo.hpp"
 #include "Reflection/DestructorInfo.hpp"

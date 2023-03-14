@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Reflection/Utils.hpp"
-
 namespace EngineS {
 
 class Type;
@@ -16,6 +14,9 @@ inline const Type* TypeOf(const T& val);
 
 #include "Base/TypeTraits.hpp"
 #include "Reflection/TypeRegistry.hpp"
+#include "Reflection/Utils.hpp"
+
+#include <typeinfo>
 
 namespace EngineS {
 

@@ -31,6 +31,8 @@ class ConstructorInfo {
 
     virtual Variant
     Invoke(Argument arg0, Argument arg1, Argument arg2, Argument arg3, Argument arg4, Argument arg5) const = 0;
+
+    virtual Variant InvokeVariadic(const std::vector<Argument>& args) const = 0;
 };
 
 } // namespace EngineS

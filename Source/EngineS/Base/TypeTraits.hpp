@@ -29,11 +29,11 @@ struct RemovePointersImpl {
 
 template<IsPointer T>
 struct RemovePointersImpl<T> {
-    using Type = RemovePointersImpl<RemovePointer<T>>::Type;
+    using Type = typename RemovePointersImpl<RemovePointer<T>>::Type;
 };
 } // namespace Detail
 template<class T>
-using RemovePointers = Detail::RemovePointersImpl<T>::Type;
+using RemovePointers = typename Detail::RemovePointersImpl<T>::Type;
 
 template<class T>
 inline constexpr std::size_t PointerCount() {
@@ -47,17 +47,14 @@ inline constexpr std::size_t PointerCount() {
 namespace Detail {
 template<class T>
 struct RawTypeImpl {
-    using Type = RemoveCV<T>;
+    using Type = RemoveCVRef<T>;
 };
 template<IsPointer T>
 struct RawTypeImpl<T> {
     using Type = RawTypeImpl<RemovePointer<T>>::Type;
 };
-template<IsReference T>
-struct RawTypeImpl<T> {
-    using Type = RawTypeImpl<RemoveReference<T>>;
-};
 } // namespace Detail
+
 template<class T>
 using RawType = Detail::RawTypeImpl<T>::Type;
 

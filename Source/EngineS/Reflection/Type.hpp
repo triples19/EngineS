@@ -3,6 +3,7 @@
 #include "Base/Concepts.hpp"
 #include "Base/PrimitiveTypes.hpp"
 
+#include <concepts>
 #include <string>
 #include <string_view>
 #include <typeindex>
@@ -20,7 +21,6 @@ template<class>
 class Class;
 }
 
-class Object;
 class MemberInfo;
 class FieldInfo;
 class MethodInfo;
@@ -78,14 +78,17 @@ class Type {
 
     std::vector<const MethodInfo*> GetMethods(std::string_view name) const;
 
-    const MethodInfo*
-    GetMethod(std::string_view name, const Type* returnType, std::vector<const Type*> paramTypes) const;
+    const MethodInfo* GetMethod(std::string_view name, std::vector<const Type*> paramTypes) const;
 
     const ConstructorInfo* GetConstructor(std::vector<const Type*> paramTypes) const;
 
     std::vector<const ConstructorInfo*> GetConstructors() const;
 
     const DestructorInfo* GetDestructor() const;
+
+    virtual bool IsNumber() const        = 0;
+    virtual bool IsIntegral() const      = 0;
+    virtual bool IsFloatingPoint() const = 0;
 
   private:
     hash32           _hash;
@@ -108,6 +111,10 @@ class TypeImpl : public Type {
   public:
     TypeImpl(std::string_view name) : Type(name, typeid(T)) {}
     void* Cast(void* ptr) const override { return static_cast<void*>(static_cast<T*>(ptr)); }
+
+    bool IsNumber() const override { return IsIntegral() || IsFloatingPoint(); }
+    bool IsIntegral() const override { return std::integral<T>; }
+    bool IsFloatingPoint() const override { return std::floating_point<T>; }
 };
 
 } // namespace Detail

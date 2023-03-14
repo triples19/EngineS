@@ -98,10 +98,9 @@ std::vector<const MethodInfo*> Type::GetMethods(std::string_view name) const {
     return ret;
 }
 
-const MethodInfo*
-Type::GetMethod(std::string_view name, const Type* returnType, std::vector<const Type*> paramTypes) const {
+const MethodInfo* Type::GetMethod(std::string_view name, std::vector<const Type*> paramTypes) const {
     auto iter = std::ranges::find_if(_methods, [&](const MethodInfo* info) {
-        return info->GetName() == name && info->GetReturnType() == returnType &&
+        return info->GetName() == name &&
                std::ranges::equal(paramTypes, info->GetParameterInfos(), {}, {}, [](const ParameterInfo& info) {
                    return info.GetType();
                });

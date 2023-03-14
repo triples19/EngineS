@@ -36,3 +36,7 @@ endif ()
 if (NOT TARGET Catch2)
     add_subdirectory(Catch2)
 endif ()
+
+if (NOT TARGET lua)
+    include(lua.cmake)
+endif ()

@@ -96,6 +96,14 @@ class MethodInfoImpl : public MethodInfo {
         return InvokeTemplate(instance, arg0, arg1, arg2, arg3, arg4, arg5);
     }
 
+    Variant InvokeVariadic(Instance instance, const std::vector<Argument>& args) const override {
+        if (args.size() != ParamsCount)
+            return {};
+        return [&]<size_t... ArgIdx>(std::index_sequence<ArgIdx...>) {
+            return InvokeTemplate(instance, args[ArgIdx]...);
+        }(std::make_index_sequence<ParamsCount>());
+    }
+
   private:
     template<class... Args, size_t... N>
     decltype(auto) InvokeTemplateExpand(std::index_sequence<N...>, Instance instance, Args&&... args) const {

@@ -5,6 +5,7 @@
 
 #include <cassert>
 #include <memory>
+#include <typeindex>
 
 namespace EngineS {
 
@@ -43,6 +44,13 @@ const Type* TypeRegistry::GetType(std::type_index typeIndex) const {
         return iter->second;
     }
     return nullptr;
+}
+
+std::vector<const Type*> TypeRegistry::GetTypes() const {
+    std::vector<const Type*> ret;
+    ret.reserve(_types.size());
+    std::ranges::transform(_types, std::back_inserter(ret), [](const auto& pair) { return pair.second; });
+    return ret;
 }
 
 void TypeRegistry::AddBases(const Type* type, const std::vector<std::type_index>& baseIndices) {

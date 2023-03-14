@@ -40,6 +40,8 @@ class MethodInfo : public MemberInfo {
     virtual Variant
     Invoke(Instance instance, Argument arg0, Argument arg1, Argument arg2, Argument arg3, Argument arg4, Argument arg5)
         const = 0;
+
+    virtual Variant InvokeVariadic(Instance instance, const std::vector<Argument>& args) const = 0;
 };
 
 } // namespace EngineS
