@@ -2,6 +2,7 @@
 #include "Base/Macros.hpp"
 #include "IO/Logger.hpp"
 
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #define GLFW_CALLBACK(functionName)                                                          \
@@ -91,6 +92,12 @@ GLFWwindow* WindowSystem::GetWindow() const {
 
 std::tuple<u32, u32> WindowSystem::GetWindowSize() const {
     return {_width, _height};
+}
+
+std::tuple<u32, u32> WindowSystem::GetFramebufferSize() const {
+    int w, h;
+    glfwGetFramebufferSize(_window, &w, &h);
+    return {w, h};
 }
 
 } // namespace EngineS

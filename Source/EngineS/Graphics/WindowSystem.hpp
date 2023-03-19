@@ -26,6 +26,7 @@ class WindowSystem : public Object {
     void                 SetWindowSize(u32 width, u32 height);
     GLFWwindow*          GetWindow() const;
     std::tuple<u32, u32> GetWindowSize() const;
+    std::tuple<u32, u32> GetFramebufferSize() const;
 
     using OnResetFunc       = std::function<void()>;
     using OnKeyFunc         = std::function<void(int, int, int, int)>;

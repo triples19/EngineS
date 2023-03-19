@@ -52,7 +52,7 @@ void RenderSystem::Initialize() {
 
     WindowSystem::Instance()->RegisterOnWindowSizeFunc([this](u32 w, u32 h) { this->OnWindowSizeChange(w, h); });
 
-    auto [width, height] = WindowSystem::Instance()->GetWindowSize();
+    auto [width, height] = WindowSystem::Instance()->GetFramebufferSize();
 
     _colorTex = device->CreateTexture2D();
     _colorTex->Init(TextureDescriptor {
@@ -92,8 +92,8 @@ void RenderSystem::Update() {
         .clearColorValue = {0.2f, 0.3f, 0.3f, 1.0f},
     });
 
-    auto [winWidth, winHeight] = WindowSystem::Instance()->GetWindowSize();
-    drawList->SetViewport(0, 0, winWidth, winHeight);
+    auto [fbWidth, fbHeight] = WindowSystem::Instance()->GetFramebufferSize();
+    drawList->SetViewport(0, 0, fbWidth, fbHeight);
 
     auto* scene  = SceneManager::Instance()->GetCurrentScene();
     auto* camera = scene->GetMainCamera();
