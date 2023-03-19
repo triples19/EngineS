@@ -1,16 +1,16 @@
 #include "Engine/Engine.hpp"
 #include "Base/AutoReleasePool.hpp"
 #include "Base/Macros.hpp"
-#include "Function/GameObject.hpp"
-#include "Function/InputSystem.hpp"
-#include "Function/Scene.hpp"
-#include "Function/SceneManager.hpp"
+#include "GameObject/GameObject.hpp"
 #include "Generated/Refl.hpp"
+#include "Graphics/RenderSystem.hpp"
+#include "Graphics/WindowSystem.hpp"
+#include "IO/InputSystem.hpp"
 #include "IO/Logger.hpp"
 #include "Reflection/Registration.hpp"
-#include "Render/RenderSystem.hpp"
-#include "Render/WindowSystem.hpp"
 #include "Resource/ResourceManager.hpp"
+#include "Scene/Scene.hpp"
+#include "Scene/SceneManager.hpp"
 
 namespace EngineS {
 

@@ -7,39 +7,39 @@
 #include "Reflection/TypeRegistry.hpp"
 #include "Reflection/Registration.hpp"
 
-#include "Render/Buffer.hpp"
-#include "Render/OpenGL/BufferOpenGL.hpp"
-#include "Function/Camera.hpp"
-#include "Function/Component.hpp"
-#include "Render/DrawList.hpp"
-#include "Render/OpenGL/DrawListOpenGL.hpp"
-#include "Engine/Engine.hpp"
-#include "Render/Framebuffer.hpp"
-#include "Render/OpenGL/FramebufferOpenGL.hpp"
-#include "Function/GameObject.hpp"
-#include "Function/InputSystem.hpp"
-#include "IO/Logger.hpp"
-#include "Render/Material2D.hpp"
-#include "Base/Object.hpp"
-#include "Render/Program.hpp"
-#include "Render/OpenGL/ProgramOpenGL.hpp"
-#include "Base/Ref.hpp"
-#include "Render/RenderPipeline.hpp"
-#include "Render/OpenGL/RenderPipelineOpenGL.hpp"
-#include "Render/RenderSystem.hpp"
-#include "Render/Renderer.hpp"
-#include "Resource/Resource.hpp"
-#include "Resource/ResourceManager.hpp"
-#include "Function/Scene.hpp"
-#include "Function/SceneManager.hpp"
-#include "Render/Shader.hpp"
-#include "Render/OpenGL/ShaderOpenGL.hpp"
-#include "Render/SpriteRenderer.hpp"
-#include "Resource/Impl/Text.hpp"
-#include "Render/Texture2D.hpp"
-#include "Render/OpenGL/Texture2DOpenGL.hpp"
-#include "Function/Transform2D.hpp"
-#include "Render/WindowSystem.hpp"
+    #include "GraphicsAPI/Buffer.hpp"
+    #include "GraphicsAPI/OpenGL/BufferOpenGL.hpp"
+    #include "Graphics/Camera.hpp"
+    #include "GameObject/Component.hpp"
+    #include "GraphicsAPI/DrawList.hpp"
+    #include "GraphicsAPI/OpenGL/DrawListOpenGL.hpp"
+    #include "Engine/Engine.hpp"
+    #include "GraphicsAPI/Framebuffer.hpp"
+    #include "GraphicsAPI/OpenGL/FramebufferOpenGL.hpp"
+    #include "GameObject/GameObject.hpp"
+    #include "IO/InputSystem.hpp"
+    #include "IO/Logger.hpp"
+    #include "Graphics/Material2D.hpp"
+    #include "Base/Object.hpp"
+    #include "GraphicsAPI/Program.hpp"
+    #include "GraphicsAPI/OpenGL/ProgramOpenGL.hpp"
+    #include "Base/Ref.hpp"
+    #include "GraphicsAPI/RenderPipeline.hpp"
+    #include "GraphicsAPI/OpenGL/RenderPipelineOpenGL.hpp"
+    #include "Graphics/RenderSystem.hpp"
+    #include "GraphicsAPI/Renderer.hpp"
+    #include "Resource/Resource.hpp"
+    #include "Resource/ResourceManager.hpp"
+    #include "Scene/Scene.hpp"
+    #include "Scene/SceneManager.hpp"
+    #include "GraphicsAPI/Shader.hpp"
+    #include "GraphicsAPI/OpenGL/ShaderOpenGL.hpp"
+    #include "Graphics/SpriteRenderer.hpp"
+    #include "Resource/Impl/Text.hpp"
+    #include "GraphicsAPI/Texture2D.hpp"
+    #include "GraphicsAPI/OpenGL/Texture2DOpenGL.hpp"
+    #include "GameObject/Transform2D.hpp"
+    #include "Graphics/WindowSystem.hpp"
 
 #include "Refl.hpp"
 
@@ -47,31 +47,50 @@
 
 void EngineS::Registration::RegisterEngineObjects() {
     Registration::Class<EngineS::Buffer>("EngineS::Buffer")
-        .Bases<DROP_FIRST(_, EngineS::Object)>()
-        .Constructor<DROP_FIRST(_, unsigned long long, EngineS::BufferType, EngineS::BufferUsage)>({ {"size"},{"type"},{"usage"}, })
-        .Method("GetType", static_cast<MethodType<EngineS::Buffer, false, true, const EngineS::Type *>>(&EngineS::Buffer::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::Buffer, false, false, void *>>(&EngineS::Buffer::GetPointer), {  })
-        .Method("UpdateData", static_cast<MethodType<EngineS::Buffer, false, false, void, const std::byte *>>(&EngineS::Buffer::UpdateData), { {"data"}, })
+    .Bases
+    <DROP_FIRST(_, EngineS::Object)>()
+        .Constructor
+        <DROP_FIRST(_, unsigned long long, EngineS::BufferType, EngineS::BufferUsage)>({ {"size"},{"type"},{"usage"}, })
+        .Method("GetType", static_cast
+        <MethodType<EngineS::Buffer, false, true, const EngineS::Type *>>(&EngineS::Buffer::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::Buffer, false, false, void *>>(&EngineS::Buffer::GetPointer), {  })
+        .Method("UpdateData", static_cast
+        <MethodType<EngineS::Buffer, false, false, void, const std::byte *>>(&EngineS::Buffer::UpdateData), { {"data"}, })
     ;
 
     Registration::Class<EngineS::BufferOpenGL>("EngineS::BufferOpenGL")
-        .Bases<DROP_FIRST(_, EngineS::Buffer)>()
-        .Constructor<DROP_FIRST(_, unsigned long long, EngineS::BufferType, EngineS::BufferUsage)>({ {"size"},{"type"},{"usage"}, })
-        .Method("GetType", static_cast<MethodType<EngineS::BufferOpenGL, false, true, const EngineS::Type *>>(&EngineS::BufferOpenGL::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::BufferOpenGL, false, false, void *>>(&EngineS::BufferOpenGL::GetPointer), {  })
-        .Method("UpdateData", static_cast<MethodType<EngineS::BufferOpenGL, false, false, void, const std::byte *>>(&EngineS::BufferOpenGL::UpdateData), { {"data"}, })
-        .Method("GetHandler", static_cast<MethodType<EngineS::BufferOpenGL, false, true, unsigned int>>(&EngineS::BufferOpenGL::GetHandler), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::Buffer)>()
+        .Constructor
+        <DROP_FIRST(_, unsigned long long, EngineS::BufferType, EngineS::BufferUsage)>({ {"size"},{"type"},{"usage"}, })
+        .Method("GetType", static_cast
+        <MethodType<EngineS::BufferOpenGL, false, true, const EngineS::Type *>>(&EngineS::BufferOpenGL::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::BufferOpenGL, false, false, void *>>(&EngineS::BufferOpenGL::GetPointer), {  })
+        .Method("UpdateData", static_cast
+        <MethodType<EngineS::BufferOpenGL, false, false, void, const std::byte *>>(&EngineS::BufferOpenGL::UpdateData), { {"data"}, })
+        .Method("GetHandler", static_cast
+        <MethodType<EngineS::BufferOpenGL, false, true, unsigned int>>(&EngineS::BufferOpenGL::GetHandler), {  })
     ;
 
     Registration::Class<EngineS::Camera>("EngineS::Camera")
-        .Bases<DROP_FIRST(_, EngineS::Component)>()
-        .Method("GetType", static_cast<MethodType<EngineS::Camera, false, true, const EngineS::Type *>>(&EngineS::Camera::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::Camera, false, false, void *>>(&EngineS::Camera::GetPointer), {  })
-        .Method("Initialize", static_cast<MethodType<EngineS::Camera, false, false, void, EngineS::GameObject *>>(&EngineS::Camera::Initialize), { {"parent"}, })
-        .Method("Update", static_cast<MethodType<EngineS::Camera, false, false, void, float>>(&EngineS::Camera::Update), { {"deltaTime"}, })
-        .Method("ConstructProjectionMatrix", static_cast<MethodType<EngineS::Camera, false, false, void>>(&EngineS::Camera::ConstructProjectionMatrix), {  })
-        .Method("GetProjectionMatrix", static_cast<MethodType<EngineS::Camera, false, true, const EngineS::Matrix4x4 &>>(&EngineS::Camera::GetProjectionMatrix), {  })
-        .Method("GetViewMatrix", static_cast<MethodType<EngineS::Camera, false, true, EngineS::Matrix4x4>>(&EngineS::Camera::GetViewMatrix), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::Component)>()
+        .Method("GetType", static_cast
+        <MethodType<EngineS::Camera, false, true, const EngineS::Type *>>(&EngineS::Camera::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::Camera, false, false, void *>>(&EngineS::Camera::GetPointer), {  })
+        .Method("Initialize", static_cast
+        <MethodType<EngineS::Camera, false, false, void, EngineS::GameObject *>>(&EngineS::Camera::Initialize), { {"parent"}, })
+        .Method("Update", static_cast
+        <MethodType<EngineS::Camera, false, false, void, float>>(&EngineS::Camera::Update), { {"deltaTime"}, })
+        .Method("ConstructProjectionMatrix", static_cast
+        <MethodType<EngineS::Camera, false, false, void>>(&EngineS::Camera::ConstructProjectionMatrix), {  })
+        .Method("GetProjectionMatrix", static_cast
+        <MethodType<EngineS::Camera, false, true, const EngineS::Matrix4x4 &>>(&EngineS::Camera::GetProjectionMatrix), {  })
+        .Method("GetViewMatrix", static_cast
+        <MethodType<EngineS::Camera, false, true, EngineS::Matrix4x4>>(&EngineS::Camera::GetViewMatrix), {  })
         .Field("width", &EngineS::Camera::width)
         .Field("height", &EngineS::Camera::height)
         .Field("near", &EngineS::Camera::near)
@@ -79,335 +98,573 @@ void EngineS::Registration::RegisterEngineObjects() {
     ;
 
     Registration::Class<EngineS::Component>("EngineS::Component")
-        .Bases<DROP_FIRST(_, EngineS::Object)>()
-        .Method("GetType", static_cast<MethodType<EngineS::Component, false, true, const EngineS::Type *>>(&EngineS::Component::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::Component, false, false, void *>>(&EngineS::Component::GetPointer), {  })
-        .Method("Initialize", static_cast<MethodType<EngineS::Component, false, false, void, EngineS::GameObject *>>(&EngineS::Component::Initialize), { {"parent"}, })
-        .Method("Update", static_cast<MethodType<EngineS::Component, false, false, void, float>>(&EngineS::Component::Update), { {"deltaTime"}, })
-        .Method("SetEnabled", static_cast<MethodType<EngineS::Component, false, false, void, bool>>(&EngineS::Component::SetEnabled), { {"value"}, })
-        .Method("GetEnabled", static_cast<MethodType<EngineS::Component, false, true, bool>>(&EngineS::Component::GetEnabled), {  })
-        .Method("GetGameObject", static_cast<MethodType<EngineS::Component, false, true, EngineS::GameObject *>>(&EngineS::Component::GetGameObject), {  })
-        .Method("GetComponent", static_cast<MethodType<EngineS::Component, false, true, EngineS::Component *, const EngineS::Type *>>(&EngineS::Component::GetComponent), { {"type"}, })
-        .Method("GetComponents", static_cast<MethodType<EngineS::Component, false, true, std::vector<EngineS::Component *, std::allocator<EngineS::Component *>>, const EngineS::Type *>>(&EngineS::Component::GetComponents), { {"type"}, })
+    .Bases
+    <DROP_FIRST(_, EngineS::Object)>()
+        .Method("GetType", static_cast
+        <MethodType<EngineS::Component, false, true, const EngineS::Type *>>(&EngineS::Component::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::Component, false, false, void *>>(&EngineS::Component::GetPointer), {  })
+        .Method("Initialize", static_cast
+        <MethodType<EngineS::Component, false, false, void, EngineS::GameObject *>>(&EngineS::Component::Initialize), { {"parent"}, })
+        .Method("Update", static_cast
+        <MethodType<EngineS::Component, false, false, void, float>>(&EngineS::Component::Update), { {"deltaTime"}, })
+        .Method("SetEnabled", static_cast
+        <MethodType<EngineS::Component, false, false, void, bool>>(&EngineS::Component::SetEnabled), { {"value"}, })
+        .Method("GetEnabled", static_cast
+        <MethodType<EngineS::Component, false, true, bool>>(&EngineS::Component::GetEnabled), {  })
+        .Method("GetGameObject", static_cast
+        <MethodType<EngineS::Component, false, true, EngineS::GameObject *>>(&EngineS::Component::GetGameObject), {  })
+        .Method("GetComponent", static_cast
+        <MethodType<EngineS::Component, false, true, EngineS::Component *, const EngineS::Type *>>(&EngineS::Component::GetComponent), { {"type"}, })
+        .Method("GetComponents", static_cast
+        <MethodType<EngineS::Component, false, true, std::vector<EngineS::Component *, std::allocator<EngineS::Component *>>, const EngineS::Type *>>(&EngineS::Component::GetComponents), { {"type"}, })
     ;
 
     Registration::Class<EngineS::DrawList>("EngineS::DrawList")
-        .Bases<DROP_FIRST(_, EngineS::Object)>()
-        .Method("GetType", static_cast<MethodType<EngineS::DrawList, false, true, const EngineS::Type *>>(&EngineS::DrawList::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::DrawList, false, false, void *>>(&EngineS::DrawList::GetPointer), {  })
-        .Method("Begin", static_cast<MethodType<EngineS::DrawList, false, false, void, const EngineS::RenderPassDescriptor &>>(&EngineS::DrawList::Begin), { {"desc"}, })
-        .Method("SetViewport", static_cast<MethodType<EngineS::DrawList, false, false, void, int, int, unsigned int, unsigned int>>(&EngineS::DrawList::SetViewport), { {"x"},{"y"},{"w"},{"h"}, })
-        .Method("BindRenderPipeline", static_cast<MethodType<EngineS::DrawList, false, false, void, const EngineS::RenderPipeline *>>(&EngineS::DrawList::BindRenderPipeline), { {"pipeline"}, })
-        .Method("BindVertexBuffer", static_cast<MethodType<EngineS::DrawList, false, false, void, const EngineS::Buffer *>>(&EngineS::DrawList::BindVertexBuffer), { {"buffer"}, })
-        .Method("BindTexture", static_cast<MethodType<EngineS::DrawList, false, false, void, const EngineS::Texture2D *>>(&EngineS::DrawList::BindTexture), { {"texture"}, })
-        .Method("Draw", static_cast<MethodType<EngineS::DrawList, false, false, void, unsigned long long, unsigned long long>>(&EngineS::DrawList::Draw), { {"start"},{"count"}, })
-        .Method("End", static_cast<MethodType<EngineS::DrawList, false, false, void>>(&EngineS::DrawList::End), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::Object)>()
+        .Method("GetType", static_cast
+        <MethodType<EngineS::DrawList, false, true, const EngineS::Type *>>(&EngineS::DrawList::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::DrawList, false, false, void *>>(&EngineS::DrawList::GetPointer), {  })
+        .Method("Begin", static_cast
+        <MethodType<EngineS::DrawList, false, false, void, const EngineS::RenderPassDescriptor &>>(&EngineS::DrawList::Begin), { {"desc"}, })
+        .Method("SetViewport", static_cast
+        <MethodType<EngineS::DrawList, false, false, void, int, int, unsigned int, unsigned int>>(&EngineS::DrawList::SetViewport), { {"x"},{"y"},{"w"},{"h"}, })
+        .Method("BindRenderPipeline", static_cast
+        <MethodType<EngineS::DrawList, false, false, void, const EngineS::RenderPipeline *>>(&EngineS::DrawList::BindRenderPipeline), { {"pipeline"}, })
+        .Method("BindVertexBuffer", static_cast
+        <MethodType<EngineS::DrawList, false, false, void, const EngineS::Buffer *>>(&EngineS::DrawList::BindVertexBuffer), { {"buffer"}, })
+        .Method("BindTexture", static_cast
+        <MethodType<EngineS::DrawList, false, false, void, const EngineS::Texture2D *>>(&EngineS::DrawList::BindTexture), { {"texture"}, })
+        .Method("Draw", static_cast
+        <MethodType<EngineS::DrawList, false, false, void, unsigned long long, unsigned long long>>(&EngineS::DrawList::Draw), { {"start"},{"count"}, })
+        .Method("End", static_cast
+        <MethodType<EngineS::DrawList, false, false, void>>(&EngineS::DrawList::End), {  })
     ;
 
     Registration::Class<EngineS::DrawListOpenGL>("EngineS::DrawListOpenGL")
-        .Bases<DROP_FIRST(_, EngineS::DrawList)>()
-        .Method("GetType", static_cast<MethodType<EngineS::DrawListOpenGL, false, true, const EngineS::Type *>>(&EngineS::DrawListOpenGL::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::DrawListOpenGL, false, false, void *>>(&EngineS::DrawListOpenGL::GetPointer), {  })
-        .Method("Begin", static_cast<MethodType<EngineS::DrawListOpenGL, false, false, void, const EngineS::RenderPassDescriptor &>>(&EngineS::DrawListOpenGL::Begin), { {"desc"}, })
-        .Method("SetViewport", static_cast<MethodType<EngineS::DrawListOpenGL, false, false, void, int, int, unsigned int, unsigned int>>(&EngineS::DrawListOpenGL::SetViewport), { {"x"},{"y"},{"w"},{"h"}, })
-        .Method("BindRenderPipeline", static_cast<MethodType<EngineS::DrawListOpenGL, false, false, void, const EngineS::RenderPipeline *>>(&EngineS::DrawListOpenGL::BindRenderPipeline), { {"pipeline"}, })
-        .Method("BindVertexBuffer", static_cast<MethodType<EngineS::DrawListOpenGL, false, false, void, const EngineS::Buffer *>>(&EngineS::DrawListOpenGL::BindVertexBuffer), { {"buffer"}, })
-        .Method("BindTexture", static_cast<MethodType<EngineS::DrawListOpenGL, false, false, void, const EngineS::Texture2D *>>(&EngineS::DrawListOpenGL::BindTexture), { {"texture"}, })
-        .Method("Draw", static_cast<MethodType<EngineS::DrawListOpenGL, false, false, void, unsigned long long, unsigned long long>>(&EngineS::DrawListOpenGL::Draw), { {"start"},{"count"}, })
-        .Method("End", static_cast<MethodType<EngineS::DrawListOpenGL, false, false, void>>(&EngineS::DrawListOpenGL::End), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::DrawList)>()
+        .Method("GetType", static_cast
+        <MethodType<EngineS::DrawListOpenGL, false, true, const EngineS::Type *>>(&EngineS::DrawListOpenGL::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::DrawListOpenGL, false, false, void *>>(&EngineS::DrawListOpenGL::GetPointer), {  })
+        .Method("Begin", static_cast
+        <MethodType<EngineS::DrawListOpenGL, false, false, void, const EngineS::RenderPassDescriptor &>>(&EngineS::DrawListOpenGL::Begin), { {"desc"}, })
+        .Method("SetViewport", static_cast
+        <MethodType<EngineS::DrawListOpenGL, false, false, void, int, int, unsigned int, unsigned int>>(&EngineS::DrawListOpenGL::SetViewport), { {"x"},{"y"},{"w"},{"h"}, })
+        .Method("BindRenderPipeline", static_cast
+        <MethodType<EngineS::DrawListOpenGL, false, false, void, const EngineS::RenderPipeline *>>(&EngineS::DrawListOpenGL::BindRenderPipeline), { {"pipeline"}, })
+        .Method("BindVertexBuffer", static_cast
+        <MethodType<EngineS::DrawListOpenGL, false, false, void, const EngineS::Buffer *>>(&EngineS::DrawListOpenGL::BindVertexBuffer), { {"buffer"}, })
+        .Method("BindTexture", static_cast
+        <MethodType<EngineS::DrawListOpenGL, false, false, void, const EngineS::Texture2D *>>(&EngineS::DrawListOpenGL::BindTexture), { {"texture"}, })
+        .Method("Draw", static_cast
+        <MethodType<EngineS::DrawListOpenGL, false, false, void, unsigned long long, unsigned long long>>(&EngineS::DrawListOpenGL::Draw), { {"start"},{"count"}, })
+        .Method("End", static_cast
+        <MethodType<EngineS::DrawListOpenGL, false, false, void>>(&EngineS::DrawListOpenGL::End), {  })
     ;
 
     Registration::Class<EngineS::Engine>("EngineS::Engine")
-        .Bases<DROP_FIRST(_, EngineS::Object)>()
-        .Method("GetType", static_cast<MethodType<EngineS::Engine, false, true, const EngineS::Type *>>(&EngineS::Engine::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::Engine, false, false, void *>>(&EngineS::Engine::GetPointer), {  })
-        .Method("Instance", static_cast<MethodType<EngineS::Engine, true, false, EngineS::Engine *>>(&EngineS::Engine::Instance), {  })
-        .Method("StartEngine", static_cast<MethodType<EngineS::Engine, false, false, void>>(&EngineS::Engine::StartEngine), {  })
-        .Method("Shutdown", static_cast<MethodType<EngineS::Engine, false, false, void>>(&EngineS::Engine::Shutdown), {  })
-        .Method("Run", static_cast<MethodType<EngineS::Engine, false, false, void>>(&EngineS::Engine::Run), {  })
-        .Method("GetFPS", static_cast<MethodType<EngineS::Engine, false, true, int>>(&EngineS::Engine::GetFPS), {  })
-        .Method("RegisterUpdateFunc", static_cast<MethodType<EngineS::Engine, false, false, void, std::function<void (float)>>>(&EngineS::Engine::RegisterUpdateFunc), { {"func"}, })
+    .Bases
+    <DROP_FIRST(_, EngineS::Object)>()
+        .Method("GetType", static_cast
+        <MethodType<EngineS::Engine, false, true, const EngineS::Type *>>(&EngineS::Engine::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::Engine, false, false, void *>>(&EngineS::Engine::GetPointer), {  })
+        .Method("Instance", static_cast
+        <MethodType<EngineS::Engine, true, false, EngineS::Engine *>>(&EngineS::Engine::Instance), {  })
+        .Method("StartEngine", static_cast
+        <MethodType<EngineS::Engine, false, false, void>>(&EngineS::Engine::StartEngine), {  })
+        .Method("Shutdown", static_cast
+        <MethodType<EngineS::Engine, false, false, void>>(&EngineS::Engine::Shutdown), {  })
+        .Method("Run", static_cast
+        <MethodType<EngineS::Engine, false, false, void>>(&EngineS::Engine::Run), {  })
+        .Method("GetFPS", static_cast
+        <MethodType<EngineS::Engine, false, true, int>>(&EngineS::Engine::GetFPS), {  })
+        .Method("RegisterUpdateFunc", static_cast
+        <MethodType<EngineS::Engine, false, false, void, std::function<void (float)>>>(&EngineS::Engine::RegisterUpdateFunc), { {"func"}, })
     ;
 
     Registration::Class<EngineS::Framebuffer>("EngineS::Framebuffer")
-        .Bases<DROP_FIRST(_, EngineS::Object)>()
-        .Constructor<DROP_FIRST(_, const EngineS::FramebufferDescriptor &)>({ {"desc"}, })
-        .Method("GetType", static_cast<MethodType<EngineS::Framebuffer, false, true, const EngineS::Type *>>(&EngineS::Framebuffer::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::Framebuffer, false, false, void *>>(&EngineS::Framebuffer::GetPointer), {  })
-        .Method("GetColorAttachment", static_cast<MethodType<EngineS::Framebuffer, false, true, EngineS::Texture2D *, unsigned int>>(&EngineS::Framebuffer::GetColorAttachment), { {"index"}, })
-        .Method("GetDepthAttachment", static_cast<MethodType<EngineS::Framebuffer, false, true, EngineS::Texture2D *>>(&EngineS::Framebuffer::GetDepthAttachment), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::Object)>()
+        .Constructor
+        <DROP_FIRST(_, const EngineS::FramebufferDescriptor &)>({ {"desc"}, })
+        .Method("GetType", static_cast
+        <MethodType<EngineS::Framebuffer, false, true, const EngineS::Type *>>(&EngineS::Framebuffer::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::Framebuffer, false, false, void *>>(&EngineS::Framebuffer::GetPointer), {  })
+        .Method("GetColorAttachment", static_cast
+        <MethodType<EngineS::Framebuffer, false, true, EngineS::Texture2D *, unsigned int>>(&EngineS::Framebuffer::GetColorAttachment), { {"index"}, })
+        .Method("GetDepthAttachment", static_cast
+        <MethodType<EngineS::Framebuffer, false, true, EngineS::Texture2D *>>(&EngineS::Framebuffer::GetDepthAttachment), {  })
     ;
 
     Registration::Class<EngineS::FramebufferOpenGL>("EngineS::FramebufferOpenGL")
-        .Bases<DROP_FIRST(_, EngineS::Framebuffer)>()
-        .Constructor<DROP_FIRST(_, const EngineS::FramebufferDescriptor &)>({ {"desc"}, })
-        .Method("GetType", static_cast<MethodType<EngineS::FramebufferOpenGL, false, true, const EngineS::Type *>>(&EngineS::FramebufferOpenGL::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::FramebufferOpenGL, false, false, void *>>(&EngineS::FramebufferOpenGL::GetPointer), {  })
-        .Method("GetHandler", static_cast<MethodType<EngineS::FramebufferOpenGL, false, true, unsigned int>>(&EngineS::FramebufferOpenGL::GetHandler), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::Framebuffer)>()
+        .Constructor
+        <DROP_FIRST(_, const EngineS::FramebufferDescriptor &)>({ {"desc"}, })
+        .Method("GetType", static_cast
+        <MethodType<EngineS::FramebufferOpenGL, false, true, const EngineS::Type *>>(&EngineS::FramebufferOpenGL::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::FramebufferOpenGL, false, false, void *>>(&EngineS::FramebufferOpenGL::GetPointer), {  })
+        .Method("GetHandler", static_cast
+        <MethodType<EngineS::FramebufferOpenGL, false, true, unsigned int>>(&EngineS::FramebufferOpenGL::GetHandler), {  })
     ;
 
     Registration::Class<EngineS::GameObject>("EngineS::GameObject")
-        .Bases<DROP_FIRST(_, EngineS::Object)>()
-        .Constructor<DROP_FIRST(_)>({  })
-        .Method("GetType", static_cast<MethodType<EngineS::GameObject, false, true, const EngineS::Type *>>(&EngineS::GameObject::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::GameObject, false, false, void *>>(&EngineS::GameObject::GetPointer), {  })
-        .Method("Update", static_cast<MethodType<EngineS::GameObject, false, false, void, float>>(&EngineS::GameObject::Update), { {"deltaTime"}, })
-        .Method("AddComponent", static_cast<MethodType<EngineS::GameObject, false, false, EngineS::Component *, const EngineS::Type *>>(&EngineS::GameObject::AddComponent), { {"type"}, })
-        .Method("GetComponent", static_cast<MethodType<EngineS::GameObject, false, true, EngineS::Component *, const EngineS::Type *>>(&EngineS::GameObject::GetComponent), { {"type"}, })
-        .Method("GetComponents", static_cast<MethodType<EngineS::GameObject, false, true, std::vector<EngineS::Component *, std::allocator<EngineS::Component *>>, const EngineS::Type *>>(&EngineS::GameObject::GetComponents), { {"type"}, })
+    .Bases
+    <DROP_FIRST(_, EngineS::Object)>()
+        .Constructor
+        <DROP_FIRST(_)>({  })
+        .Method("GetType", static_cast
+        <MethodType<EngineS::GameObject, false, true, const EngineS::Type *>>(&EngineS::GameObject::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::GameObject, false, false, void *>>(&EngineS::GameObject::GetPointer), {  })
+        .Method("Update", static_cast
+        <MethodType<EngineS::GameObject, false, false, void, float>>(&EngineS::GameObject::Update), { {"deltaTime"}, })
+        .Method("AddComponent", static_cast
+        <MethodType<EngineS::GameObject, false, false, EngineS::Component *, const EngineS::Type *>>(&EngineS::GameObject::AddComponent), { {"type"}, })
+        .Method("GetComponent", static_cast
+        <MethodType<EngineS::GameObject, false, true, EngineS::Component *, const EngineS::Type *>>(&EngineS::GameObject::GetComponent), { {"type"}, })
+        .Method("GetComponents", static_cast
+        <MethodType<EngineS::GameObject, false, true, std::vector<EngineS::Component *, std::allocator<EngineS::Component *>>, const EngineS::Type *>>(&EngineS::GameObject::GetComponents), { {"type"}, })
     ;
 
     Registration::Class<EngineS::InputSystem>("EngineS::InputSystem")
-        .Bases<DROP_FIRST(_, EngineS::Object)>()
-        .Constructor<DROP_FIRST(_)>({  })
-        .Method("GetType", static_cast<MethodType<EngineS::InputSystem, false, true, const EngineS::Type *>>(&EngineS::InputSystem::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::InputSystem, false, false, void *>>(&EngineS::InputSystem::GetPointer), {  })
-        .Method("Instance", static_cast<MethodType<EngineS::InputSystem, true, false, EngineS::InputSystem *>>(&EngineS::InputSystem::Instance), {  })
-        .Method("Initialize", static_cast<MethodType<EngineS::InputSystem, false, false, void>>(&EngineS::InputSystem::Initialize), {  })
-        .Method("Update", static_cast<MethodType<EngineS::InputSystem, false, false, void>>(&EngineS::InputSystem::Update), {  })
-        .Method("GetKey", static_cast<MethodType<EngineS::InputSystem, false, false, bool, KeyCode>>(&EngineS::InputSystem::GetKey), { {"key"}, })
-        .Method("GetKeyDown", static_cast<MethodType<EngineS::InputSystem, false, false, bool, KeyCode>>(&EngineS::InputSystem::GetKeyDown), { {"key"}, })
-        .Method("GetKeyUp", static_cast<MethodType<EngineS::InputSystem, false, false, bool, KeyCode>>(&EngineS::InputSystem::GetKeyUp), { {"key"}, })
+    .Bases
+    <DROP_FIRST(_, EngineS::Object)>()
+        .Constructor
+        <DROP_FIRST(_)>({  })
+        .Method("GetType", static_cast
+        <MethodType<EngineS::InputSystem, false, true, const EngineS::Type *>>(&EngineS::InputSystem::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::InputSystem, false, false, void *>>(&EngineS::InputSystem::GetPointer), {  })
+        .Method("Instance", static_cast
+        <MethodType<EngineS::InputSystem, true, false, EngineS::InputSystem *>>(&EngineS::InputSystem::Instance), {  })
+        .Method("Initialize", static_cast
+        <MethodType<EngineS::InputSystem, false, false, void>>(&EngineS::InputSystem::Initialize), {  })
+        .Method("Update", static_cast
+        <MethodType<EngineS::InputSystem, false, false, void>>(&EngineS::InputSystem::Update), {  })
+        .Method("GetKey", static_cast
+        <MethodType<EngineS::InputSystem, false, false, bool, KeyCode>>(&EngineS::InputSystem::GetKey), { {"key"}, })
+        .Method("GetKeyDown", static_cast
+        <MethodType<EngineS::InputSystem, false, false, bool, KeyCode>>(&EngineS::InputSystem::GetKeyDown), { {"key"}, })
+        .Method("GetKeyUp", static_cast
+        <MethodType<EngineS::InputSystem, false, false, bool, KeyCode>>(&EngineS::InputSystem::GetKeyUp), { {"key"}, })
     ;
 
     Registration::Class<EngineS::Logger>("EngineS::Logger")
-        .Bases<DROP_FIRST(_, EngineS::Object)>()
-        .Constructor<DROP_FIRST(_)>({  })
-        .Method("GetType", static_cast<MethodType<EngineS::Logger, false, true, const EngineS::Type *>>(&EngineS::Logger::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::Logger, false, false, void *>>(&EngineS::Logger::GetPointer), {  })
-        .Method("Instance", static_cast<MethodType<EngineS::Logger, true, false, EngineS::Logger *>>(&EngineS::Logger::Instance), {  })
-        .Method("GetPrefix", static_cast<MethodType<EngineS::Logger, true, false, std::basic_string<char, std::char_traits<char>, std::allocator<char>>, EngineS::LogLevel, std::source_location>>(&EngineS::Logger::GetPrefix), { {"level"},{"location"}, })
-        .Method("Log", static_cast<MethodType<EngineS::Logger, false, false, void, EngineS::LogLevel, std::basic_string<char, std::char_traits<char>, std::allocator<char>>, std::source_location>>(&EngineS::Logger::Log), { {"level"},{"message"},{"location"}, })
-        .Method("Open", static_cast<MethodType<EngineS::Logger, false, false, void, const std::filesystem::path &>>(&EngineS::Logger::Open), { {"filePath"}, })
-        .Method("Close", static_cast<MethodType<EngineS::Logger, false, false, void>>(&EngineS::Logger::Close), {  })
-        .Method("SetLevel", static_cast<MethodType<EngineS::Logger, false, false, void, EngineS::LogLevel>>(&EngineS::Logger::SetLevel), { {"level"}, })
-        .Method("GetLevel", static_cast<MethodType<EngineS::Logger, false, true, EngineS::LogLevel>>(&EngineS::Logger::GetLevel), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::Object)>()
+        .Constructor
+        <DROP_FIRST(_)>({  })
+        .Method("GetType", static_cast
+        <MethodType<EngineS::Logger, false, true, const EngineS::Type *>>(&EngineS::Logger::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::Logger, false, false, void *>>(&EngineS::Logger::GetPointer), {  })
+        .Method("Instance", static_cast
+        <MethodType<EngineS::Logger, true, false, EngineS::Logger *>>(&EngineS::Logger::Instance), {  })
+        .Method("GetPrefix", static_cast
+        <MethodType<EngineS::Logger, true, false, std::basic_string<char, std::char_traits<char>, std::allocator<char>>, EngineS::LogLevel, std::source_location>>(&EngineS::Logger::GetPrefix), { {"level"},{"location"}, })
+        .Method("Log", static_cast
+        <MethodType<EngineS::Logger, false, false, void, EngineS::LogLevel, std::basic_string<char, std::char_traits<char>, std::allocator<char>>, std::source_location>>(&EngineS::Logger::Log), { {"level"},{"message"},{"location"}, })
+        .Method("Open", static_cast
+        <MethodType<EngineS::Logger, false, false, void, const std::filesystem::path &>>(&EngineS::Logger::Open), { {"filePath"}, })
+        .Method("Close", static_cast
+        <MethodType<EngineS::Logger, false, false, void>>(&EngineS::Logger::Close), {  })
+        .Method("SetLevel", static_cast
+        <MethodType<EngineS::Logger, false, false, void, EngineS::LogLevel>>(&EngineS::Logger::SetLevel), { {"level"}, })
+        .Method("GetLevel", static_cast
+        <MethodType<EngineS::Logger, false, true, EngineS::LogLevel>>(&EngineS::Logger::GetLevel), {  })
     ;
 
     Registration::Class<EngineS::Material2D>("EngineS::Material2D")
-        .Bases<DROP_FIRST(_, EngineS::Object)>()
-        .Constructor<DROP_FIRST(_, EngineS::Program *, EngineS::Texture2D *)>({ {"program"},{"texture"}, })
-        .Method("GetType", static_cast<MethodType<EngineS::Material2D, false, true, const EngineS::Type *>>(&EngineS::Material2D::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::Material2D, false, false, void *>>(&EngineS::Material2D::GetPointer), {  })
-        .Method("GetProgram", static_cast<MethodType<EngineS::Material2D, false, true, EngineS::Program *>>(&EngineS::Material2D::GetProgram), {  })
-        .Method("GetTexture", static_cast<MethodType<EngineS::Material2D, false, true, EngineS::Texture2D *>>(&EngineS::Material2D::GetTexture), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::Object)>()
+        .Constructor
+        <DROP_FIRST(_, EngineS::Program *, EngineS::Texture2D *)>({ {"program"},{"texture"}, })
+        .Method("GetType", static_cast
+        <MethodType<EngineS::Material2D, false, true, const EngineS::Type *>>(&EngineS::Material2D::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::Material2D, false, false, void *>>(&EngineS::Material2D::GetPointer), {  })
+        .Method("GetProgram", static_cast
+        <MethodType<EngineS::Material2D, false, true, EngineS::Program *>>(&EngineS::Material2D::GetProgram), {  })
+        .Method("GetTexture", static_cast
+        <MethodType<EngineS::Material2D, false, true, EngineS::Texture2D *>>(&EngineS::Material2D::GetTexture), {  })
     ;
 
     Registration::Class<EngineS::Object>("EngineS::Object")
-        .Bases<DROP_FIRST(_, EngineS::Ref)>()
-        .Constructor<DROP_FIRST(_)>({  })
-        .Method("GetType", static_cast<MethodType<EngineS::Object, false, true, const EngineS::Type *>>(&EngineS::Object::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::Object, false, false, void *>>(&EngineS::Object::GetPointer), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::Ref)>()
+        .Constructor
+        <DROP_FIRST(_)>({  })
+        .Method("GetType", static_cast
+        <MethodType<EngineS::Object, false, true, const EngineS::Type *>>(&EngineS::Object::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::Object, false, false, void *>>(&EngineS::Object::GetPointer), {  })
     ;
 
     Registration::Class<EngineS::Program>("EngineS::Program")
-        .Bases<DROP_FIRST(_, EngineS::Resource)>()
-        .Method("GetType", static_cast<MethodType<EngineS::Program, false, true, const EngineS::Type *>>(&EngineS::Program::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::Program, false, false, void *>>(&EngineS::Program::GetPointer), {  })
-        .Method("Load", static_cast<MethodType<EngineS::Program, false, false, bool, const std::filesystem::path &>>(&EngineS::Program::Load), { {"path"}, })
-        .Method("Link", static_cast<MethodType<EngineS::Program, false, false, bool, EngineS::Shader *, EngineS::Shader *>>(&EngineS::Program::Link), { {"fragShader"},{"vertShader"}, })
+    .Bases
+    <DROP_FIRST(_, EngineS::Resource)>()
+        .Method("GetType", static_cast
+        <MethodType<EngineS::Program, false, true, const EngineS::Type *>>(&EngineS::Program::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::Program, false, false, void *>>(&EngineS::Program::GetPointer), {  })
+        .Method("Load", static_cast
+        <MethodType<EngineS::Program, false, false, bool, const std::filesystem::path &>>(&EngineS::Program::Load), { {"path"}, })
+        .Method("Link", static_cast
+        <MethodType<EngineS::Program, false, false, bool, EngineS::Shader *, EngineS::Shader *>>(&EngineS::Program::Link), { {"fragShader"},{"vertShader"}, })
     ;
 
     Registration::Class<EngineS::ProgramOpenGL>("EngineS::ProgramOpenGL")
-        .Bases<DROP_FIRST(_, EngineS::Program)>()
-        .Constructor<DROP_FIRST(_)>({  })
-        .Method("GetType", static_cast<MethodType<EngineS::ProgramOpenGL, false, true, const EngineS::Type *>>(&EngineS::ProgramOpenGL::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::ProgramOpenGL, false, false, void *>>(&EngineS::ProgramOpenGL::GetPointer), {  })
-        .Method("Link", static_cast<MethodType<EngineS::ProgramOpenGL, false, false, bool, EngineS::Shader *, EngineS::Shader *>>(&EngineS::ProgramOpenGL::Link), { {"fragShader"},{"vertShader"}, })
-        .Method("GetHandler", static_cast<MethodType<EngineS::ProgramOpenGL, false, true, unsigned int>>(&EngineS::ProgramOpenGL::GetHandler), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::Program)>()
+        .Constructor
+        <DROP_FIRST(_)>({  })
+        .Method("GetType", static_cast
+        <MethodType<EngineS::ProgramOpenGL, false, true, const EngineS::Type *>>(&EngineS::ProgramOpenGL::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::ProgramOpenGL, false, false, void *>>(&EngineS::ProgramOpenGL::GetPointer), {  })
+        .Method("Link", static_cast
+        <MethodType<EngineS::ProgramOpenGL, false, false, bool, EngineS::Shader *, EngineS::Shader *>>(&EngineS::ProgramOpenGL::Link), { {"fragShader"},{"vertShader"}, })
+        .Method("GetHandler", static_cast
+        <MethodType<EngineS::ProgramOpenGL, false, true, unsigned int>>(&EngineS::ProgramOpenGL::GetHandler), {  })
     ;
 
     Registration::Class<EngineS::Ref>("EngineS::Ref")
-        .Bases<DROP_FIRST(_)>()
-        .Constructor<DROP_FIRST(_)>({  })
-        .Method("GetType", static_cast<MethodType<EngineS::Ref, false, true, const EngineS::Type *>>(&EngineS::Ref::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::Ref, false, false, void *>>(&EngineS::Ref::GetPointer), {  })
-        .Method("Retain", static_cast<MethodType<EngineS::Ref, false, false, void>>(&EngineS::Ref::Retain), {  })
-        .Method("Release", static_cast<MethodType<EngineS::Ref, false, false, void>>(&EngineS::Ref::Release), {  })
-        .Method("GetRefCount", static_cast<MethodType<EngineS::Ref, false, true, int>>(&EngineS::Ref::GetRefCount), {  })
+    .Bases
+    <DROP_FIRST(_)>()
+        .Constructor
+        <DROP_FIRST(_)>({  })
+        .Method("GetType", static_cast
+        <MethodType<EngineS::Ref, false, true, const EngineS::Type *>>(&EngineS::Ref::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::Ref, false, false, void *>>(&EngineS::Ref::GetPointer), {  })
+        .Method("Retain", static_cast
+        <MethodType<EngineS::Ref, false, false, void>>(&EngineS::Ref::Retain), {  })
+        .Method("Release", static_cast
+        <MethodType<EngineS::Ref, false, false, void>>(&EngineS::Ref::Release), {  })
+        .Method("GetRefCount", static_cast
+        <MethodType<EngineS::Ref, false, true, int>>(&EngineS::Ref::GetRefCount), {  })
     ;
 
     Registration::Class<EngineS::RenderPipeline>("EngineS::RenderPipeline")
-        .Bases<DROP_FIRST(_, EngineS::Object)>()
-        .Constructor<DROP_FIRST(_, const EngineS::RenderPipelineDescriptor &)>({ {"desc"}, })
-        .Method("GetType", static_cast<MethodType<EngineS::RenderPipeline, false, true, const EngineS::Type *>>(&EngineS::RenderPipeline::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::RenderPipeline, false, false, void *>>(&EngineS::RenderPipeline::GetPointer), {  })
-        .Method("GetProgram", static_cast<MethodType<EngineS::RenderPipeline, false, true, EngineS::Program *>>(&EngineS::RenderPipeline::GetProgram), {  })
-        .Method("SetProgram", static_cast<MethodType<EngineS::RenderPipeline, false, false, void, EngineS::Program *>>(&EngineS::RenderPipeline::SetProgram), { {"p"}, })
-        .Method("GetVertexLayout", static_cast<MethodType<EngineS::RenderPipeline, false, true, const EngineS::VertexLayout &>>(&EngineS::RenderPipeline::GetVertexLayout), {  })
-        .Method("GetRenderPrimitive", static_cast<MethodType<EngineS::RenderPipeline, false, true, EngineS::RenderPrimitive>>(&EngineS::RenderPipeline::GetRenderPrimitive), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::Object)>()
+        .Constructor
+        <DROP_FIRST(_, const EngineS::RenderPipelineDescriptor &)>({ {"desc"}, })
+        .Method("GetType", static_cast
+        <MethodType<EngineS::RenderPipeline, false, true, const EngineS::Type *>>(&EngineS::RenderPipeline::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::RenderPipeline, false, false, void *>>(&EngineS::RenderPipeline::GetPointer), {  })
+        .Method("GetProgram", static_cast
+        <MethodType<EngineS::RenderPipeline, false, true, EngineS::Program *>>(&EngineS::RenderPipeline::GetProgram), {  })
+        .Method("SetProgram", static_cast
+        <MethodType<EngineS::RenderPipeline, false, false, void, EngineS::Program *>>(&EngineS::RenderPipeline::SetProgram), { {"p"}, })
+        .Method("GetVertexLayout", static_cast
+        <MethodType<EngineS::RenderPipeline, false, true, const EngineS::VertexLayout &>>(&EngineS::RenderPipeline::GetVertexLayout), {  })
+        .Method("GetRenderPrimitive", static_cast
+        <MethodType<EngineS::RenderPipeline, false, true, EngineS::RenderPrimitive>>(&EngineS::RenderPipeline::GetRenderPrimitive), {  })
     ;
 
     Registration::Class<EngineS::RenderPipelineOpenGL>("EngineS::RenderPipelineOpenGL")
-        .Bases<DROP_FIRST(_, EngineS::RenderPipeline)>()
-        .Constructor<DROP_FIRST(_, const EngineS::RenderPipelineDescriptor &)>({ {"desc"}, })
-        .Method("GetType", static_cast<MethodType<EngineS::RenderPipelineOpenGL, false, true, const EngineS::Type *>>(&EngineS::RenderPipelineOpenGL::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::RenderPipelineOpenGL, false, false, void *>>(&EngineS::RenderPipelineOpenGL::GetPointer), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::RenderPipeline)>()
+        .Constructor
+        <DROP_FIRST(_, const EngineS::RenderPipelineDescriptor &)>({ {"desc"}, })
+        .Method("GetType", static_cast
+        <MethodType<EngineS::RenderPipelineOpenGL, false, true, const EngineS::Type *>>(&EngineS::RenderPipelineOpenGL::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::RenderPipelineOpenGL, false, false, void *>>(&EngineS::RenderPipelineOpenGL::GetPointer), {  })
     ;
 
     Registration::Class<EngineS::RenderSystem>("EngineS::RenderSystem")
-        .Bases<DROP_FIRST(_, EngineS::Object)>()
-        .Constructor<DROP_FIRST(_)>({  })
-        .Method("GetType", static_cast<MethodType<EngineS::RenderSystem, false, true, const EngineS::Type *>>(&EngineS::RenderSystem::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::RenderSystem, false, false, void *>>(&EngineS::RenderSystem::GetPointer), {  })
-        .Method("Instance", static_cast<MethodType<EngineS::RenderSystem, true, false, EngineS::RenderSystem *>>(&EngineS::RenderSystem::Instance), {  })
-        .Method("Initialize", static_cast<MethodType<EngineS::RenderSystem, false, false, void>>(&EngineS::RenderSystem::Initialize), {  })
-        .Method("Update", static_cast<MethodType<EngineS::RenderSystem, false, false, void>>(&EngineS::RenderSystem::Update), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::Object)>()
+        .Constructor
+        <DROP_FIRST(_)>({  })
+        .Method("GetType", static_cast
+        <MethodType<EngineS::RenderSystem, false, true, const EngineS::Type *>>(&EngineS::RenderSystem::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::RenderSystem, false, false, void *>>(&EngineS::RenderSystem::GetPointer), {  })
+        .Method("Instance", static_cast
+        <MethodType<EngineS::RenderSystem, true, false, EngineS::RenderSystem *>>(&EngineS::RenderSystem::Instance), {  })
+        .Method("Initialize", static_cast
+        <MethodType<EngineS::RenderSystem, false, false, void>>(&EngineS::RenderSystem::Initialize), {  })
+        .Method("Update", static_cast
+        <MethodType<EngineS::RenderSystem, false, false, void>>(&EngineS::RenderSystem::Update), {  })
     ;
 
     Registration::Class<EngineS::Renderer>("EngineS::Renderer")
-        .Bases<DROP_FIRST(_, EngineS::Component)>()
-        .Method("GetType", static_cast<MethodType<EngineS::Renderer, false, true, const EngineS::Type *>>(&EngineS::Renderer::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::Renderer, false, false, void *>>(&EngineS::Renderer::GetPointer), {  })
-        .Method("Render", static_cast<MethodType<EngineS::Renderer, false, false, void, const EngineS::Matrix4x4 &, EngineS::DrawList *>>(&EngineS::Renderer::Render), { {"modelMat"},{"drawList"}, })
+    .Bases
+    <DROP_FIRST(_, EngineS::Component)>()
+        .Method("GetType", static_cast
+        <MethodType<EngineS::Renderer, false, true, const EngineS::Type *>>(&EngineS::Renderer::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::Renderer, false, false, void *>>(&EngineS::Renderer::GetPointer), {  })
+        .Method("Render", static_cast
+        <MethodType<EngineS::Renderer, false, false, void, const EngineS::Matrix4x4 &, EngineS::DrawList *>>(&EngineS::Renderer::Render), { {"modelMat"},{"drawList"}, })
     ;
 
     Registration::Class<EngineS::Resource>("EngineS::Resource")
-        .Bases<DROP_FIRST(_, EngineS::Object)>()
-        .Method("GetType", static_cast<MethodType<EngineS::Resource, false, true, const EngineS::Type *>>(&EngineS::Resource::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::Resource, false, false, void *>>(&EngineS::Resource::GetPointer), {  })
-        .Method("Load", static_cast<MethodType<EngineS::Resource, false, false, bool, const std::filesystem::path &>>(&EngineS::Resource::Load), { {"path"}, })
+    .Bases
+    <DROP_FIRST(_, EngineS::Object)>()
+        .Method("GetType", static_cast
+        <MethodType<EngineS::Resource, false, true, const EngineS::Type *>>(&EngineS::Resource::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::Resource, false, false, void *>>(&EngineS::Resource::GetPointer), {  })
+        .Method("Load", static_cast
+        <MethodType<EngineS::Resource, false, false, bool, const std::filesystem::path &>>(&EngineS::Resource::Load), { {"path"}, })
     ;
 
     Registration::Class<EngineS::ResourceManager>("EngineS::ResourceManager")
-        .Bases<DROP_FIRST(_, EngineS::Object)>()
-        .Method("GetType", static_cast<MethodType<EngineS::ResourceManager, false, true, const EngineS::Type *>>(&EngineS::ResourceManager::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::ResourceManager, false, false, void *>>(&EngineS::ResourceManager::GetPointer), {  })
-        .Method("Instance", static_cast<MethodType<EngineS::ResourceManager, true, false, EngineS::ResourceManager *>>(&EngineS::ResourceManager::Instance), {  })
-        .Method("Update", static_cast<MethodType<EngineS::ResourceManager, false, false, void>>(&EngineS::ResourceManager::Update), {  })
-        .Method("Load", static_cast<MethodType<EngineS::ResourceManager, false, false, EngineS::Resource *, const EngineS::Type *, const std::filesystem::path &>>(&EngineS::ResourceManager::Load), { {"type"},{"path"}, })
-        .Method("AddResourceDir", static_cast<MethodType<EngineS::ResourceManager, false, false, bool, const std::filesystem::path &>>(&EngineS::ResourceManager::AddResourceDir), { {"path"}, })
-        .Method("FindResourcePath", static_cast<MethodType<EngineS::ResourceManager, false, true, std::optional<std::filesystem::path>, const std::filesystem::path &>>(&EngineS::ResourceManager::FindResourcePath), { {"path"}, })
-        .Method("SetAutoReload", static_cast<MethodType<EngineS::ResourceManager, false, false, void, bool>>(&EngineS::ResourceManager::SetAutoReload), { {"value"}, })
+    .Bases
+    <DROP_FIRST(_, EngineS::Object)>()
+        .Method("GetType", static_cast
+        <MethodType<EngineS::ResourceManager, false, true, const EngineS::Type *>>(&EngineS::ResourceManager::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::ResourceManager, false, false, void *>>(&EngineS::ResourceManager::GetPointer), {  })
+        .Method("Instance", static_cast
+        <MethodType<EngineS::ResourceManager, true, false, EngineS::ResourceManager *>>(&EngineS::ResourceManager::Instance), {  })
+        .Method("Update", static_cast
+        <MethodType<EngineS::ResourceManager, false, false, void>>(&EngineS::ResourceManager::Update), {  })
+        .Method("Load", static_cast
+        <MethodType<EngineS::ResourceManager, false, false, EngineS::Resource *, const EngineS::Type *, const std::filesystem::path &>>(&EngineS::ResourceManager::Load), { {"type"},{"path"}, })
+        .Method("AddResourceDir", static_cast
+        <MethodType<EngineS::ResourceManager, false, false, bool, const std::filesystem::path &>>(&EngineS::ResourceManager::AddResourceDir), { {"path"}, })
+        .Method("FindResourcePath", static_cast
+        <MethodType<EngineS::ResourceManager, false, true, std::optional<std::filesystem::path>, const std::filesystem::path &>>(&EngineS::ResourceManager::FindResourcePath), { {"path"}, })
+        .Method("SetAutoReload", static_cast
+        <MethodType<EngineS::ResourceManager, false, false, void, bool>>(&EngineS::ResourceManager::SetAutoReload), { {"value"}, })
     ;
 
     Registration::Class<EngineS::Scene>("EngineS::Scene")
-        .Bases<DROP_FIRST(_, EngineS::Object)>()
-        .Constructor<DROP_FIRST(_)>({  })
-        .Method("GetType", static_cast<MethodType<EngineS::Scene, false, true, const EngineS::Type *>>(&EngineS::Scene::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::Scene, false, false, void *>>(&EngineS::Scene::GetPointer), {  })
-        .Method("Initialize", static_cast<MethodType<EngineS::Scene, false, false, void>>(&EngineS::Scene::Initialize), {  })
-        .Method("GetGameObjects", static_cast<MethodType<EngineS::Scene, false, false, std::unordered_set<EngineS::GameObject *, std::hash<EngineS::GameObject *>, std::equal_to<EngineS::GameObject *>, std::allocator<EngineS::GameObject *>> &>>(&EngineS::Scene::GetGameObjects), {  })
-        .Method("AddGameObject", static_cast<MethodType<EngineS::Scene, false, false, void, EngineS::GameObject *>>(&EngineS::Scene::AddGameObject), { {"gameObject"}, })
-        .Method("AddGameObject", static_cast<MethodType<EngineS::Scene, false, false, void, EngineS::GameObject *, EngineS::Transform2D *>>(&EngineS::Scene::AddGameObject), { {"gameObject"},{"parent"}, })
-        .Method("RemoveGameObject", static_cast<MethodType<EngineS::Scene, false, false, void, EngineS::GameObject *>>(&EngineS::Scene::RemoveGameObject), { {"gameObject"}, })
-        .Method("GetMainCamera", static_cast<MethodType<EngineS::Scene, false, false, EngineS::Camera *>>(&EngineS::Scene::GetMainCamera), {  })
-        .Method("GetRootTransform", static_cast<MethodType<EngineS::Scene, false, false, EngineS::Transform2D *>>(&EngineS::Scene::GetRootTransform), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::Object)>()
+        .Constructor
+        <DROP_FIRST(_)>({  })
+        .Method("GetType", static_cast
+        <MethodType<EngineS::Scene, false, true, const EngineS::Type *>>(&EngineS::Scene::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::Scene, false, false, void *>>(&EngineS::Scene::GetPointer), {  })
+        .Method("Initialize", static_cast
+        <MethodType<EngineS::Scene, false, false, void>>(&EngineS::Scene::Initialize), {  })
+        .Method("GetGameObjects", static_cast
+        <MethodType<EngineS::Scene, false, false, std::unordered_set<EngineS::GameObject *, std::hash<EngineS::GameObject *>, std::equal_to<EngineS::GameObject *>, std::allocator<EngineS::GameObject *>> &>>(&EngineS::Scene::GetGameObjects), {  })
+        .Method("AddGameObject", static_cast
+        <MethodType<EngineS::Scene, false, false, void, EngineS::GameObject *>>(&EngineS::Scene::AddGameObject), { {"gameObject"}, })
+        .Method("AddGameObject", static_cast
+        <MethodType<EngineS::Scene, false, false, void, EngineS::GameObject *, EngineS::Transform2D *>>(&EngineS::Scene::AddGameObject), { {"gameObject"},{"parent"}, })
+        .Method("RemoveGameObject", static_cast
+        <MethodType<EngineS::Scene, false, false, void, EngineS::GameObject *>>(&EngineS::Scene::RemoveGameObject), { {"gameObject"}, })
+        .Method("GetMainCamera", static_cast
+        <MethodType<EngineS::Scene, false, false, EngineS::Camera *>>(&EngineS::Scene::GetMainCamera), {  })
+        .Method("GetRootTransform", static_cast
+        <MethodType<EngineS::Scene, false, false, EngineS::Transform2D *>>(&EngineS::Scene::GetRootTransform), {  })
     ;
 
     Registration::Class<EngineS::SceneManager>("EngineS::SceneManager")
-        .Bases<DROP_FIRST(_, EngineS::Object)>()
-        .Method("GetType", static_cast<MethodType<EngineS::SceneManager, false, true, const EngineS::Type *>>(&EngineS::SceneManager::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::SceneManager, false, false, void *>>(&EngineS::SceneManager::GetPointer), {  })
-        .Method("Instance", static_cast<MethodType<EngineS::SceneManager, true, false, EngineS::SceneManager *>>(&EngineS::SceneManager::Instance), {  })
-        .Method("Initialize", static_cast<MethodType<EngineS::SceneManager, false, false, void>>(&EngineS::SceneManager::Initialize), {  })
-        .Method("SetCurrentScene", static_cast<MethodType<EngineS::SceneManager, false, false, void, EngineS::Scene *>>(&EngineS::SceneManager::SetCurrentScene), { {"scene"}, })
-        .Method("GetCurrentScene", static_cast<MethodType<EngineS::SceneManager, false, false, EngineS::Scene *>>(&EngineS::SceneManager::GetCurrentScene), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::Object)>()
+        .Method("GetType", static_cast
+        <MethodType<EngineS::SceneManager, false, true, const EngineS::Type *>>(&EngineS::SceneManager::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::SceneManager, false, false, void *>>(&EngineS::SceneManager::GetPointer), {  })
+        .Method("Instance", static_cast
+        <MethodType<EngineS::SceneManager, true, false, EngineS::SceneManager *>>(&EngineS::SceneManager::Instance), {  })
+        .Method("Initialize", static_cast
+        <MethodType<EngineS::SceneManager, false, false, void>>(&EngineS::SceneManager::Initialize), {  })
+        .Method("SetCurrentScene", static_cast
+        <MethodType<EngineS::SceneManager, false, false, void, EngineS::Scene *>>(&EngineS::SceneManager::SetCurrentScene), { {"scene"}, })
+        .Method("GetCurrentScene", static_cast
+        <MethodType<EngineS::SceneManager, false, false, EngineS::Scene *>>(&EngineS::SceneManager::GetCurrentScene), {  })
     ;
 
     Registration::Class<EngineS::Shader>("EngineS::Shader")
-        .Bases<DROP_FIRST(_, EngineS::Object)>()
-        .Method("GetType", static_cast<MethodType<EngineS::Shader, false, true, const EngineS::Type *>>(&EngineS::Shader::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::Shader, false, false, void *>>(&EngineS::Shader::GetPointer), {  })
-        .Method("Compile", static_cast<MethodType<EngineS::Shader, false, false, bool, EngineS::ShaderStage, const std::basic_string<char, std::char_traits<char>, std::allocator<char>> &>>(&EngineS::Shader::Compile), { {"stage"},{"src"}, })
-        .Method("Compile", static_cast<MethodType<EngineS::Shader, false, false, bool, EngineS::ShaderStage, const std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char>>>> &>>(&EngineS::Shader::Compile), { {"stage"},{"src"}, })
+    .Bases
+    <DROP_FIRST(_, EngineS::Object)>()
+        .Method("GetType", static_cast
+        <MethodType<EngineS::Shader, false, true, const EngineS::Type *>>(&EngineS::Shader::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::Shader, false, false, void *>>(&EngineS::Shader::GetPointer), {  })
+        .Method("Compile", static_cast
+        <MethodType<EngineS::Shader, false, false, bool, EngineS::ShaderStage, const std::basic_string<char, std::char_traits<char>, std::allocator<char>> &>>(&EngineS::Shader::Compile), { {"stage"},{"src"}, })
+        .Method("Compile", static_cast
+        <MethodType<EngineS::Shader, false, false, bool, EngineS::ShaderStage, const std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char>>>> &>>(&EngineS::Shader::Compile), { {"stage"},{"src"}, })
     ;
 
     Registration::Class<EngineS::ShaderOpenGL>("EngineS::ShaderOpenGL")
-        .Bases<DROP_FIRST(_, EngineS::Shader)>()
-        .Method("GetType", static_cast<MethodType<EngineS::ShaderOpenGL, false, true, const EngineS::Type *>>(&EngineS::ShaderOpenGL::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::ShaderOpenGL, false, false, void *>>(&EngineS::ShaderOpenGL::GetPointer), {  })
-        .Method("GetHandler", static_cast<MethodType<EngineS::ShaderOpenGL, false, true, unsigned int>>(&EngineS::ShaderOpenGL::GetHandler), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::Shader)>()
+        .Method("GetType", static_cast
+        <MethodType<EngineS::ShaderOpenGL, false, true, const EngineS::Type *>>(&EngineS::ShaderOpenGL::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::ShaderOpenGL, false, false, void *>>(&EngineS::ShaderOpenGL::GetPointer), {  })
+        .Method("GetHandler", static_cast
+        <MethodType<EngineS::ShaderOpenGL, false, true, unsigned int>>(&EngineS::ShaderOpenGL::GetHandler), {  })
     ;
 
     Registration::Class<EngineS::SpriteRenderer>("EngineS::SpriteRenderer")
-        .Bases<DROP_FIRST(_, EngineS::Renderer)>()
-        .Constructor<DROP_FIRST(_)>({  })
-        .Method("GetType", static_cast<MethodType<EngineS::SpriteRenderer, false, true, const EngineS::Type *>>(&EngineS::SpriteRenderer::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::SpriteRenderer, false, false, void *>>(&EngineS::SpriteRenderer::GetPointer), {  })
-        .Method("Render", static_cast<MethodType<EngineS::SpriteRenderer, false, false, void, const EngineS::Matrix4x4 &, EngineS::DrawList *>>(&EngineS::SpriteRenderer::Render), { {"modelMat"},{"drawList"}, })
-        .Method("Initialize", static_cast<MethodType<EngineS::SpriteRenderer, false, false, void, EngineS::GameObject *>>(&EngineS::SpriteRenderer::Initialize), { {"parent"}, })
-        .Method("SetMaterial", static_cast<MethodType<EngineS::SpriteRenderer, false, false, void, EngineS::Material2D *>>(&EngineS::SpriteRenderer::SetMaterial), { {"material"}, })
-        .Method("GetMaterial", static_cast<MethodType<EngineS::SpriteRenderer, false, false, EngineS::Material2D *>>(&EngineS::SpriteRenderer::GetMaterial), {  })
-        .Method("GetAnchor", static_cast<MethodType<EngineS::SpriteRenderer, false, true, const EngineS::Vector2 &>>(&EngineS::SpriteRenderer::GetAnchor), {  })
-        .Method("SetAnchor", static_cast<MethodType<EngineS::SpriteRenderer, false, false, void, const EngineS::Vector2 &>>(&EngineS::SpriteRenderer::SetAnchor), { {"anchor"}, })
-        .Method("GetColor", static_cast<MethodType<EngineS::SpriteRenderer, false, true, const EngineS::Color4F &>>(&EngineS::SpriteRenderer::GetColor), {  })
-        .Method("SetColor", static_cast<MethodType<EngineS::SpriteRenderer, false, false, void, const EngineS::Color4F &>>(&EngineS::SpriteRenderer::SetColor), { {"color"}, })
+    .Bases
+    <DROP_FIRST(_, EngineS::Renderer)>()
+        .Constructor
+        <DROP_FIRST(_)>({  })
+        .Method("GetType", static_cast
+        <MethodType<EngineS::SpriteRenderer, false, true, const EngineS::Type *>>(&EngineS::SpriteRenderer::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::SpriteRenderer, false, false, void *>>(&EngineS::SpriteRenderer::GetPointer), {  })
+        .Method("Render", static_cast
+        <MethodType<EngineS::SpriteRenderer, false, false, void, const EngineS::Matrix4x4 &, EngineS::DrawList *>>(&EngineS::SpriteRenderer::Render), { {"modelMat"},{"drawList"}, })
+        .Method("Initialize", static_cast
+        <MethodType<EngineS::SpriteRenderer, false, false, void, EngineS::GameObject *>>(&EngineS::SpriteRenderer::Initialize), { {"parent"}, })
+        .Method("SetMaterial", static_cast
+        <MethodType<EngineS::SpriteRenderer, false, false, void, EngineS::Material2D *>>(&EngineS::SpriteRenderer::SetMaterial), { {"material"}, })
+        .Method("GetMaterial", static_cast
+        <MethodType<EngineS::SpriteRenderer, false, false, EngineS::Material2D *>>(&EngineS::SpriteRenderer::GetMaterial), {  })
+        .Method("GetAnchor", static_cast
+        <MethodType<EngineS::SpriteRenderer, false, true, const EngineS::Vector2 &>>(&EngineS::SpriteRenderer::GetAnchor), {  })
+        .Method("SetAnchor", static_cast
+        <MethodType<EngineS::SpriteRenderer, false, false, void, const EngineS::Vector2 &>>(&EngineS::SpriteRenderer::SetAnchor), { {"anchor"}, })
+        .Method("GetColor", static_cast
+        <MethodType<EngineS::SpriteRenderer, false, true, const EngineS::Color4F &>>(&EngineS::SpriteRenderer::GetColor), {  })
+        .Method("SetColor", static_cast
+        <MethodType<EngineS::SpriteRenderer, false, false, void, const EngineS::Color4F &>>(&EngineS::SpriteRenderer::SetColor), { {"color"}, })
     ;
 
     Registration::Class<EngineS::Text>("EngineS::Text")
-        .Bases<DROP_FIRST(_, EngineS::Resource)>()
-        .Method("GetType", static_cast<MethodType<EngineS::Text, false, true, const EngineS::Type *>>(&EngineS::Text::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::Text, false, false, void *>>(&EngineS::Text::GetPointer), {  })
-        .Method("Load", static_cast<MethodType<EngineS::Text, false, false, bool, const std::filesystem::path &>>(&EngineS::Text::Load), { {"path"}, })
-        .Method("GetText", static_cast<MethodType<EngineS::Text, false, true, const std::basic_string<char, std::char_traits<char>, std::allocator<char>> &>>(&EngineS::Text::GetText), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::Resource)>()
+        .Method("GetType", static_cast
+        <MethodType<EngineS::Text, false, true, const EngineS::Type *>>(&EngineS::Text::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::Text, false, false, void *>>(&EngineS::Text::GetPointer), {  })
+        .Method("Load", static_cast
+        <MethodType<EngineS::Text, false, false, bool, const std::filesystem::path &>>(&EngineS::Text::Load), { {"path"}, })
+        .Method("GetText", static_cast
+        <MethodType<EngineS::Text, false, true, const std::basic_string<char, std::char_traits<char>, std::allocator<char>> &>>(&EngineS::Text::GetText), {  })
     ;
 
     Registration::Class<EngineS::Texture2D>("EngineS::Texture2D")
-        .Bases<DROP_FIRST(_, EngineS::Resource)>()
-        .Method("GetType", static_cast<MethodType<EngineS::Texture2D, false, true, const EngineS::Type *>>(&EngineS::Texture2D::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::Texture2D, false, false, void *>>(&EngineS::Texture2D::GetPointer), {  })
-        .Method("Load", static_cast<MethodType<EngineS::Texture2D, false, false, bool, const std::filesystem::path &>>(&EngineS::Texture2D::Load), { {"path"}, })
-        .Method("Init", static_cast<MethodType<EngineS::Texture2D, false, false, void, const EngineS::TextureDescriptor &>>(&EngineS::Texture2D::Init), { {"desc"}, })
-        .Method("UpdateData", static_cast<MethodType<EngineS::Texture2D, false, false, void, const std::byte *, unsigned int, unsigned int>>(&EngineS::Texture2D::UpdateData), { {"data"},{"width"},{"height"}, })
-        .Method("Apply", static_cast<MethodType<EngineS::Texture2D, false, true, void, unsigned int>>(&EngineS::Texture2D::Apply), { {"index"}, })
-        .Method("GetWidth", static_cast<MethodType<EngineS::Texture2D, false, true, unsigned int>>(&EngineS::Texture2D::GetWidth), {  })
-        .Method("GetHeight", static_cast<MethodType<EngineS::Texture2D, false, true, unsigned int>>(&EngineS::Texture2D::GetHeight), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::Resource)>()
+        .Method("GetType", static_cast
+        <MethodType<EngineS::Texture2D, false, true, const EngineS::Type *>>(&EngineS::Texture2D::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::Texture2D, false, false, void *>>(&EngineS::Texture2D::GetPointer), {  })
+        .Method("Load", static_cast
+        <MethodType<EngineS::Texture2D, false, false, bool, const std::filesystem::path &>>(&EngineS::Texture2D::Load), { {"path"}, })
+        .Method("Init", static_cast
+        <MethodType<EngineS::Texture2D, false, false, void, const EngineS::TextureDescriptor &>>(&EngineS::Texture2D::Init), { {"desc"}, })
+        .Method("UpdateData", static_cast
+        <MethodType<EngineS::Texture2D, false, false, void, const std::byte *, unsigned int, unsigned int>>(&EngineS::Texture2D::UpdateData), { {"data"},{"width"},{"height"}, })
+        .Method("Apply", static_cast
+        <MethodType<EngineS::Texture2D, false, true, void, unsigned int>>(&EngineS::Texture2D::Apply), { {"index"}, })
+        .Method("GetWidth", static_cast
+        <MethodType<EngineS::Texture2D, false, true, unsigned int>>(&EngineS::Texture2D::GetWidth), {  })
+        .Method("GetHeight", static_cast
+        <MethodType<EngineS::Texture2D, false, true, unsigned int>>(&EngineS::Texture2D::GetHeight), {  })
     ;
 
     Registration::Class<EngineS::Texture2DOpenGL>("EngineS::Texture2DOpenGL")
-        .Bases<DROP_FIRST(_, EngineS::Texture2D)>()
-        .Method("GetType", static_cast<MethodType<EngineS::Texture2DOpenGL, false, true, const EngineS::Type *>>(&EngineS::Texture2DOpenGL::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::Texture2DOpenGL, false, false, void *>>(&EngineS::Texture2DOpenGL::GetPointer), {  })
-        .Method("Init", static_cast<MethodType<EngineS::Texture2DOpenGL, false, false, void, const EngineS::TextureDescriptor &>>(&EngineS::Texture2DOpenGL::Init), { {"desc"}, })
-        .Method("UpdateData", static_cast<MethodType<EngineS::Texture2DOpenGL, false, false, void, const std::byte *, unsigned int, unsigned int>>(&EngineS::Texture2DOpenGL::UpdateData), { {"data"},{"width"},{"height"}, })
-        .Method("Apply", static_cast<MethodType<EngineS::Texture2DOpenGL, false, true, void, unsigned int>>(&EngineS::Texture2DOpenGL::Apply), { {"index"}, })
-        .Method("GetHandler", static_cast<MethodType<EngineS::Texture2DOpenGL, false, true, unsigned int>>(&EngineS::Texture2DOpenGL::GetHandler), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::Texture2D)>()
+        .Method("GetType", static_cast
+        <MethodType<EngineS::Texture2DOpenGL, false, true, const EngineS::Type *>>(&EngineS::Texture2DOpenGL::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::Texture2DOpenGL, false, false, void *>>(&EngineS::Texture2DOpenGL::GetPointer), {  })
+        .Method("Init", static_cast
+        <MethodType<EngineS::Texture2DOpenGL, false, false, void, const EngineS::TextureDescriptor &>>(&EngineS::Texture2DOpenGL::Init), { {"desc"}, })
+        .Method("UpdateData", static_cast
+        <MethodType<EngineS::Texture2DOpenGL, false, false, void, const std::byte *, unsigned int, unsigned int>>(&EngineS::Texture2DOpenGL::UpdateData), { {"data"},{"width"},{"height"}, })
+        .Method("Apply", static_cast
+        <MethodType<EngineS::Texture2DOpenGL, false, true, void, unsigned int>>(&EngineS::Texture2DOpenGL::Apply), { {"index"}, })
+        .Method("GetHandler", static_cast
+        <MethodType<EngineS::Texture2DOpenGL, false, true, unsigned int>>(&EngineS::Texture2DOpenGL::GetHandler), {  })
     ;
 
     Registration::Class<EngineS::Transform2D>("EngineS::Transform2D")
-        .Bases<DROP_FIRST(_, EngineS::Component)>()
-        .Method("GetType", static_cast<MethodType<EngineS::Transform2D, false, true, const EngineS::Type *>>(&EngineS::Transform2D::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::Transform2D, false, false, void *>>(&EngineS::Transform2D::GetPointer), {  })
-        .Method("MakeModelMatrix", static_cast<MethodType<EngineS::Transform2D, false, true, EngineS::Matrix4x4>>(&EngineS::Transform2D::MakeModelMatrix), {  })
-        .Method("Visit", static_cast<MethodType<EngineS::Transform2D, false, false, void, const EngineS::Matrix4x4 &, std::function<void (GameObject *, const Matrix4x4 &)>>>(&EngineS::Transform2D::Visit), { {"parentModelMat"},{"func"}, })
-        .Method("GetParent", static_cast<MethodType<EngineS::Transform2D, false, false, EngineS::Transform2D *>>(&EngineS::Transform2D::GetParent), {  })
-        .Method("SetParent", static_cast<MethodType<EngineS::Transform2D, false, false, void, EngineS::Transform2D *>>(&EngineS::Transform2D::SetParent), { {"parent"}, })
-        .Method("AddChild", static_cast<MethodType<EngineS::Transform2D, false, false, void, EngineS::Transform2D *>>(&EngineS::Transform2D::AddChild), { {"child"}, })
-        .Method("RemoveChild", static_cast<MethodType<EngineS::Transform2D, false, false, void, EngineS::Transform2D *>>(&EngineS::Transform2D::RemoveChild), { {"child"}, })
-        .Method("RemoveFromParent", static_cast<MethodType<EngineS::Transform2D, false, false, void>>(&EngineS::Transform2D::RemoveFromParent), {  })
-        .Method("GetChildren", static_cast<MethodType<EngineS::Transform2D, false, false, std::unordered_set<EngineS::Transform2D *, std::hash<EngineS::Transform2D *>, std::equal_to<EngineS::Transform2D *>, std::allocator<EngineS::Transform2D *>> &>>(&EngineS::Transform2D::GetChildren), {  })
+    .Bases
+    <DROP_FIRST(_, EngineS::Component)>()
+        .Method("GetType", static_cast
+        <MethodType<EngineS::Transform2D, false, true, const EngineS::Type *>>(&EngineS::Transform2D::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::Transform2D, false, false, void *>>(&EngineS::Transform2D::GetPointer), {  })
+        .Method("MakeModelMatrix", static_cast
+        <MethodType<EngineS::Transform2D, false, true, EngineS::Matrix4x4>>(&EngineS::Transform2D::MakeModelMatrix), {  })
+        .Method("Visit", static_cast
+        <MethodType<EngineS::Transform2D, false, false, void, const EngineS::Matrix4x4 &, std::function<void (GameObject *, const Matrix4x4 &)>>>(&EngineS::Transform2D::Visit), { {"parentModelMat"},{"func"}, })
+        .Method("GetParent", static_cast
+        <MethodType<EngineS::Transform2D, false, false, EngineS::Transform2D *>>(&EngineS::Transform2D::GetParent), {  })
+        .Method("SetParent", static_cast
+        <MethodType<EngineS::Transform2D, false, false, void, EngineS::Transform2D *>>(&EngineS::Transform2D::SetParent), { {"parent"}, })
+        .Method("AddChild", static_cast
+        <MethodType<EngineS::Transform2D, false, false, void, EngineS::Transform2D *>>(&EngineS::Transform2D::AddChild), { {"child"}, })
+        .Method("RemoveChild", static_cast
+        <MethodType<EngineS::Transform2D, false, false, void, EngineS::Transform2D *>>(&EngineS::Transform2D::RemoveChild), { {"child"}, })
+        .Method("RemoveFromParent", static_cast
+        <MethodType<EngineS::Transform2D, false, false, void>>(&EngineS::Transform2D::RemoveFromParent), {  })
+        .Method("GetChildren", static_cast
+        <MethodType<EngineS::Transform2D, false, false, std::unordered_set<EngineS::Transform2D *, std::hash<EngineS::Transform2D *>, std::equal_to<EngineS::Transform2D *>, std::allocator<EngineS::Transform2D *>> &>>(&EngineS::Transform2D::GetChildren), {  })
         .Field("position", &EngineS::Transform2D::position)
         .Field("scale", &EngineS::Transform2D::scale)
         .Field("rotation", &EngineS::Transform2D::rotation)
     ;
 
     Registration::Class<EngineS::WindowSystem>("EngineS::WindowSystem")
-        .Bases<DROP_FIRST(_, EngineS::Object)>()
-        .Constructor<DROP_FIRST(_)>({  })
-        .Method("GetType", static_cast<MethodType<EngineS::WindowSystem, false, true, const EngineS::Type *>>(&EngineS::WindowSystem::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<EngineS::WindowSystem, false, false, void *>>(&EngineS::WindowSystem::GetPointer), {  })
-        .Method("Instance", static_cast<MethodType<EngineS::WindowSystem, true, false, EngineS::WindowSystem *>>(&EngineS::WindowSystem::Instance), {  })
-        .Method("Initialize", static_cast<MethodType<EngineS::WindowSystem, false, false, void>>(&EngineS::WindowSystem::Initialize), {  })
-        .Method("PollEvents", static_cast<MethodType<EngineS::WindowSystem, false, true, void>>(&EngineS::WindowSystem::PollEvents), {  })
-        .Method("SwapBuffers", static_cast<MethodType<EngineS::WindowSystem, false, true, void>>(&EngineS::WindowSystem::SwapBuffers), {  })
-        .Method("ShouldClose", static_cast<MethodType<EngineS::WindowSystem, false, true, bool>>(&EngineS::WindowSystem::ShouldClose), {  })
-        .Method("SetTitle", static_cast<MethodType<EngineS::WindowSystem, false, false, void, const std::basic_string<char, std::char_traits<char>, std::allocator<char>> &>>(&EngineS::WindowSystem::SetTitle), { {"title"}, })
-        .Method("SetWindowSize", static_cast<MethodType<EngineS::WindowSystem, false, false, void, unsigned int, unsigned int>>(&EngineS::WindowSystem::SetWindowSize), { {"width"},{"height"}, })
-        .Method("GetWindow", static_cast<MethodType<EngineS::WindowSystem, false, true, GLFWwindow *>>(&EngineS::WindowSystem::GetWindow), {  })
-        .Method("GetWindowSize", static_cast<MethodType<EngineS::WindowSystem, false, true, std::tuple<unsigned int, unsigned int>>>(&EngineS::WindowSystem::GetWindowSize), {  })
-        .Method("RegisterOnResetFunc", static_cast<MethodType<EngineS::WindowSystem, false, false, void, std::function<void ()>>>(&EngineS::WindowSystem::RegisterOnResetFunc), { {"func"}, })
-        .Method("RegisterOnKeyFunc", static_cast<MethodType<EngineS::WindowSystem, false, false, void, std::function<void (int, int, int, int)>>>(&EngineS::WindowSystem::RegisterOnKeyFunc), { {"func"}, })
-        .Method("RegisterOnCharFunc", static_cast<MethodType<EngineS::WindowSystem, false, false, void, std::function<void (unsigned int)>>>(&EngineS::WindowSystem::RegisterOnCharFunc), { {"func"}, })
-        .Method("RegisterOnCharModsFunc", static_cast<MethodType<EngineS::WindowSystem, false, false, void, std::function<void (int, unsigned int)>>>(&EngineS::WindowSystem::RegisterOnCharModsFunc), { {"func"}, })
-        .Method("RegisterOnMouseButtonFunc", static_cast<MethodType<EngineS::WindowSystem, false, false, void, std::function<void (int, int, int)>>>(&EngineS::WindowSystem::RegisterOnMouseButtonFunc), { {"func"}, })
-        .Method("RegisterOnCursorPosFunc", static_cast<MethodType<EngineS::WindowSystem, false, false, void, std::function<void (double, double)>>>(&EngineS::WindowSystem::RegisterOnCursorPosFunc), { {"func"}, })
-        .Method("RegisterOnCursorEnterFunc", static_cast<MethodType<EngineS::WindowSystem, false, false, void, std::function<void (int)>>>(&EngineS::WindowSystem::RegisterOnCursorEnterFunc), { {"func"}, })
-        .Method("RegisterOnScrollFunc", static_cast<MethodType<EngineS::WindowSystem, false, false, void, std::function<void (double, double)>>>(&EngineS::WindowSystem::RegisterOnScrollFunc), { {"func"}, })
-        .Method("RegisterOnDropFunc", static_cast<MethodType<EngineS::WindowSystem, false, false, void, std::function<void (int, const char **)>>>(&EngineS::WindowSystem::RegisterOnDropFunc), { {"func"}, })
-        .Method("RegisterOnWindowSizeFunc", static_cast<MethodType<EngineS::WindowSystem, false, false, void, std::function<void (unsigned int, unsigned int)>>>(&EngineS::WindowSystem::RegisterOnWindowSizeFunc), { {"func"}, })
-        .Method("RegisterOnWindowCloseFunc", static_cast<MethodType<EngineS::WindowSystem, false, false, void, std::function<void ()>>>(&EngineS::WindowSystem::RegisterOnWindowCloseFunc), { {"func"}, })
+    .Bases
+    <DROP_FIRST(_, EngineS::Object)>()
+        .Constructor
+        <DROP_FIRST(_)>({  })
+        .Method("GetType", static_cast
+        <MethodType<EngineS::WindowSystem, false, true, const EngineS::Type *>>(&EngineS::WindowSystem::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<EngineS::WindowSystem, false, false, void *>>(&EngineS::WindowSystem::GetPointer), {  })
+        .Method("Instance", static_cast
+        <MethodType<EngineS::WindowSystem, true, false, EngineS::WindowSystem *>>(&EngineS::WindowSystem::Instance), {  })
+        .Method("Initialize", static_cast
+        <MethodType<EngineS::WindowSystem, false, false, void>>(&EngineS::WindowSystem::Initialize), {  })
+        .Method("PollEvents", static_cast
+        <MethodType<EngineS::WindowSystem, false, true, void>>(&EngineS::WindowSystem::PollEvents), {  })
+        .Method("SwapBuffers", static_cast
+        <MethodType<EngineS::WindowSystem, false, true, void>>(&EngineS::WindowSystem::SwapBuffers), {  })
+        .Method("ShouldClose", static_cast
+        <MethodType<EngineS::WindowSystem, false, true, bool>>(&EngineS::WindowSystem::ShouldClose), {  })
+        .Method("SetTitle", static_cast
+        <MethodType<EngineS::WindowSystem, false, false, void, const std::basic_string<char, std::char_traits<char>, std::allocator<char>> &>>(&EngineS::WindowSystem::SetTitle), { {"title"}, })
+        .Method("SetWindowSize", static_cast
+        <MethodType<EngineS::WindowSystem, false, false, void, unsigned int, unsigned int>>(&EngineS::WindowSystem::SetWindowSize), { {"width"},{"height"}, })
+        .Method("GetWindow", static_cast
+        <MethodType<EngineS::WindowSystem, false, true, GLFWwindow *>>(&EngineS::WindowSystem::GetWindow), {  })
+        .Method("GetWindowSize", static_cast
+        <MethodType<EngineS::WindowSystem, false, true, std::tuple<unsigned int, unsigned int>>>(&EngineS::WindowSystem::GetWindowSize), {  })
+        .Method("RegisterOnResetFunc", static_cast
+        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void ()>>>(&EngineS::WindowSystem::RegisterOnResetFunc), { {"func"}, })
+        .Method("RegisterOnKeyFunc", static_cast
+        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void (int, int, int, int)>>>(&EngineS::WindowSystem::RegisterOnKeyFunc), { {"func"}, })
+        .Method("RegisterOnCharFunc", static_cast
+        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void (unsigned int)>>>(&EngineS::WindowSystem::RegisterOnCharFunc), { {"func"}, })
+        .Method("RegisterOnCharModsFunc", static_cast
+        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void (int, unsigned int)>>>(&EngineS::WindowSystem::RegisterOnCharModsFunc), { {"func"}, })
+        .Method("RegisterOnMouseButtonFunc", static_cast
+        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void (int, int, int)>>>(&EngineS::WindowSystem::RegisterOnMouseButtonFunc), { {"func"}, })
+        .Method("RegisterOnCursorPosFunc", static_cast
+        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void (double, double)>>>(&EngineS::WindowSystem::RegisterOnCursorPosFunc), { {"func"}, })
+        .Method("RegisterOnCursorEnterFunc", static_cast
+        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void (int)>>>(&EngineS::WindowSystem::RegisterOnCursorEnterFunc), { {"func"}, })
+        .Method("RegisterOnScrollFunc", static_cast
+        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void (double, double)>>>(&EngineS::WindowSystem::RegisterOnScrollFunc), { {"func"}, })
+        .Method("RegisterOnDropFunc", static_cast
+        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void (int, const char **)>>>(&EngineS::WindowSystem::RegisterOnDropFunc), { {"func"}, })
+        .Method("RegisterOnWindowSizeFunc", static_cast
+        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void (unsigned int, unsigned int)>>>(&EngineS::WindowSystem::RegisterOnWindowSizeFunc), { {"func"}, })
+        .Method("RegisterOnWindowCloseFunc", static_cast
+        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void ()>>>(&EngineS::WindowSystem::RegisterOnWindowCloseFunc), { {"func"}, })
     ;
 
-    TypeRegistry::Instance()->ProcessBases();
+TypeRegistry::Instance()->ProcessBases();
 }

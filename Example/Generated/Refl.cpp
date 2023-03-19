@@ -7,7 +7,7 @@
 #include "Reflection/TypeRegistry.hpp"
 #include "Reflection/Registration.hpp"
 
-#include "TestComponent.hpp"
+    #include "TestComponent.hpp"
 
 #include "Refl.hpp"
 
@@ -17,11 +17,15 @@ using namespace EngineS;
 
 void EngineS::Registration::RegisterUserObjects() {
     Registration::Class<TestComponent>("TestComponent")
-        .Bases<DROP_FIRST(_, EngineS::Component)>()
-        .Method("GetType", static_cast<MethodType<TestComponent, false, true, const EngineS::Type *>>(&TestComponent::GetType), {  })
-        .Method("GetPointer", static_cast<MethodType<TestComponent, false, false, void *>>(&TestComponent::GetPointer), {  })
-        .Method("Update", static_cast<MethodType<TestComponent, false, false, void, float>>(&TestComponent::Update), { {"deltaTime"}, })
+    .Bases
+    <DROP_FIRST(_, EngineS::Component)>()
+        .Method("GetType", static_cast
+        <MethodType<TestComponent, false, true, const EngineS::Type *>>(&TestComponent::GetType), {  })
+        .Method("GetPointer", static_cast
+        <MethodType<TestComponent, false, false, void *>>(&TestComponent::GetPointer), {  })
+        .Method("Update", static_cast
+        <MethodType<TestComponent, false, false, void, float>>(&TestComponent::Update), { {"deltaTime"}, })
     ;
 
-    TypeRegistry::Instance()->ProcessBases();
+TypeRegistry::Instance()->ProcessBases();
 }
