@@ -66,4 +66,18 @@ Class<T>& Class<T>::Constructor(const std::vector<std::string_view>& params, Acc
     return *this;
 }
 
+template<class T>
+    requires std::is_enum_v<T>
+Enum<T>::Enum(std::string_view name) {
+    _info = new Detail::EnumInfoImpl<T>(name);
+    TypeRegistry::Instance()->RegisterEnum(_info);
+}
+
+template<class T>
+    requires std::is_enum_v<T>
+Enum<T>& Enum<T>::Value(std::string_view name, T val) {
+    _info->_map[name] = static_cast<std::underlying_type_t<T>>(val);
+    return *this;
+}
+
 } // namespace EngineS::Registration

@@ -28,7 +28,7 @@ void ObjectMatchCallback::run(const clang::ast_matchers::MatchFinder::MatchResul
     printingPolicy.adjustForCPlusPlus();
 
     auto getTypeName = [&](const QualType& type) {
-        return clang::TypeName::getFullyQualifiedName(type.getCanonicalType(), *Result.Context, printingPolicy);
+        return clang::TypeName::getFullyQualifiedName(type, *Result.Context, printingPolicy);
     };
 
     auto parseParams = [&](const auto& params) {

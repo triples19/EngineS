@@ -1,18 +1,17 @@
 #pragma once
 
+#include "Reflection/EnumInfo.hpp"
 #include "Reflection/FieldInfo.hpp"
 #include "Reflection/MemberInfo.hpp"
 #include "Reflection/MethodInfo.hpp"
 
 #include <string>
+#include <type_traits>
 #include <vector>
 
 namespace EngineS {
 
 class Type;
-namespace Detail {
-struct BaseInfo;
-}
 
 namespace Registration {
 
@@ -47,6 +46,20 @@ class Class {
 
   private:
     Type* _type;
+};
+
+template<class T>
+    requires std::is_enum_v<T>
+class Enum {
+  public:
+    Enum(std::string_view name);
+
+    Enum& Value(std::string_view name, T val);
+
+    const EnumInfo* Get() const { return _info; }
+
+  private:
+    Detail::EnumInfoImpl<T>* _info;
 };
 
 } // namespace Registration

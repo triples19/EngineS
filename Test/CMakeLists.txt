@@ -1,6 +1,7 @@
 set(SOURCES
         main.cpp
         Reflection/Constructors.cpp
+        Reflection/Enum.cpp
         Reflection/Fields.cpp
         Reflection/Instance.cpp
         Reflection/Methods.cpp

@@ -31,10 +31,10 @@ TEST_CASE("Methods") {
             .Method("s", static_cast<float (*)(float, float)>(&A::s), {"x", "y"})
             .Get();
 
-    auto foo1 = type->GetMethod("foo", TypeOf<int>(), {});
-    auto foo2 = type->GetMethod("foo", TypeOf<int>(), {TypeOf<int>()});
-    auto bar  = type->GetMethod("bar", TypeOf<void>(), {TypeOf<int&>()});
-    auto s    = type->GetMethod("s", TypeOf<float>(), {TypeOf<float>(), TypeOf<float>()});
+    auto foo1 = type->GetMethod("foo", {});
+    auto foo2 = type->GetMethod("foo", {TypeOf<int>()});
+    auto bar  = type->GetMethod("bar", {TypeOf<int&>()});
+    auto s    = type->GetMethod("s", {TypeOf<float>(), TypeOf<float>()});
 
     SECTION("Finding") {
         REQUIRE(foo1);

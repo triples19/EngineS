@@ -11,6 +11,7 @@
 namespace EngineS {
 
 class Type;
+class EnumInfo;
 
 class TypeRegistry {
   public:
@@ -28,6 +29,10 @@ class TypeRegistry {
 
     void ProcessBases();
 
+    void RegisterEnum(EnumInfo* enumInfo);
+
+    const EnumInfo* GetEnum(std::string_view name) const;
+
   private:
     void GetBasesOfType(Type* type);
 
@@ -37,6 +42,8 @@ class TypeRegistry {
 
     std::unordered_set<const Type*>                          _processedTypes;
     std::unordered_map<hash32, std::vector<std::type_index>> _tempBases;
+
+    std::unordered_map<hash32, EnumInfo*> _enums;
 };
 
 } // namespace EngineS

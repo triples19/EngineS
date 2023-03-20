@@ -82,4 +82,18 @@ void TypeRegistry::ProcessBases() {
     _tempBases.clear();
 }
 
+void TypeRegistry::RegisterEnum(EnumInfo* enumInfo) {
+    auto hasher                         = Hasher<std::string_view> {};
+    _enums[hasher(enumInfo->GetName())] = enumInfo;
+}
+
+const EnumInfo* TypeRegistry::GetEnum(std::string_view name) const {
+    auto hash = Hasher<std::string_view> {}(name);
+    auto iter = _enums.find(hash);
+    if (iter == _enums.end()) {
+        return nullptr;
+    }
+    return iter->second;
+}
+
 } // namespace EngineS
