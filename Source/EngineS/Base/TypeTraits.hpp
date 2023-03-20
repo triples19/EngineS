@@ -51,11 +51,11 @@ struct RawTypeImpl {
 };
 template<IsPointer T>
 struct RawTypeImpl<T> {
-    using Type = RawTypeImpl<RemovePointer<T>>::Type;
+    using Type = typename RawTypeImpl<RemovePointer<T>>::Type;
 };
 } // namespace Detail
 
 template<class T>
-using RawType = Detail::RawTypeImpl<T>::Type;
+using RawType = typename Detail::RawTypeImpl<T>::Type;
 
 } // namespace EngineS

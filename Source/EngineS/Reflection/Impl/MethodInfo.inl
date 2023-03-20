@@ -23,7 +23,7 @@ struct SignatureTraitBase<Ret(Params...)> {
 
     template<size_t Index>
     struct TypeOfParam {
-        using Type = std::tuple_element<Index, std::tuple<Params...>>::type;
+        using Type = typename std::tuple_element<Index, std::tuple<Params...>>::type;
     };
 };
 
@@ -39,8 +39,8 @@ struct SignatureTrait<Ret(Params...) const> : SignatureTraitBase<Ret(Params...)>
 template<class Ptr>
 class MethodInfoImpl : public MethodInfo {
   public:
-    using MethodType                  = MemberTrait<Ptr>::Type;
-    using ReturnType                  = SignatureTrait<MethodType>::ReturnType;
+    using MethodType                  = typename MemberTrait<Ptr>::Type;
+    using ReturnType                  = typename SignatureTrait<MethodType>::ReturnType;
     constexpr static auto ParamsCount = SignatureTrait<MethodType>::ParamsCount;
 
     template<size_t Index>
@@ -101,7 +101,8 @@ class MethodInfoImpl : public MethodInfo {
             return {};
         return [&]<size_t... ArgIdx>(std::index_sequence<ArgIdx...>) {
             return InvokeTemplate(instance, args[ArgIdx]...);
-        }(std::make_index_sequence<ParamsCount>());
+        }
+        (std::make_index_sequence<ParamsCount>());
     }
 
   private:

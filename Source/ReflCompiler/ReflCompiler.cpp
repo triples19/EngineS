@@ -3,8 +3,8 @@
 
 #include <algorithm>
 #include <clang/AST/QualTypeNames.h>
-#include <execution>
 #include <fstream>
+#include <llvm/Support/ThreadPool.h>
 #include <sstream>
 
 using namespace llvm;
@@ -203,7 +203,12 @@ void ReflCompiler::Run() {
         fmt::print("[{}/{}] Compiled {}\n", index++, len, relativePathStr);
         outsLk.unlock();
     };
-    std::for_each(std::execution::par_unseq, _sources.begin(), _sources.end(), runLambda);
+    // std::for_each(std::execution::par_unseq, _sources.begin(), _sources.end(), runLambda);
+    ThreadPool pool;
+    for (const auto& source : _sources) {
+        pool.async(runLambda, source);
+    }
+    pool.wait();
 
     // running this in parallel will result in different order per run
     // we don't care about the order, but it's best to result in the same when nothing changes
