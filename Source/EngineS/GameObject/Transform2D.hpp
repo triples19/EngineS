@@ -27,7 +27,8 @@ class Transform2D : public Component {
     void         AddChild(Transform2D* child);
     void         RemoveChild(Transform2D* child);
     void         RemoveFromParent();
-    auto&        GetChildren() { return _children; }
+
+    const std::unordered_set<Transform2D*>& GetChildren() { return _children; }
 
   private:
     std::unordered_set<Transform2D*> _children;

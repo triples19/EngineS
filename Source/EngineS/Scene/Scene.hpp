@@ -20,7 +20,8 @@ class Scene : public Object {
 
     virtual void Initialize();
 
-    auto&        GetGameObjects() { return _gameObjects; }
+    const std::unordered_set<GameObject*>& GetGameObjects() { return _gameObjects; }
+
     void         AddGameObject(GameObject* gameObject);
     void         AddGameObject(GameObject* gameObject, Transform2D* parent);
     void         RemoveGameObject(GameObject* gameObject);

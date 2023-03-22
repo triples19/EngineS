@@ -50,28 +50,28 @@ void EngineS::Registration::RegisterEngineObjects() {
     .Bases
     <DROP_FIRST(_, EngineS::Object)>()
         .Constructor
-        <DROP_FIRST(_, unsigned long long, EngineS::BufferType, EngineS::BufferUsage)>({ {"size"},{"type"},{"usage"}, })
+        <DROP_FIRST(_, size_t, EngineS::BufferType, EngineS::BufferUsage)>({ {"size"},{"type"},{"usage"}, })
         .Method("GetType", static_cast
         <MethodType<EngineS::Buffer, false, true, const EngineS::Type *>>(&EngineS::Buffer::GetType), {  })
         .Method("GetPointer", static_cast
         <MethodType<EngineS::Buffer, false, false, void *>>(&EngineS::Buffer::GetPointer), {  })
         .Method("UpdateData", static_cast
-        <MethodType<EngineS::Buffer, false, false, void, const std::byte *>>(&EngineS::Buffer::UpdateData), { {"data"}, })
+        <MethodType<EngineS::Buffer, false, false, void, const EngineS::byte *>>(&EngineS::Buffer::UpdateData), { {"data"}, })
     ;
 
     Registration::Class<EngineS::BufferOpenGL>("EngineS::BufferOpenGL")
     .Bases
     <DROP_FIRST(_, EngineS::Buffer)>()
         .Constructor
-        <DROP_FIRST(_, unsigned long long, EngineS::BufferType, EngineS::BufferUsage)>({ {"size"},{"type"},{"usage"}, })
+        <DROP_FIRST(_, size_t, EngineS::BufferType, EngineS::BufferUsage)>({ {"size"},{"type"},{"usage"}, })
         .Method("GetType", static_cast
         <MethodType<EngineS::BufferOpenGL, false, true, const EngineS::Type *>>(&EngineS::BufferOpenGL::GetType), {  })
         .Method("GetPointer", static_cast
         <MethodType<EngineS::BufferOpenGL, false, false, void *>>(&EngineS::BufferOpenGL::GetPointer), {  })
         .Method("UpdateData", static_cast
-        <MethodType<EngineS::BufferOpenGL, false, false, void, const std::byte *>>(&EngineS::BufferOpenGL::UpdateData), { {"data"}, })
+        <MethodType<EngineS::BufferOpenGL, false, false, void, const EngineS::byte *>>(&EngineS::BufferOpenGL::UpdateData), { {"data"}, })
         .Method("GetHandler", static_cast
-        <MethodType<EngineS::BufferOpenGL, false, true, unsigned int>>(&EngineS::BufferOpenGL::GetHandler), {  })
+        <MethodType<EngineS::BufferOpenGL, false, true, GLuint>>(&EngineS::BufferOpenGL::GetHandler), {  })
     ;
 
     Registration::Class<EngineS::Camera>("EngineS::Camera")
@@ -117,7 +117,7 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("GetComponent", static_cast
         <MethodType<EngineS::Component, false, true, EngineS::Component *, const EngineS::Type *>>(&EngineS::Component::GetComponent), { {"type"}, })
         .Method("GetComponents", static_cast
-        <MethodType<EngineS::Component, false, true, std::vector<EngineS::Component *, std::allocator<EngineS::Component *>>, const EngineS::Type *>>(&EngineS::Component::GetComponents), { {"type"}, })
+        <MethodType<EngineS::Component, false, true, std::vector<EngineS::Component *>, const EngineS::Type *>>(&EngineS::Component::GetComponents), { {"type"}, })
     ;
 
     Registration::Class<EngineS::DrawList>("EngineS::DrawList")
@@ -130,7 +130,7 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("Begin", static_cast
         <MethodType<EngineS::DrawList, false, false, void, const EngineS::RenderPassDescriptor &>>(&EngineS::DrawList::Begin), { {"desc"}, })
         .Method("SetViewport", static_cast
-        <MethodType<EngineS::DrawList, false, false, void, int, int, unsigned int, unsigned int>>(&EngineS::DrawList::SetViewport), { {"x"},{"y"},{"w"},{"h"}, })
+        <MethodType<EngineS::DrawList, false, false, void, EngineS::i32, EngineS::i32, EngineS::u32, EngineS::u32>>(&EngineS::DrawList::SetViewport), { {"x"},{"y"},{"w"},{"h"}, })
         .Method("BindRenderPipeline", static_cast
         <MethodType<EngineS::DrawList, false, false, void, const EngineS::RenderPipeline *>>(&EngineS::DrawList::BindRenderPipeline), { {"pipeline"}, })
         .Method("BindVertexBuffer", static_cast
@@ -138,7 +138,7 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("BindTexture", static_cast
         <MethodType<EngineS::DrawList, false, false, void, const EngineS::Texture2D *>>(&EngineS::DrawList::BindTexture), { {"texture"}, })
         .Method("Draw", static_cast
-        <MethodType<EngineS::DrawList, false, false, void, unsigned long long, unsigned long long>>(&EngineS::DrawList::Draw), { {"start"},{"count"}, })
+        <MethodType<EngineS::DrawList, false, false, void, size_t, size_t>>(&EngineS::DrawList::Draw), { {"start"},{"count"}, })
         .Method("End", static_cast
         <MethodType<EngineS::DrawList, false, false, void>>(&EngineS::DrawList::End), {  })
     ;
@@ -153,7 +153,7 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("Begin", static_cast
         <MethodType<EngineS::DrawListOpenGL, false, false, void, const EngineS::RenderPassDescriptor &>>(&EngineS::DrawListOpenGL::Begin), { {"desc"}, })
         .Method("SetViewport", static_cast
-        <MethodType<EngineS::DrawListOpenGL, false, false, void, int, int, unsigned int, unsigned int>>(&EngineS::DrawListOpenGL::SetViewport), { {"x"},{"y"},{"w"},{"h"}, })
+        <MethodType<EngineS::DrawListOpenGL, false, false, void, EngineS::i32, EngineS::i32, EngineS::u32, EngineS::u32>>(&EngineS::DrawListOpenGL::SetViewport), { {"x"},{"y"},{"w"},{"h"}, })
         .Method("BindRenderPipeline", static_cast
         <MethodType<EngineS::DrawListOpenGL, false, false, void, const EngineS::RenderPipeline *>>(&EngineS::DrawListOpenGL::BindRenderPipeline), { {"pipeline"}, })
         .Method("BindVertexBuffer", static_cast
@@ -161,7 +161,7 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("BindTexture", static_cast
         <MethodType<EngineS::DrawListOpenGL, false, false, void, const EngineS::Texture2D *>>(&EngineS::DrawListOpenGL::BindTexture), { {"texture"}, })
         .Method("Draw", static_cast
-        <MethodType<EngineS::DrawListOpenGL, false, false, void, unsigned long long, unsigned long long>>(&EngineS::DrawListOpenGL::Draw), { {"start"},{"count"}, })
+        <MethodType<EngineS::DrawListOpenGL, false, false, void, size_t, size_t>>(&EngineS::DrawListOpenGL::Draw), { {"start"},{"count"}, })
         .Method("End", static_cast
         <MethodType<EngineS::DrawListOpenGL, false, false, void>>(&EngineS::DrawListOpenGL::End), {  })
     ;
@@ -184,7 +184,7 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("GetFPS", static_cast
         <MethodType<EngineS::Engine, false, true, int>>(&EngineS::Engine::GetFPS), {  })
         .Method("RegisterUpdateFunc", static_cast
-        <MethodType<EngineS::Engine, false, false, void, std::function<void (float)>>>(&EngineS::Engine::RegisterUpdateFunc), { {"func"}, })
+        <MethodType<EngineS::Engine, false, false, void, EngineS::Engine::UpdateFunc>>(&EngineS::Engine::RegisterUpdateFunc), { {"func"}, })
     ;
 
     Registration::Class<EngineS::Framebuffer>("EngineS::Framebuffer")
@@ -197,7 +197,7 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("GetPointer", static_cast
         <MethodType<EngineS::Framebuffer, false, false, void *>>(&EngineS::Framebuffer::GetPointer), {  })
         .Method("GetColorAttachment", static_cast
-        <MethodType<EngineS::Framebuffer, false, true, EngineS::Texture2D *, unsigned int>>(&EngineS::Framebuffer::GetColorAttachment), { {"index"}, })
+        <MethodType<EngineS::Framebuffer, false, true, EngineS::Texture2D *, EngineS::u32>>(&EngineS::Framebuffer::GetColorAttachment), { {"index"}, })
         .Method("GetDepthAttachment", static_cast
         <MethodType<EngineS::Framebuffer, false, true, EngineS::Texture2D *>>(&EngineS::Framebuffer::GetDepthAttachment), {  })
     ;
@@ -212,7 +212,7 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("GetPointer", static_cast
         <MethodType<EngineS::FramebufferOpenGL, false, false, void *>>(&EngineS::FramebufferOpenGL::GetPointer), {  })
         .Method("GetHandler", static_cast
-        <MethodType<EngineS::FramebufferOpenGL, false, true, unsigned int>>(&EngineS::FramebufferOpenGL::GetHandler), {  })
+        <MethodType<EngineS::FramebufferOpenGL, false, true, GLuint>>(&EngineS::FramebufferOpenGL::GetHandler), {  })
     ;
 
     Registration::Class<EngineS::GameObject>("EngineS::GameObject")
@@ -231,7 +231,7 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("GetComponent", static_cast
         <MethodType<EngineS::GameObject, false, true, EngineS::Component *, const EngineS::Type *>>(&EngineS::GameObject::GetComponent), { {"type"}, })
         .Method("GetComponents", static_cast
-        <MethodType<EngineS::GameObject, false, true, std::vector<EngineS::Component *, std::allocator<EngineS::Component *>>, const EngineS::Type *>>(&EngineS::GameObject::GetComponents), { {"type"}, })
+        <MethodType<EngineS::GameObject, false, true, std::vector<EngineS::Component *>, const EngineS::Type *>>(&EngineS::GameObject::GetComponents), { {"type"}, })
     ;
 
     Registration::Class<EngineS::InputSystem>("EngineS::InputSystem")
@@ -269,9 +269,9 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("Instance", static_cast
         <MethodType<EngineS::Logger, true, false, EngineS::Logger *>>(&EngineS::Logger::Instance), {  })
         .Method("GetPrefix", static_cast
-        <MethodType<EngineS::Logger, true, false, std::basic_string<char, std::char_traits<char>, std::allocator<char>>, EngineS::LogLevel, std::source_location>>(&EngineS::Logger::GetPrefix), { {"level"},{"location"}, })
+        <MethodType<EngineS::Logger, true, false, std::string, EngineS::LogLevel, std::source_location>>(&EngineS::Logger::GetPrefix), { {"level"},{"location"}, })
         .Method("Log", static_cast
-        <MethodType<EngineS::Logger, false, false, void, EngineS::LogLevel, std::basic_string<char, std::char_traits<char>, std::allocator<char>>, std::source_location>>(&EngineS::Logger::Log), { {"level"},{"message"},{"location"}, })
+        <MethodType<EngineS::Logger, false, false, void, EngineS::LogLevel, std::string, std::source_location>>(&EngineS::Logger::Log), { {"level"},{"message"},{"location"}, })
         .Method("Open", static_cast
         <MethodType<EngineS::Logger, false, false, void, const std::filesystem::path &>>(&EngineS::Logger::Open), { {"filePath"}, })
         .Method("Close", static_cast
@@ -333,7 +333,7 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("Link", static_cast
         <MethodType<EngineS::ProgramOpenGL, false, false, bool, EngineS::Shader *, EngineS::Shader *>>(&EngineS::ProgramOpenGL::Link), { {"fragShader"},{"vertShader"}, })
         .Method("GetHandler", static_cast
-        <MethodType<EngineS::ProgramOpenGL, false, true, unsigned int>>(&EngineS::ProgramOpenGL::GetHandler), {  })
+        <MethodType<EngineS::ProgramOpenGL, false, true, GLuint>>(&EngineS::ProgramOpenGL::GetHandler), {  })
     ;
 
     Registration::Class<EngineS::Ref>("EngineS::Ref")
@@ -350,7 +350,7 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("Release", static_cast
         <MethodType<EngineS::Ref, false, false, void>>(&EngineS::Ref::Release), {  })
         .Method("GetRefCount", static_cast
-        <MethodType<EngineS::Ref, false, true, int>>(&EngineS::Ref::GetRefCount), {  })
+        <MethodType<EngineS::Ref, false, true, EngineS::i32>>(&EngineS::Ref::GetRefCount), {  })
     ;
 
     Registration::Class<EngineS::RenderPipeline>("EngineS::RenderPipeline")
@@ -455,7 +455,7 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("Initialize", static_cast
         <MethodType<EngineS::Scene, false, false, void>>(&EngineS::Scene::Initialize), {  })
         .Method("GetGameObjects", static_cast
-        <MethodType<EngineS::Scene, false, false, std::unordered_set<EngineS::GameObject *, std::hash<EngineS::GameObject *>, std::equal_to<EngineS::GameObject *>, std::allocator<EngineS::GameObject *>> &>>(&EngineS::Scene::GetGameObjects), {  })
+        <MethodType<EngineS::Scene, false, false, const std::unordered_set<EngineS::GameObject *> &>>(&EngineS::Scene::GetGameObjects), {  })
         .Method("AddGameObject", static_cast
         <MethodType<EngineS::Scene, false, false, void, EngineS::GameObject *>>(&EngineS::Scene::AddGameObject), { {"gameObject"}, })
         .Method("AddGameObject", static_cast
@@ -493,9 +493,9 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("GetPointer", static_cast
         <MethodType<EngineS::Shader, false, false, void *>>(&EngineS::Shader::GetPointer), {  })
         .Method("Compile", static_cast
-        <MethodType<EngineS::Shader, false, false, bool, EngineS::ShaderStage, const std::basic_string<char, std::char_traits<char>, std::allocator<char>> &>>(&EngineS::Shader::Compile), { {"stage"},{"src"}, })
+        <MethodType<EngineS::Shader, false, false, bool, EngineS::ShaderStage, const std::string &>>(&EngineS::Shader::Compile), { {"stage"},{"src"}, })
         .Method("Compile", static_cast
-        <MethodType<EngineS::Shader, false, false, bool, EngineS::ShaderStage, const std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>, std::allocator<std::basic_string<char, std::char_traits<char>, std::allocator<char>>>> &>>(&EngineS::Shader::Compile), { {"stage"},{"src"}, })
+        <MethodType<EngineS::Shader, false, false, bool, EngineS::ShaderStage, const std::vector<std::string> &>>(&EngineS::Shader::Compile), { {"stage"},{"src"}, })
     ;
 
     Registration::Class<EngineS::ShaderOpenGL>("EngineS::ShaderOpenGL")
@@ -506,7 +506,7 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("GetPointer", static_cast
         <MethodType<EngineS::ShaderOpenGL, false, false, void *>>(&EngineS::ShaderOpenGL::GetPointer), {  })
         .Method("GetHandler", static_cast
-        <MethodType<EngineS::ShaderOpenGL, false, true, unsigned int>>(&EngineS::ShaderOpenGL::GetHandler), {  })
+        <MethodType<EngineS::ShaderOpenGL, false, true, GLuint>>(&EngineS::ShaderOpenGL::GetHandler), {  })
     ;
 
     Registration::Class<EngineS::SpriteRenderer>("EngineS::SpriteRenderer")
@@ -546,7 +546,7 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("Load", static_cast
         <MethodType<EngineS::Text, false, false, bool, const std::filesystem::path &>>(&EngineS::Text::Load), { {"path"}, })
         .Method("GetText", static_cast
-        <MethodType<EngineS::Text, false, true, const std::basic_string<char, std::char_traits<char>, std::allocator<char>> &>>(&EngineS::Text::GetText), {  })
+        <MethodType<EngineS::Text, false, true, const std::string &>>(&EngineS::Text::GetText), {  })
     ;
 
     Registration::Class<EngineS::Texture2D>("EngineS::Texture2D")
@@ -561,13 +561,13 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("Init", static_cast
         <MethodType<EngineS::Texture2D, false, false, void, const EngineS::TextureDescriptor &>>(&EngineS::Texture2D::Init), { {"desc"}, })
         .Method("UpdateData", static_cast
-        <MethodType<EngineS::Texture2D, false, false, void, const std::byte *, unsigned int, unsigned int>>(&EngineS::Texture2D::UpdateData), { {"data"},{"width"},{"height"}, })
+        <MethodType<EngineS::Texture2D, false, false, void, const EngineS::byte *, EngineS::u32, EngineS::u32>>(&EngineS::Texture2D::UpdateData), { {"data"},{"width"},{"height"}, })
         .Method("Apply", static_cast
-        <MethodType<EngineS::Texture2D, false, true, void, unsigned int>>(&EngineS::Texture2D::Apply), { {"index"}, })
+        <MethodType<EngineS::Texture2D, false, true, void, EngineS::u32>>(&EngineS::Texture2D::Apply), { {"index"}, })
         .Method("GetWidth", static_cast
-        <MethodType<EngineS::Texture2D, false, true, unsigned int>>(&EngineS::Texture2D::GetWidth), {  })
+        <MethodType<EngineS::Texture2D, false, true, EngineS::u32>>(&EngineS::Texture2D::GetWidth), {  })
         .Method("GetHeight", static_cast
-        <MethodType<EngineS::Texture2D, false, true, unsigned int>>(&EngineS::Texture2D::GetHeight), {  })
+        <MethodType<EngineS::Texture2D, false, true, EngineS::u32>>(&EngineS::Texture2D::GetHeight), {  })
     ;
 
     Registration::Class<EngineS::Texture2DOpenGL>("EngineS::Texture2DOpenGL")
@@ -580,11 +580,11 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("Init", static_cast
         <MethodType<EngineS::Texture2DOpenGL, false, false, void, const EngineS::TextureDescriptor &>>(&EngineS::Texture2DOpenGL::Init), { {"desc"}, })
         .Method("UpdateData", static_cast
-        <MethodType<EngineS::Texture2DOpenGL, false, false, void, const std::byte *, unsigned int, unsigned int>>(&EngineS::Texture2DOpenGL::UpdateData), { {"data"},{"width"},{"height"}, })
+        <MethodType<EngineS::Texture2DOpenGL, false, false, void, const EngineS::byte *, EngineS::u32, EngineS::u32>>(&EngineS::Texture2DOpenGL::UpdateData), { {"data"},{"width"},{"height"}, })
         .Method("Apply", static_cast
-        <MethodType<EngineS::Texture2DOpenGL, false, true, void, unsigned int>>(&EngineS::Texture2DOpenGL::Apply), { {"index"}, })
+        <MethodType<EngineS::Texture2DOpenGL, false, true, void, EngineS::u32>>(&EngineS::Texture2DOpenGL::Apply), { {"index"}, })
         .Method("GetHandler", static_cast
-        <MethodType<EngineS::Texture2DOpenGL, false, true, unsigned int>>(&EngineS::Texture2DOpenGL::GetHandler), {  })
+        <MethodType<EngineS::Texture2DOpenGL, false, true, GLuint>>(&EngineS::Texture2DOpenGL::GetHandler), {  })
     ;
 
     Registration::Class<EngineS::Transform2D>("EngineS::Transform2D")
@@ -597,7 +597,7 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("MakeModelMatrix", static_cast
         <MethodType<EngineS::Transform2D, false, true, EngineS::Matrix4x4>>(&EngineS::Transform2D::MakeModelMatrix), {  })
         .Method("Visit", static_cast
-        <MethodType<EngineS::Transform2D, false, false, void, const EngineS::Matrix4x4 &, std::function<void (GameObject *, const Matrix4x4 &)>>>(&EngineS::Transform2D::Visit), { {"parentModelMat"},{"func"}, })
+        <MethodType<EngineS::Transform2D, false, false, void, const EngineS::Matrix4x4 &, EngineS::Transform2D::VisitFunc>>(&EngineS::Transform2D::Visit), { {"parentModelMat"},{"func"}, })
         .Method("GetParent", static_cast
         <MethodType<EngineS::Transform2D, false, false, EngineS::Transform2D *>>(&EngineS::Transform2D::GetParent), {  })
         .Method("SetParent", static_cast
@@ -609,7 +609,7 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("RemoveFromParent", static_cast
         <MethodType<EngineS::Transform2D, false, false, void>>(&EngineS::Transform2D::RemoveFromParent), {  })
         .Method("GetChildren", static_cast
-        <MethodType<EngineS::Transform2D, false, false, std::unordered_set<EngineS::Transform2D *, std::hash<EngineS::Transform2D *>, std::equal_to<EngineS::Transform2D *>, std::allocator<EngineS::Transform2D *>> &>>(&EngineS::Transform2D::GetChildren), {  })
+        <MethodType<EngineS::Transform2D, false, false, const std::unordered_set<EngineS::Transform2D *> &>>(&EngineS::Transform2D::GetChildren), {  })
         .Field("position", &EngineS::Transform2D::position)
         .Field("scale", &EngineS::Transform2D::scale)
         .Field("rotation", &EngineS::Transform2D::rotation)
@@ -635,35 +635,37 @@ void EngineS::Registration::RegisterEngineObjects() {
         .Method("ShouldClose", static_cast
         <MethodType<EngineS::WindowSystem, false, true, bool>>(&EngineS::WindowSystem::ShouldClose), {  })
         .Method("SetTitle", static_cast
-        <MethodType<EngineS::WindowSystem, false, false, void, const std::basic_string<char, std::char_traits<char>, std::allocator<char>> &>>(&EngineS::WindowSystem::SetTitle), { {"title"}, })
+        <MethodType<EngineS::WindowSystem, false, false, void, const std::string &>>(&EngineS::WindowSystem::SetTitle), { {"title"}, })
         .Method("SetWindowSize", static_cast
-        <MethodType<EngineS::WindowSystem, false, false, void, unsigned int, unsigned int>>(&EngineS::WindowSystem::SetWindowSize), { {"width"},{"height"}, })
+        <MethodType<EngineS::WindowSystem, false, false, void, EngineS::u32, EngineS::u32>>(&EngineS::WindowSystem::SetWindowSize), { {"width"},{"height"}, })
         .Method("GetWindow", static_cast
         <MethodType<EngineS::WindowSystem, false, true, GLFWwindow *>>(&EngineS::WindowSystem::GetWindow), {  })
         .Method("GetWindowSize", static_cast
-        <MethodType<EngineS::WindowSystem, false, true, std::tuple<unsigned int, unsigned int>>>(&EngineS::WindowSystem::GetWindowSize), {  })
+        <MethodType<EngineS::WindowSystem, false, true, std::tuple<EngineS::u32, EngineS::u32>>>(&EngineS::WindowSystem::GetWindowSize), {  })
+        .Method("GetFramebufferSize", static_cast
+        <MethodType<EngineS::WindowSystem, false, true, std::tuple<EngineS::u32, EngineS::u32>>>(&EngineS::WindowSystem::GetFramebufferSize), {  })
         .Method("RegisterOnResetFunc", static_cast
-        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void ()>>>(&EngineS::WindowSystem::RegisterOnResetFunc), { {"func"}, })
+        <MethodType<EngineS::WindowSystem, false, false, void, EngineS::WindowSystem::OnResetFunc>>(&EngineS::WindowSystem::RegisterOnResetFunc), { {"func"}, })
         .Method("RegisterOnKeyFunc", static_cast
-        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void (int, int, int, int)>>>(&EngineS::WindowSystem::RegisterOnKeyFunc), { {"func"}, })
+        <MethodType<EngineS::WindowSystem, false, false, void, EngineS::WindowSystem::OnKeyFunc>>(&EngineS::WindowSystem::RegisterOnKeyFunc), { {"func"}, })
         .Method("RegisterOnCharFunc", static_cast
-        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void (unsigned int)>>>(&EngineS::WindowSystem::RegisterOnCharFunc), { {"func"}, })
+        <MethodType<EngineS::WindowSystem, false, false, void, EngineS::WindowSystem::OnCharFunc>>(&EngineS::WindowSystem::RegisterOnCharFunc), { {"func"}, })
         .Method("RegisterOnCharModsFunc", static_cast
-        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void (int, unsigned int)>>>(&EngineS::WindowSystem::RegisterOnCharModsFunc), { {"func"}, })
+        <MethodType<EngineS::WindowSystem, false, false, void, EngineS::WindowSystem::OnCharModsFunc>>(&EngineS::WindowSystem::RegisterOnCharModsFunc), { {"func"}, })
         .Method("RegisterOnMouseButtonFunc", static_cast
-        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void (int, int, int)>>>(&EngineS::WindowSystem::RegisterOnMouseButtonFunc), { {"func"}, })
+        <MethodType<EngineS::WindowSystem, false, false, void, EngineS::WindowSystem::OnMouseButtonFunc>>(&EngineS::WindowSystem::RegisterOnMouseButtonFunc), { {"func"}, })
         .Method("RegisterOnCursorPosFunc", static_cast
-        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void (double, double)>>>(&EngineS::WindowSystem::RegisterOnCursorPosFunc), { {"func"}, })
+        <MethodType<EngineS::WindowSystem, false, false, void, EngineS::WindowSystem::OnCursorPosFunc>>(&EngineS::WindowSystem::RegisterOnCursorPosFunc), { {"func"}, })
         .Method("RegisterOnCursorEnterFunc", static_cast
-        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void (int)>>>(&EngineS::WindowSystem::RegisterOnCursorEnterFunc), { {"func"}, })
+        <MethodType<EngineS::WindowSystem, false, false, void, EngineS::WindowSystem::OnCursorEnterFunc>>(&EngineS::WindowSystem::RegisterOnCursorEnterFunc), { {"func"}, })
         .Method("RegisterOnScrollFunc", static_cast
-        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void (double, double)>>>(&EngineS::WindowSystem::RegisterOnScrollFunc), { {"func"}, })
+        <MethodType<EngineS::WindowSystem, false, false, void, EngineS::WindowSystem::OnScrollFunc>>(&EngineS::WindowSystem::RegisterOnScrollFunc), { {"func"}, })
         .Method("RegisterOnDropFunc", static_cast
-        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void (int, const char **)>>>(&EngineS::WindowSystem::RegisterOnDropFunc), { {"func"}, })
+        <MethodType<EngineS::WindowSystem, false, false, void, EngineS::WindowSystem::OnDropFunc>>(&EngineS::WindowSystem::RegisterOnDropFunc), { {"func"}, })
         .Method("RegisterOnWindowSizeFunc", static_cast
-        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void (unsigned int, unsigned int)>>>(&EngineS::WindowSystem::RegisterOnWindowSizeFunc), { {"func"}, })
+        <MethodType<EngineS::WindowSystem, false, false, void, EngineS::WindowSystem::OnWindowSizeFunc>>(&EngineS::WindowSystem::RegisterOnWindowSizeFunc), { {"func"}, })
         .Method("RegisterOnWindowCloseFunc", static_cast
-        <MethodType<EngineS::WindowSystem, false, false, void, std::function<void ()>>>(&EngineS::WindowSystem::RegisterOnWindowCloseFunc), { {"func"}, })
+        <MethodType<EngineS::WindowSystem, false, false, void, EngineS::WindowSystem::OnWindowCloseFunc>>(&EngineS::WindowSystem::RegisterOnWindowCloseFunc), { {"func"}, })
     ;
 
 TypeRegistry::Instance()->ProcessBases();
