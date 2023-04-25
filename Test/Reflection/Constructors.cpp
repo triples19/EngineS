@@ -1,14 +1,14 @@
 #include <catch2/catch_test_macros.hpp>
 #include <type_traits>
 
-#include "Reflection/ConstructorInfo.hpp"
-#include "Reflection/DestructorInfo.hpp"
-#include "Reflection/FieldInfo.hpp"
-#include "Reflection/Instance.hpp"
-#include "Reflection/MethodInfo.hpp"
-#include "Reflection/Registration.hpp"
-#include "Reflection/Utils.hpp"
-#include "Reflection/Variant.hpp"
+#include "Core/Reflection/ConstructorInfo.hpp"
+#include "Core/Reflection/DestructorInfo.hpp"
+#include "Core/Reflection/FieldInfo.hpp"
+#include "Core/Reflection/Instance.hpp"
+#include "Core/Reflection/MethodInfo.hpp"
+#include "Core/Reflection/Registration.hpp"
+#include "Core/Reflection/Utils.hpp"
+#include "Core/Reflection/Variant.hpp"
 
 using namespace EngineS;
 

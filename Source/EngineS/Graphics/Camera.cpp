@@ -1,5 +1,5 @@
 #include "Graphics/Camera.hpp"
-#include "GameObject/Transform2D.hpp"
+#include "Gameplay/GameObject/Transform2D.hpp"
 
 namespace EngineS {
 

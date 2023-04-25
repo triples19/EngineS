@@ -1,8 +1,8 @@
 #include <catch2/catch_test_macros.hpp>
 #include <type_traits>
 
-#include "Reflection/Registration.hpp"
-#include "Reflection/Variant.hpp"
+#include "Core/Reflection/Registration.hpp"
+#include "Core/Reflection/Variant.hpp"
 
 using namespace EngineS;
 

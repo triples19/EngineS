@@ -2,8 +2,8 @@
 #include <catch2/matchers/catch_matchers_all.hpp>
 #include <type_traits>
 
-#include "Reflection/Registration.hpp"
-#include "Reflection/Variant.hpp"
+#include "Core/Reflection/Registration.hpp"
+#include "Core/Reflection/Variant.hpp"
 
 using namespace EngineS;
 

@@ -1,6 +1,6 @@
 #include "Graphics/WindowSystem.hpp"
-#include "Base/Macros.hpp"
-#include "IO/Logger.hpp"
+#include "Core/IO/Logger.hpp"
+#include "Core/Macros.hpp"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -17,7 +17,7 @@ static WindowSystem* s_SharedInstance;
 WindowSystem* WindowSystem::Instance() {
     if (!s_SharedInstance) {
         s_SharedInstance = new (std::nothrow) WindowSystem;
-        ES_ASSERT_NOMSG(s_SharedInstance != nullptr);
+        ES_ASSERT(s_SharedInstance != nullptr);
     }
     return s_SharedInstance;
 }

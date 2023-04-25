@@ -1,7 +1,7 @@
 #include "Resource/ResourceManager.hpp"
-#include "Base/Macros.hpp"
-#include "Reflection/ConstructorInfo.hpp"
-#include "Reflection/Type.hpp"
+#include "Core/Macros.hpp"
+#include "Core/Reflection/ConstructorInfo.hpp"
+#include "Core/Reflection/Type.hpp"
 #include "Resource/Resource.hpp"
 
 #include <fstream>
@@ -15,7 +15,7 @@ ResourceManager* s_SharedInstance;
 ResourceManager* ResourceManager::Instance() {
     if (!s_SharedInstance) {
         s_SharedInstance = new (std::nothrow) ResourceManager;
-        ES_ASSERT_NOMSG(s_SharedInstance != nullptr);
+        ES_ASSERT(s_SharedInstance != nullptr);
         s_SharedInstance->Retain();
     }
     return s_SharedInstance;

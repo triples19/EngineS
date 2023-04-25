@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Base/Object.hpp"
-#include "GraphicsAPI/DeviceInfo.hpp"
+#include "Core/Object.hpp"
+#include "Graphics/API/DeviceInfo.hpp"
 
 #include <memory>
 #include <utility>

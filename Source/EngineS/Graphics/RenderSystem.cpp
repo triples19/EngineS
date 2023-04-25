@@ -1,22 +1,22 @@
 #include "Graphics/RenderSystem.hpp"
-#include "Base/Hash.hpp"
-#include "Base/Macros.hpp"
-#include "GameObject/GameObject.hpp"
-#include "GameObject/Transform2D.hpp"
+#include "Core/Hash.hpp"
+#include "Core/Macros.hpp"
+#include "Core/Math/Math.hpp"
+#include "Gameplay/GameObject/GameObject.hpp"
+#include "Gameplay/GameObject/Transform2D.hpp"
+#include "Gameplay/Scene/Scene.hpp"
+#include "Gameplay/Scene/SceneManager.hpp"
+#include "Graphics/API/DeviceInfo.hpp"
+#include "Graphics/API/DrawList.hpp"
+#include "Graphics/API/Framebuffer.hpp"
+#include "Graphics/API/Program.hpp"
+#include "Graphics/API/RenderDevice.hpp"
+#include "Graphics/API/Texture2D.hpp"
 #include "Graphics/Camera.hpp"
 #include "Graphics/Material2D.hpp"
 #include "Graphics/SpriteRenderer.hpp"
 #include "Graphics/WindowSystem.hpp"
-#include "GraphicsAPI/DeviceInfo.hpp"
-#include "GraphicsAPI/DrawList.hpp"
-#include "GraphicsAPI/Framebuffer.hpp"
-#include "GraphicsAPI/Program.hpp"
-#include "GraphicsAPI/RenderDevice.hpp"
-#include "GraphicsAPI/Texture2D.hpp"
-#include "Math/Math.hpp"
 #include "Resource/ResourceManager.hpp"
-#include "Scene/Scene.hpp"
-#include "Scene/SceneManager.hpp"
 
 namespace EngineS {
 
@@ -25,7 +25,7 @@ static RenderSystem* s_SharedInstance;
 RenderSystem* RenderSystem::Instance() {
     if (!s_SharedInstance) {
         s_SharedInstance = new (std::nothrow) RenderSystem;
-        ES_ASSERT_NOMSG(s_SharedInstance != nullptr);
+        ES_ASSERT(s_SharedInstance != nullptr);
     }
     return s_SharedInstance;
 }

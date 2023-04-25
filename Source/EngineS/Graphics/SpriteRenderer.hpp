@@ -2,12 +2,12 @@
 
 #include <memory>
 
-#include "Base/SharedPtr.hpp"
-#include "GameObject/Component.hpp"
+#include "Core/Math/Math.hpp"
+#include "Core/Memory/SharedPtr.hpp"
+#include "Gameplay/GameObject/Component.hpp"
+#include "Graphics/API/BufferTypes.hpp"
+#include "Graphics/API/Renderer.hpp"
 #include "Graphics/Material2D.hpp"
-#include "GraphicsAPI/BufferTypes.hpp"
-#include "GraphicsAPI/Renderer.hpp"
-#include "Math/Math.hpp"
 
 namespace EngineS {
 

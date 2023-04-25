@@ -1,7 +1,7 @@
 #pragma once
 
-#include "GameObject/Component.hpp"
-#include "Math/Math.hpp"
+#include "Core/Math/Math.hpp"
+#include "Gameplay/GameObject/Component.hpp"
 
 namespace EngineS {
 

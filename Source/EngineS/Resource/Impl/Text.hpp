@@ -2,6 +2,8 @@
 
 #include "Resource/Resource.hpp"
 
+#include <sstream>
+
 namespace EngineS {
 
 class Text : public Resource {

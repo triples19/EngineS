@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Base/Object.hpp"
-#include "Base/SharedPtr.hpp"
-#include "GraphicsAPI/Program.hpp"
-#include "GraphicsAPI/Texture2D.hpp"
+#include "Core/Memory/SharedPtr.hpp"
+#include "Core/Object.hpp"
+#include "Graphics/API/Program.hpp"
+#include "Graphics/API/Texture2D.hpp"
 
 #include <memory>
 

@@ -7,7 +7,7 @@ set(SOURCES
         Reflection/Methods.cpp
         Reflection/Type.cpp
         Reflection/Variant.cpp
-        )
+        Container/String.cpp)
 
 add_executable(EngineS-Test ${SOURCES})
 target_link_libraries(EngineS-Test PRIVATE EngineS Catch2::Catch2)

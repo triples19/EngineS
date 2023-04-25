@@ -1,8 +1,8 @@
 #include <catch2/catch_test_macros.hpp>
 #include <type_traits>
 
-#include "Reflection/EnumInfo.hpp"
-#include "Reflection/Registration.hpp"
+#include "Core/Reflection/EnumInfo.hpp"
+#include "Core/Reflection/Registration.hpp"
 
 using namespace EngineS;
 
