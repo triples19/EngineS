@@ -3,12 +3,6 @@ file(GLOB_RECURSE SOURCE_FILES "*.cpp")
 
 add_library(EngineS ${SOURCE_FILES})
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    target_link_libraries(EngineS PRIVATE -static)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_link_libraries(EngineS PRIVATE -static-libgcc -static-libstdc++)
-endif ()
-
 if (APPLE)
     target_link_libraries(EngineS PRIVATE
             "-framework Cocoa"
