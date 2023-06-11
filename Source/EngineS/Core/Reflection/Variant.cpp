@@ -44,10 +44,6 @@ Detail::VariantTypeHandler* Variant::GetHandler() const {
     return _handler.get();
 }
 
-void* Variant::GetAddress() const {
-    return _handler->GetAddress(_data);
-}
-
 void* Variant::GetRawAddress() const {
     return _handler->GetRawAddress(_data);
 }

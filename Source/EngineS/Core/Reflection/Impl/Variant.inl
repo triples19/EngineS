@@ -14,7 +14,6 @@ struct VariantTypeHandlerImplEmpty : VariantTypeHandler {
     VariantData Create(const void* val) const override { return {}; }
     VariantData Copy(VariantData other) const override { return {}; }
     void        Destroy(VariantData obj) const override {}
-    void*       GetAddress(VariantData obj) const override { return nullptr; }
     void*       GetRawAddress(VariantData obj) const override { return nullptr; }
     bool        IsValid() const override { return false; }
 
@@ -29,7 +28,6 @@ struct VariantTypeHandlerImplHeap : VariantTypeHandler {
     VariantData Create(const void* val) const override { return new T(*static_cast<const T*>(val)); }
     VariantData Copy(VariantData other) const override { return Create(other.ptr); }
     void        Destroy(VariantData obj) const override { delete static_cast<T*>(obj.ptr); }
-    void*       GetAddress(VariantData obj) const override { return obj.ptr; }
     void*       GetRawAddress(VariantData obj) const override {
         auto ptr = static_cast<T*>(obj.ptr);
         return const_cast<void*>(static_cast<const void*>(RawAddressOf(ptr)));

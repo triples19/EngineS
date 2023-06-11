@@ -36,7 +36,6 @@ struct VariantTypeHandler {
     virtual VariantData Create(const void* val) const        = 0;
     virtual VariantData Copy(VariantData other) const        = 0;
     virtual void        Destroy(VariantData obj) const       = 0;
-    virtual void*       GetAddress(VariantData obj) const    = 0;
     virtual void*       GetRawAddress(VariantData obj) const = 0;
     virtual bool        IsValid() const                      = 0;
 
@@ -86,8 +85,6 @@ class Variant {
     bool operator==(T&& val) const;
 
     Detail::VariantTypeHandler* GetHandler() const;
-
-    void* GetAddress() const;
 
     void* GetRawAddress() const;
 
