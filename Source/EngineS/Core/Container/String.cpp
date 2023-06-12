@@ -301,6 +301,7 @@ String& String::Insert(u32 pos, const String& str) {
 
 String& String::Remove(u32 pos, u32 n) {
     Replace(pos, n, "");
+    return *this;
 }
 
 std::vector<String> String::Split(char spearator) const {
