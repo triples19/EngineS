@@ -20,6 +20,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(ES_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Source/EngineS)
 add_subdirectory(Source/EngineS)
 
-add_subdirectory(Example)
+add_subdirectory(Sample)
 
-add_subdirectory(Test)
+add_subdirectory(Tests)
