@@ -25,13 +25,13 @@ concept HasGetTypeMethod = //
     };
 
 template<class T>
-inline auto RawAddressOf(T& data) {
-    if constexpr (IsPointer<T> && PointerCount<T>() >= 1 && !IsVoidPointer<T>) {
-        return RawAddressOf<RemovePointer<T>>(*data);
-    } else if constexpr (IsVoidPointer<T>) {
+inline void* RawAddressOf(const T& data) {
+    if constexpr (SameAs<T, void*>) {
         return data;
+    } else if constexpr (IsPointer<T>) {
+        return RawAddressOf(*data);
     } else {
-        return std::addressof(data);
+        return const_cast<void*>(static_cast<const void*>(&data));
     }
 }
 

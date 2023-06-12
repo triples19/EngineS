@@ -11,7 +11,9 @@ struct CustomStruct {
     int   x;
     float y;
 
-    bool operator==(const CustomStruct& rhs) const { return x == rhs.x && y == rhs.y; }
+    bool operator==(const CustomStruct& rhs) const {
+        return x == rhs.x && y == rhs.y;
+    }
 };
 
 TEST_CASE("Variant") {
@@ -70,23 +72,18 @@ TEST_CASE("Variant") {
     }
 
     SECTION("Move construct & move assignment") {
-        Variant var1     = 10;
-        auto    address1 = &var1.GetValue<int>();
+        Variant var1 = 10;
 
         Variant var2(std::move(var1));
         REQUIRE_FALSE(var1.IsValid()); // NOLINT
         REQUIRE(var2.IsType<int>());
         REQUIRE(var2.GetValue<int>() == 10);
-        // var2 should use the same address(pointer) as var1
-        REQUIRE(address1 == &var2.GetValue<int>());
 
-        Variant var3     = 'a';
-        auto    address3 = &var3.GetValue<char>();
-        var2             = std::move(var3);
+        Variant var3 = 'a';
+        var2         = std::move(var3);
         REQUIRE_FALSE(var3.IsValid()); // NOLINT
         REQUIRE(var2.IsType<char>());
         REQUIRE(var2.GetValue<char>() == 'a');
-        REQUIRE(address3 == &var2.GetValue<char>());
     }
 
     SECTION("VariantVector") {
@@ -101,7 +98,7 @@ TEST_CASE("Variant") {
             REQUIRE(varVec[2] == 3);
         }
 
-        SECTION("Single level & mutliple types") {
+        SECTION("Single level & multiple types") {
             Variant var = VariantVector {5, 5.0f, 'c'};
             REQUIRE(var.IsType<VariantVector>());
             auto varVec = var.GetValue<VariantVector>();

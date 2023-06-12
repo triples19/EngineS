@@ -2,7 +2,7 @@
 
 namespace EngineS {
 
-Variant::Variant() : _handler(new Detail::VariantTypeHandlerImplEmpty {}) {}
+Variant::Variant() : _handler(new Detail::VariantHandlerEmpty {}) {}
 
 Variant::~Variant() {
     if (_handler)
@@ -29,7 +29,6 @@ Variant& Variant::operator=(const Variant& other) {
 }
 
 Variant& Variant::operator=(Variant&& other) noexcept {
-    _handler->Destroy(_data);
     std::swap(_data, other._data);
     _handler = std::move(other._handler);
 
@@ -40,7 +39,7 @@ bool Variant::IsValid() const {
     return _handler && _handler->IsValid();
 }
 
-Detail::VariantTypeHandler* Variant::GetHandler() const {
+Detail::VariantHandlerBase* Variant::GetHandler() const {
     return _handler.get();
 }
 

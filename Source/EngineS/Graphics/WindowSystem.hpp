@@ -24,7 +24,6 @@ class WindowSystem : public Object {
     bool                 ShouldClose() const;
     void                 SetTitle(const std::string& title);
     void                 SetWindowSize(u32 width, u32 height);
-    GLFWwindow*          GetWindow() const;
     std::tuple<u32, u32> GetWindowSize() const;
     std::tuple<u32, u32> GetFramebufferSize() const;
 
@@ -40,17 +39,39 @@ class WindowSystem : public Object {
     using OnWindowSizeFunc  = std::function<void(u32, u32)>;
     using OnWindowCloseFunc = std::function<void()>;
 
-    void RegisterOnResetFunc(OnResetFunc func) { _onResetFuncs.push_back(func); }
-    void RegisterOnKeyFunc(OnKeyFunc func) { _onKeyFuncs.push_back(func); }
-    void RegisterOnCharFunc(OnCharFunc func) { _onCharFuncs.push_back(func); }
-    void RegisterOnCharModsFunc(OnCharModsFunc func) { _onCharModsFuncs.push_back(func); }
-    void RegisterOnMouseButtonFunc(OnMouseButtonFunc func) { _onMouseButtonFuncs.push_back(func); }
-    void RegisterOnCursorPosFunc(OnCursorPosFunc func) { _onCursorPosFuncs.push_back(func); }
-    void RegisterOnCursorEnterFunc(OnCursorEnterFunc func) { _onCursorEnterFuncs.push_back(func); }
-    void RegisterOnScrollFunc(OnScrollFunc func) { _onScrollFuncs.push_back(func); }
-    void RegisterOnDropFunc(OnDropFunc func) { _onDropFuncs.push_back(func); }
-    void RegisterOnWindowSizeFunc(OnWindowSizeFunc func) { _onWindowSizeFuncs.push_back(func); }
-    void RegisterOnWindowCloseFunc(OnWindowCloseFunc func) { _onWindowCloseFuncs.push_back(func); }
+    void RegisterOnResetFunc(OnResetFunc func) {
+        _onResetFuncs.push_back(func);
+    }
+    void RegisterOnKeyFunc(OnKeyFunc func) {
+        _onKeyFuncs.push_back(func);
+    }
+    void RegisterOnCharFunc(OnCharFunc func) {
+        _onCharFuncs.push_back(func);
+    }
+    void RegisterOnCharModsFunc(OnCharModsFunc func) {
+        _onCharModsFuncs.push_back(func);
+    }
+    void RegisterOnMouseButtonFunc(OnMouseButtonFunc func) {
+        _onMouseButtonFuncs.push_back(func);
+    }
+    void RegisterOnCursorPosFunc(OnCursorPosFunc func) {
+        _onCursorPosFuncs.push_back(func);
+    }
+    void RegisterOnCursorEnterFunc(OnCursorEnterFunc func) {
+        _onCursorEnterFuncs.push_back(func);
+    }
+    void RegisterOnScrollFunc(OnScrollFunc func) {
+        _onScrollFuncs.push_back(func);
+    }
+    void RegisterOnDropFunc(OnDropFunc func) {
+        _onDropFuncs.push_back(func);
+    }
+    void RegisterOnWindowSizeFunc(OnWindowSizeFunc func) {
+        _onWindowSizeFuncs.push_back(func);
+    }
+    void RegisterOnWindowCloseFunc(OnWindowCloseFunc func) {
+        _onWindowCloseFuncs.push_back(func);
+    }
 
   private:
     void OnReset() {

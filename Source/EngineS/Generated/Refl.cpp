@@ -638,8 +638,6 @@ void EngineS::Registration::RegisterEngineObjects() {
         <MethodType<EngineS::WindowSystem, false, false, void, const std::string &>>(&EngineS::WindowSystem::SetTitle), { {"title"}, })
         .Method("SetWindowSize", static_cast
         <MethodType<EngineS::WindowSystem, false, false, void, EngineS::u32, EngineS::u32>>(&EngineS::WindowSystem::SetWindowSize), { {"width"},{"height"}, })
-        .Method("GetWindow", static_cast
-        <MethodType<EngineS::WindowSystem, false, true, GLFWwindow *>>(&EngineS::WindowSystem::GetWindow), {  })
         .Method("GetWindowSize", static_cast
         <MethodType<EngineS::WindowSystem, false, true, std::tuple<EngineS::u32, EngineS::u32>>>(&EngineS::WindowSystem::GetWindowSize), {  })
         .Method("GetFramebufferSize", static_cast

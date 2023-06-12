@@ -23,6 +23,9 @@ template<class T>
 concept IsPointer = std::is_pointer_v<T>;
 
 template<class T>
+concept IsObject = std::is_object_v<T>;
+
+template<class T>
 concept IsReference = std::is_reference_v<T>;
 
 template<class From, class To>

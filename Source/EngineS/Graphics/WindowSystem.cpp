@@ -86,10 +86,6 @@ void WindowSystem::SetWindowSize(u32 width, u32 height) {
     glfwSetWindowSize(_window, width, height);
 }
 
-GLFWwindow* WindowSystem::GetWindow() const {
-    return _window;
-}
-
 std::tuple<u32, u32> WindowSystem::GetWindowSize() const {
     return {_width, _height};
 }
