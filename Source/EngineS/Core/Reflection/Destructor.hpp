@@ -4,13 +4,13 @@ namespace EngineS {
 
 class Instance;
 
-class DestructorInfo {
+class Destructor {
   public:
-    virtual ~DestructorInfo() = default;
+    virtual ~Destructor() = default;
 
     virtual void Invoke(Instance instance) const = 0;
 };
 
 } // namespace EngineS
 
-#include "Core/Reflection/Impl/DestructorInfo.inl"
+#include "Core/Reflection/Impl/Destructor.inl"

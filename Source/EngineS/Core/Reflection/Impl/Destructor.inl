@@ -5,9 +5,11 @@
 namespace EngineS::Detail {
 
 template<class T>
-class DestructorInfoImpl : public DestructorInfo {
+class DestructorImpl : public Destructor {
   public:
-    void Invoke(Instance instance) const override { delete instance.TryConvert<T>(); }
+    void Invoke(Instance instance) const override {
+        delete instance.TryConvert<T>();
+    }
 };
 
 } // namespace EngineS::Detail

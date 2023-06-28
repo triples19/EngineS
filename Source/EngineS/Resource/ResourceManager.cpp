@@ -1,6 +1,6 @@
 #include "Resource/ResourceManager.hpp"
 #include "Core/Macros.hpp"
-#include "Core/Reflection/ConstructorInfo.hpp"
+#include "Core/Reflection/Constructor.hpp"
 #include "Core/Reflection/Type.hpp"
 #include "Resource/Resource.hpp"
 

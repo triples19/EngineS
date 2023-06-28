@@ -1,8 +1,8 @@
 #include "ScriptingEngine.hpp"
 
-#include "Core/Reflection/ConstructorInfo.hpp"
-#include "Core/Reflection/DestructorInfo.hpp"
-#include "Core/Reflection/MethodInfo.hpp"
+#include "Core/Reflection/Constructor.hpp"
+#include "Core/Reflection/Destructor.hpp"
+#include "Core/Reflection/Method.hpp"
 #include "Core/Reflection/Type.hpp"
 #include "LuaUtils.hpp"
 

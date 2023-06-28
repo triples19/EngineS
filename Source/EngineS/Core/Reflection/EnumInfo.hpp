@@ -22,4 +22,4 @@ class EnumInfo {
 
 } // namespace EngineS
 
-#include "Core/Reflection/Impl/EnumInfo.inl"
+#include "Core/Reflection/Impl/Enum.inl"

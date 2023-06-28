@@ -1,9 +1,9 @@
 #include <catch2/catch_test_macros.hpp>
 #include <type_traits>
 
-#include "Core/Reflection/FieldInfo.hpp"
+#include "Core/Reflection/Field.hpp"
 #include "Core/Reflection/Instance.hpp"
-#include "Core/Reflection/MethodInfo.hpp"
+#include "Core/Reflection/Method.hpp"
 #include "Core/Reflection/Registration.hpp"
 #include "Core/Reflection/Utils.hpp"
 #include "Core/Reflection/Variant.hpp"
@@ -13,10 +13,18 @@ using namespace EngineS;
 namespace Test_Methods {
 
 struct A {
-    int          foo() { return 1; }
-    int          foo(int i) { return 1 + i; }
-    void         bar(int& x) const { x++; }
-    static float s(float x, float y) { return x + y; }
+    int foo() {
+        return 1;
+    }
+    int foo(int i) {
+        return 1 + i;
+    }
+    void bar(int& x) const {
+        x++;
+    }
+    static float s(float x, float y) {
+        return x + y;
+    }
 };
 
 } // namespace Test_Methods

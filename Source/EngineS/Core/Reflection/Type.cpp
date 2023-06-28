@@ -1,10 +1,10 @@
 #include "Type.hpp"
-#include "ConstructorInfo.hpp"
+#include "Constructor.hpp"
 #include "Core/Hash.hpp"
-#include "DestructorInfo.hpp"
-#include "FieldInfo.hpp"
+#include "Destructor.hpp"
+#include "Field.hpp"
 #include "MemberInfo.hpp"
-#include "MethodInfo.hpp"
+#include "Method.hpp"
 #include "TypeRegistry.hpp"
 
 #include <algorithm>
@@ -53,19 +53,25 @@ bool Type::DerivedFrom(std::string_view name) const {
 bool Type::DerivedFrom(const Type* type) const {
     if (*this == *type)
         return true;
-    return std::ranges::any_of(_bases, [type](const Type* base) {
+    return std::ranges::any_of(GetBases(), [type](const Type* base) {
         if (base == nullptr)
             return false;
         return base->DerivedFrom(type);
     });
 }
 
-const std::vector<const Type*>& Type::GetBases() const {
-    return _bases;
+std::vector<const Type*> Type::GetBases() const {
+    std::vector<const Type*> ret;
+    for (auto base : _bases) {
+        ret.push_back(base);
+        auto b = base->GetBases();
+        ret.insert(ret.end(), b.begin(), b.end());
+    }
+    return ret;
 }
 
-std::vector<const FieldInfo*> Type::GetFields() const {
-    std::vector<const FieldInfo*> ret;
+std::vector<const Field*> Type::GetFields() const {
+    std::vector<const Field*> ret;
     ret.reserve(_fields.size());
     for (auto field : _fields) {
         ret.push_back(field);
@@ -73,15 +79,15 @@ std::vector<const FieldInfo*> Type::GetFields() const {
     return ret;
 }
 
-const FieldInfo* Type::GetField(std::string_view name) const {
-    auto iter = std::ranges::find_if(_fields, [&](const FieldInfo* info) { return info->GetName() == name; });
+const Field* Type::GetField(std::string_view name) const {
+    auto iter = std::ranges::find_if(_fields, [&](const Field* info) { return info->GetName() == name; });
     if (iter == _fields.end())
         return nullptr;
     return *iter;
 }
 
-std::vector<const MethodInfo*> Type::GetMethods() const {
-    std::vector<const MethodInfo*> ret;
+std::vector<const Method*> Type::GetMethods() const {
+    std::vector<const Method*> ret;
     ret.reserve(_methods.size());
     for (auto method : _methods) {
         ret.push_back(method);
@@ -89,8 +95,8 @@ std::vector<const MethodInfo*> Type::GetMethods() const {
     return ret;
 }
 
-std::vector<const MethodInfo*> Type::GetMethods(std::string_view name) const {
-    std::vector<const MethodInfo*> ret;
+std::vector<const Method*> Type::GetMethods(std::string_view name) const {
+    std::vector<const Method*> ret;
     for (auto method : _methods) {
         if (method->GetName() == name)
             ret.push_back(method);
@@ -98,10 +104,10 @@ std::vector<const MethodInfo*> Type::GetMethods(std::string_view name) const {
     return ret;
 }
 
-const MethodInfo* Type::GetMethod(std::string_view name, std::vector<const Type*> paramTypes) const {
-    auto iter = std::ranges::find_if(_methods, [&](const MethodInfo* info) {
+const Method* Type::GetMethod(std::string_view name, std::vector<const Type*> paramTypes) const {
+    auto iter = std::ranges::find_if(_methods, [&](const Method* info) {
         return info->GetName() == name &&
-               std::ranges::equal(paramTypes, info->GetParameterInfos(), {}, {}, [](const ParameterInfo& info) {
+               std::ranges::equal(paramTypes, info->GetParameterInfos(), {}, {}, [](const Parameter& info) {
                    return info.GetType();
                });
     });
@@ -121,9 +127,9 @@ void* Type::ApplyOffset(const Type* targetType, const Type* sourceType, void* pt
     return static_cast<void*>(targetType->Cast(sourceType->Cast(ptr)));
 }
 
-const ConstructorInfo* Type::GetConstructor(std::vector<const Type*> paramTypes) const {
-    auto iter = std::ranges::find_if(_ctors, [&](const ConstructorInfo* info) {
-        return std::ranges::equal(paramTypes, info->GetParameterInfos(), {}, {}, [](const ParameterInfo& paramInfo) {
+const Constructor* Type::GetConstructor(std::vector<const Type*> paramTypes) const {
+    auto iter = std::ranges::find_if(_ctors, [&](const Constructor* info) {
+        return std::ranges::equal(paramTypes, info->GetParameterInfos(), {}, {}, [](const Parameter& paramInfo) {
             return paramInfo.GetType();
         });
     });
@@ -132,15 +138,20 @@ const ConstructorInfo* Type::GetConstructor(std::vector<const Type*> paramTypes)
     return *iter;
 }
 
-std::vector<const ConstructorInfo*> Type::GetConstructors() const {
-    std::vector<const ConstructorInfo*> ret;
+std::vector<const Constructor*> Type::GetConstructors() const {
+    std::vector<const Constructor*> ret;
     ret.reserve(_ctors.size());
     std::ranges::transform(_ctors, std::back_inserter(ret), [](auto x) { return x; });
     return ret;
 }
 
-const DestructorInfo* Type::GetDestructor() const {
+const Destructor* Type::GetDestructor() const {
     return _dtor;
+}
+
+void Type::SetName(std::string_view name) {
+    _name = name;
+    _hash = Hasher<std::string_view> {}(name);
 }
 
 } // namespace EngineS

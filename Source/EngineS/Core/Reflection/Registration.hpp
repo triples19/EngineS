@@ -1,9 +1,9 @@
 #pragma once
 
 #include "EnumInfo.hpp"
-#include "FieldInfo.hpp"
+#include "Field.hpp"
 #include "MemberInfo.hpp"
-#include "MethodInfo.hpp"
+#include "Method.hpp"
 
 #include <string>
 #include <type_traits>
@@ -42,7 +42,9 @@ class Class {
     inline Class&
     Constructor(const std::vector<std::string_view>& params, AccessLevel accessLevel = AccessLevel::Public);
 
-    const Type* Get() const { return _type; }
+    const Type* Get() const {
+        return _type;
+    }
 
   private:
     Type* _type;
@@ -56,10 +58,12 @@ class Enum {
 
     Enum& Value(std::string_view name, T val);
 
-    const EnumInfo* Get() const { return _info; }
+    const EnumInfo* Get() const {
+        return _info;
+    }
 
   private:
-    Detail::EnumInfoImpl<T>* _info;
+    Detail::EnumImpl<T>* _info;
 };
 
 } // namespace Registration

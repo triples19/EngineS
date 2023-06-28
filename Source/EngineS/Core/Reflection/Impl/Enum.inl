@@ -12,13 +12,17 @@ class Enum;
 namespace EngineS::Detail {
 
 template<class T>
-class EnumInfoImpl : public EnumInfo {
+class EnumImpl : public EnumInfo {
     friend class ::EngineS::Registration::Enum<T>;
 
   public:
-    EnumInfoImpl(std::string_view name) : _name(name) {}
-    std::string_view GetName() const override { return _name; }
-    const Type*      GetUnderlyingType() const override { return TypeOf<std::underlying_type_t<T>>(); }
+    EnumImpl(std::string_view name) : _name(name) {}
+    std::string_view GetName() const override {
+        return _name;
+    }
+    const Type* GetUnderlyingType() const override {
+        return TypeOf<std::underlying_type_t<T>>();
+    }
 
     Variant GetValue(std::string_view name) const override {
         auto iter = _map.find(name);
@@ -29,7 +33,9 @@ class EnumInfoImpl : public EnumInfo {
         }
     }
 
-    const EnumMap& GetValues() const override { return _map; }
+    const EnumMap& GetValues() const override {
+        return _map;
+    }
 
   private:
     std::string_view _name;

@@ -53,35 +53,6 @@ std::vector<const Type*> TypeRegistry::GetTypes() const {
     return ret;
 }
 
-void TypeRegistry::AddBases(const Type* type, const std::vector<std::type_index>& baseIndices) {
-    auto& storedBases = _tempBases[type->GetHashValue()];
-    storedBases.insert(storedBases.end(), baseIndices.begin(), baseIndices.end());
-}
-
-void TypeRegistry::GetBasesOfType(Type* type) {
-    if (_processedTypes.contains(type))
-        return;
-
-    for (const auto& baseIndex : _tempBases[type->GetHashValue()]) {
-        auto base = const_cast<Type*>(GetType(baseIndex));
-        assert(base);
-        GetBasesOfType(base);
-        type->_bases.push_back(base);
-        std::ranges::copy(base->_bases, std::back_inserter(type->_bases));
-        std::ranges::copy(base->_methods, std::back_inserter(type->_methods));
-        std::ranges::copy(base->_fields, std::back_inserter(type->_fields));
-    }
-    _processedTypes.insert(type);
-}
-
-void TypeRegistry::ProcessBases() {
-    for (const auto& [idx, baseIndex] : _tempBases) {
-        auto type = const_cast<Type*>(GetType(idx));
-        GetBasesOfType(type);
-    }
-    _tempBases.clear();
-}
-
 void TypeRegistry::RegisterEnum(EnumInfo* enumInfo) {
     auto hasher                         = Hasher<std::string_view> {};
     _enums[hasher(enumInfo->GetName())] = enumInfo;

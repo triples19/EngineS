@@ -7,15 +7,15 @@
 namespace EngineS {
 
 class Variant;
-class ParameterInfo;
+class Parameter;
 class Argument;
 
-class ConstructorInfo {
+class Constructor {
   public:
-    virtual ~ConstructorInfo() = default;
+    virtual ~Constructor() = default;
 
-    virtual u32                               GetParameterCount() const = 0;
-    virtual const std::vector<ParameterInfo>& GetParameterInfos() const = 0;
+    virtual u32                           GetParameterCount() const = 0;
+    virtual const std::vector<Parameter>& GetParameterInfos() const = 0;
 
     virtual Variant Invoke() const = 0;
 
@@ -37,4 +37,4 @@ class ConstructorInfo {
 
 } // namespace EngineS
 
-#include "Core/Reflection/Impl/ConstructorInfo.inl"
+#include "Core/Reflection/Impl/Constructor.inl"

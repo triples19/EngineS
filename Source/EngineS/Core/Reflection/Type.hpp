@@ -22,10 +22,10 @@ class Class;
 }
 
 class MemberInfo;
-class FieldInfo;
-class MethodInfo;
-class ConstructorInfo;
-class DestructorInfo;
+class Field;
+class Method;
+class Constructor;
+class Destructor;
 
 class Type {
     template<class>
@@ -37,9 +37,15 @@ class Type {
 
   public:
     virtual ~Type();
-    std::string_view GetName() const { return _name; }
-    hash32           GetHashValue() const { return _hash; }
-    std::type_index  GetTypeIndex() const { return _typeIndex; }
+    std::string_view GetName() const {
+        return _name;
+    }
+    hash32 GetHashValue() const {
+        return _hash;
+    }
+    std::type_index GetTypeIndex() const {
+        return _typeIndex;
+    }
 
     bool Is(std::string_view name) const;
     bool Is(const Type* type) const;
@@ -59,7 +65,9 @@ class Type {
     template<class T>
     bool DerivedFrom() const;
 
-    friend bool operator==(const Type& lhs, const Type& rhs) { return lhs._hash == rhs._hash; }
+    friend bool operator==(const Type& lhs, const Type& rhs) {
+        return lhs._hash == rhs._hash;
+    }
 
     virtual void* Cast(void* ptr) const = 0;
 
@@ -68,27 +76,30 @@ class Type {
     template<class TargetType, class SourceType>
     static TargetType DynamicCast(SourceType obj);
 
-    const std::vector<const Type*>& GetBases() const;
+    std::vector<const Type*> GetBases() const;
 
-    std::vector<const FieldInfo*> GetFields() const;
+    std::vector<const Field*> GetFields() const;
 
-    const FieldInfo* GetField(std::string_view name) const;
+    const Field* GetField(std::string_view name) const;
 
-    std::vector<const MethodInfo*> GetMethods() const;
+    std::vector<const Method*> GetMethods() const;
 
-    std::vector<const MethodInfo*> GetMethods(std::string_view name) const;
+    std::vector<const Method*> GetMethods(std::string_view name) const;
 
-    const MethodInfo* GetMethod(std::string_view name, std::vector<const Type*> paramTypes) const;
+    const Method* GetMethod(std::string_view name, std::vector<const Type*> paramTypes) const;
 
-    const ConstructorInfo* GetConstructor(std::vector<const Type*> paramTypes) const;
+    const Constructor* GetConstructor(std::vector<const Type*> paramTypes) const;
 
-    std::vector<const ConstructorInfo*> GetConstructors() const;
+    std::vector<const Constructor*> GetConstructors() const;
 
-    const DestructorInfo* GetDestructor() const;
+    const Destructor* GetDestructor() const;
 
     virtual bool IsNumber() const        = 0;
     virtual bool IsIntegral() const      = 0;
     virtual bool IsFloatingPoint() const = 0;
+
+  private:
+    void SetName(std::string_view name);
 
   private:
     hash32           _hash;
@@ -97,11 +108,11 @@ class Type {
 
     std::vector<const Type*> _bases;
 
-    std::vector<FieldInfo*>       _fields;
-    std::vector<MethodInfo*>      _methods;
-    std::vector<ConstructorInfo*> _ctors;
+    std::vector<Field*>       _fields;
+    std::vector<Method*>      _methods;
+    std::vector<Constructor*> _ctors;
 
-    DestructorInfo* _dtor;
+    Destructor* _dtor;
 };
 
 namespace Detail {
@@ -110,11 +121,19 @@ template<class T>
 class TypeImpl : public Type {
   public:
     TypeImpl(std::string_view name) : Type(name, typeid(T)) {}
-    void* Cast(void* ptr) const override { return static_cast<void*>(static_cast<T*>(ptr)); }
+    void* Cast(void* ptr) const override {
+        return static_cast<void*>(static_cast<T*>(ptr));
+    }
 
-    bool IsNumber() const override { return IsIntegral() || IsFloatingPoint(); }
-    bool IsIntegral() const override { return std::integral<T>; }
-    bool IsFloatingPoint() const override { return std::floating_point<T>; }
+    bool IsNumber() const override {
+        return IsIntegral() || IsFloatingPoint();
+    }
+    bool IsIntegral() const override {
+        return std::integral<T>;
+    }
+    bool IsFloatingPoint() const override {
+        return std::floating_point<T>;
+    }
 };
 
 } // namespace Detail
@@ -123,7 +142,9 @@ class TypeImpl : public Type {
 
 template<>
 struct std::hash<EngineS::Type> {
-    std::size_t operator()(const EngineS::Type& type) { return type.GetHashValue(); }
+    std::size_t operator()(const EngineS::Type& type) {
+        return type.GetHashValue();
+    }
 };
 
 #include "Core/Reflection/Impl/Type.inl"

@@ -12,19 +12,27 @@ namespace Test_Instance {
 
 struct A {
     ES_REFL_ENABLE
-    virtual char Name() { return 'A'; }
+    virtual char Name() {
+        return 'A';
+    }
 };
 struct B : A {
     ES_REFL_ENABLE
-    char Name() override { return 'B'; }
+    char Name() override {
+        return 'B';
+    }
 };
 struct C : B {
     ES_REFL_ENABLE
-    char Name() override { return 'C'; }
+    char Name() override {
+        return 'C';
+    }
 };
 struct D : C {
     ES_REFL_ENABLE
-    char Name() override { return 'D'; }
+    char Name() override {
+        return 'D';
+    }
 };
 
 } // namespace Test_Instance
@@ -36,7 +44,6 @@ TEST_CASE("Instance") {
     auto typeB = Registration::Class<B>("Test_Instance::B").Bases<A>().Get();
     auto typeC = Registration::Class<C>("Test_Instance::C").Bases<B>().Get();
     auto typeD = Registration::Class<D>("Test_Instance::D").Bases<C>().Get();
-    TypeRegistry::Instance()->ProcessBases();
 
     SECTION("Instance") {
         auto ptr = new C;

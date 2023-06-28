@@ -26,6 +26,4 @@ void EngineS::Registration::RegisterUserObjects() {
         .Method("Update", static_cast
         <MethodType<TestComponent, false, false, void, float>>(&TestComponent::Update), { {"deltaTime"}, })
     ;
-
-TypeRegistry::Instance()->ProcessBases();
 }

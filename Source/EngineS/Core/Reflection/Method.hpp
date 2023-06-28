@@ -10,19 +10,19 @@
 namespace EngineS {
 
 class Type;
-class ParameterInfo;
+class Parameter;
 class Instance;
 class Variant;
 class Argument;
 
-class MethodInfo : public MemberInfo {
+class Method : public MemberInfo {
   public:
     using MemberInfo::MemberInfo;
 
-    bool                                      IsStatic() const override = 0;
-    virtual const Type*                       GetReturnType() const     = 0;
-    virtual u32                               GetParameterCount() const = 0;
-    virtual const std::vector<ParameterInfo>& GetParameterInfos() const = 0;
+    bool                                  IsStatic() const override = 0;
+    virtual const Type*                   GetReturnType() const     = 0;
+    virtual u32                           GetParameterCount() const = 0;
+    virtual const std::vector<Parameter>& GetParameterInfos() const = 0;
 
     virtual Variant Invoke(Instance instance) const = 0;
 
@@ -46,4 +46,4 @@ class MethodInfo : public MemberInfo {
 
 } // namespace EngineS
 
-#include "Core/Reflection/Impl/MethodInfo.inl"
+#include "Core/Reflection/Impl/Method.inl"

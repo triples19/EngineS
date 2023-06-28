@@ -2,7 +2,7 @@
 
 #include "Core/Reflection/Argument.hpp"
 #include "Core/Reflection/Instance.hpp"
-#include "Core/Reflection/ParameterInfo.hpp"
+#include "Core/Reflection/Parameter.hpp"
 #include "Core/Reflection/TypeOf.hpp"
 #include "Core/Reflection/Variant.hpp"
 
@@ -19,7 +19,9 @@ struct SignatureTraitBase<Ret(Params...)> {
     using ReturnType                  = Ret;
     static constexpr auto ParamsCount = sizeof...(Params);
 
-    static inline std::array<const Type*, ParamsCount> GetParamTypes() { return {TypeOf<Params>()...}; }
+    static inline std::array<const Type*, ParamsCount> GetParamTypes() {
+        return {TypeOf<Params>()...};
+    }
 
     template<size_t Index>
     struct TypeOfParam {
@@ -37,7 +39,7 @@ template<class Ret, class... Params>
 struct SignatureTrait<Ret(Params...) const> : SignatureTraitBase<Ret(Params...)> {};
 
 template<class Ptr>
-class MethodInfoImpl : public MethodInfo {
+class MethodImpl : public Method {
   public:
     using MethodType                  = typename MemberTrait<Ptr>::Type;
     using ReturnType                  = typename SignatureTrait<MethodType>::ReturnType;
@@ -46,13 +48,13 @@ class MethodInfoImpl : public MethodInfo {
     template<size_t Index>
     using TypeOfParam = typename SignatureTrait<MethodType>::template TypeOfParam<Index>::Type;
 
-    MethodInfoImpl(
+    MethodImpl(
         std::string_view                     name,
         Ptr                                  ptr,
         const std::vector<std::string_view>& paramNames,
         AccessLevel                          accessLevel = AccessLevel::Public
     ) :
-        MethodInfo(name, accessLevel),
+        Method(name, accessLevel),
         _ptr(ptr) {
         assert(paramNames.size() == ParamsCount);
         auto types = SignatureTrait<MethodType>::GetParamTypes();
@@ -61,17 +63,29 @@ class MethodInfoImpl : public MethodInfo {
         }
     }
 
-    bool IsStatic() const override { return MemberTrait<Ptr>::IsStatic; }
+    bool IsStatic() const override {
+        return MemberTrait<Ptr>::IsStatic;
+    }
 
-    const Type* GetReturnType() const override { return TypeOf<ReturnType>(); }
+    const Type* GetReturnType() const override {
+        return TypeOf<ReturnType>();
+    }
 
-    u32 GetParameterCount() const override { return ParamsCount; }
+    u32 GetParameterCount() const override {
+        return ParamsCount;
+    }
 
-    const std::vector<ParameterInfo>& GetParameterInfos() const override { return _params; }
+    const std::vector<Parameter>& GetParameterInfos() const override {
+        return _params;
+    }
 
-    Variant Invoke(Instance instance) const override { return InvokeTemplate(instance); }
+    Variant Invoke(Instance instance) const override {
+        return InvokeTemplate(instance);
+    }
 
-    Variant Invoke(Instance instance, Argument arg0) const override { return InvokeTemplate(instance, arg0); }
+    Variant Invoke(Instance instance, Argument arg0) const override {
+        return InvokeTemplate(instance, arg0);
+    }
 
     Variant Invoke(Instance instance, Argument arg0, Argument arg1) const override {
         return InvokeTemplate(instance, arg0, arg1);
@@ -137,8 +151,8 @@ class MethodInfoImpl : public MethodInfo {
     }
 
   private:
-    Ptr                        _ptr;
-    std::vector<ParameterInfo> _params;
+    Ptr                    _ptr;
+    std::vector<Parameter> _params;
 };
 
 } // namespace EngineS::Detail

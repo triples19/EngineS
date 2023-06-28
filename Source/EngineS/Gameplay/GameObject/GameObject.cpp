@@ -1,7 +1,7 @@
 #include "GameObject.hpp"
 #include "Component.hpp"
 #include "Core/IO/Logger.hpp"
-#include "Core/Reflection/ConstructorInfo.hpp"
+#include "Core/Reflection/Constructor.hpp"
 #include "Core/Reflection/Type.hpp"
 
 namespace EngineS {

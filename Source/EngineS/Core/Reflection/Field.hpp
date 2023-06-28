@@ -10,7 +10,7 @@ namespace EngineS {
 
 class Type;
 
-class FieldInfo : public MemberInfo {
+class Field : public MemberInfo {
   public:
     using MemberInfo::MemberInfo;
 
@@ -29,14 +29,18 @@ class FieldInfo : public MemberInfo {
 namespace Detail {
 
 template<class Ptr>
-class FieldInfoImpl : public FieldInfo {
+class FieldImpl : public Field {
   public:
-    FieldInfoImpl(std::string_view name, Ptr ptr, AccessLevel accessLevel = AccessLevel::Public) :
-        FieldInfo(name, accessLevel), _ptr(ptr) {}
+    FieldImpl(std::string_view name, Ptr ptr, AccessLevel accessLevel = AccessLevel::Public) :
+        Field(name, accessLevel), _ptr(ptr) {}
 
-    bool IsStatic() const override { return MemberTrait<Ptr>::IsStatic; }
+    bool IsStatic() const override {
+        return MemberTrait<Ptr>::IsStatic;
+    }
 
-    const Type* GetType() const override { return TypeOf<typename MemberTrait<Ptr>::Type>(); }
+    const Type* GetType() const override {
+        return TypeOf<typename MemberTrait<Ptr>::Type>();
+    }
 
     virtual Variant GetValue(Instance instance) const override {
         if constexpr (MemberTrait<Ptr>::IsStatic) {

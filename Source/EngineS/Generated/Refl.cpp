@@ -666,5 +666,4 @@ void EngineS::Registration::RegisterEngineObjects() {
         <MethodType<EngineS::WindowSystem, false, false, void, EngineS::WindowSystem::OnWindowCloseFunc>>(&EngineS::WindowSystem::RegisterOnWindowCloseFunc), { {"func"}, })
     ;
 
-TypeRegistry::Instance()->ProcessBases();
 }
